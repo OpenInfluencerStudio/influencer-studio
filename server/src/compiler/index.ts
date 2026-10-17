@@ -20,7 +20,7 @@ export const CharacterSchema = z.object({
   height: id.optional(), proportions: id.optional(), headShape: id.optional(), neck: id.optional(), eyeShape: id.optional(), eyeColor: id.optional(),
   features: z.array(id).max(3).optional(), facialHair: id.optional(), distinctive: id.optional(), accessory: id.optional(),
   expression: id.optional(), lighting: id.optional(), background: id.optional(), renderStyle: id.optional(),
-  prop: id.optional(), silliness: z.number().int().min(0).max(4).default(0),
+  prop: id.optional(), shoes: id.optional(), silliness: z.number().int().min(0).max(4).default(0),
 }).strict();
 export type CharacterInput = z.input<typeof CharacterSchema>;
 export type Character = z.output<typeof CharacterSchema>;
@@ -95,7 +95,7 @@ export function compileCharacter(input: CharacterInput, seed = 0): Compiled {
     isHuman && f('facialHair'),
     ...featureFrags,
     isHuman && f('distinctive'),
-    f('accessory'), f('prop'),
+    f('accessory'), f('prop'), f('shoes'),
     `${CLOTHING_PHRASE}: ${f('outfit')}`,
     f('expression'), f('lighting'), f('background'),
   ];

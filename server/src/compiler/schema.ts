@@ -16,7 +16,7 @@ const mk = (rows: [string, string?][]): Opt[] => rows.map(([label, frag]) => ({ 
 
 export type CharacterKey =
   | 'type' | 'species' | 'bodySize' | 'age' | 'ethnicity' | 'skinTone' | 'hairStyle' | 'hairColor' | 'outfit' | 'height' | 'proportions'
-  | 'prop' | 'silliness' | 'headShape' | 'neck' | 'eyeShape' | 'eyeColor' | 'features' | 'facialHair' | 'distinctive' | 'accessory' | 'expression' | 'lighting' | 'background' | 'renderStyle';
+  | 'prop' | 'shoes' | 'silliness' | 'headShape' | 'neck' | 'eyeShape' | 'eyeColor' | 'features' | 'facialHair' | 'distinctive' | 'accessory' | 'expression' | 'lighting' | 'background' | 'renderStyle';
 
 export const TYPE_OPTS: (Opt & { human: boolean; phrase: string })[] = [
   { id: 'surprise', label: 'Surprise me', frag: '', human: true, phrase: '' },
@@ -121,7 +121,12 @@ export const CONTROLS: Control[] = [
     ['Bubble afro', 'a huge round bubble-shaped afro'], ['Beehive', 'a tall beehive hairdo'], ['Space buns', 'two big space buns'], ['Spiral horns hair', 'hair styled into two spiralled horn shapes'],
     ['Unicorn horn hair', 'hair twisted into a single tall unicorn-horn spike'], ['Cotton-candy cloud', 'a huge fluffy cloud of hair like cotton candy'], ['Mushroom cap', 'a big round mushroom-cap haircut'],
     ['Long braid', 'one extremely long braid reaching the floor'], ['Rainbow mohawk', 'a bright rainbow-coloured mohawk'], ['Shaved pattern', 'short hair with a neat geometric shaved pattern'],
-    ['Samurai top-knot', 'a tidy top-knot with shaved sides'], ['Antenna hair', 'two playful curled antenna-like hair tufts'], ['Waterfall curls', 'a cascade of very long ringlet curls'], ['Flame swirl', 'hair swept up into a stylised flame-shaped swirl']]) },
+    ['Samurai top-knot', 'a tidy top-knot with shaved sides'], ['Antenna hair', 'two playful curled antenna-like hair tufts'], ['Waterfall curls', 'a cascade of very long ringlet curls'], ['Flame swirl', 'hair swept up into a stylised flame-shaped swirl'],
+    ['Tornado swirl', 'hair spun up into a tall tornado-shaped swirl'], ['Pancake bun stack', 'a tall stack of three round buns on top of the head'], ['Lightning bolt part', 'short hair with a bold lightning-bolt shaped shaved pattern'],
+    ['Hair crown braid', 'a huge braided crown of hair rising above the head'], ['Fountain ponytail', 'a high ponytail fountaining up and falling around the head'], ['Double mohawk', 'two parallel tall mohawk ridges'],
+    ['Half-and-half', 'hair split in two very different styles, long and wavy on one side and short and spiky on the other'], ['Giant curl spring', 'long hair in huge spring-like corkscrew curls'],
+    ['Star-shaped cut', 'short hair shaved and shaped into a bold star pattern'], ['Wave crest', 'hair swept up into a giant ocean-wave crest'], ['Hair cloud with pins', 'a big fluffy hair cloud held with many colourful hair pins'],
+    ['Pointy spikes', 'hair in a ring of tall pointy spikes like a crown']]) },
   { id: 'hairColor', title: 'Hair color', ui: 'swatch', applies: 'all', default: 'dark_brown', options: mk([
     ['Black', 'black'], ['Dark brown', 'dark brown'], ['Brown', 'brown'], ['Auburn', 'auburn'], ['Ginger', 'ginger'], ['Blonde', 'blonde'],
     ['Platinum', 'platinum blonde'], ['Grey', 'grey'], ['Silver', 'silver'], ['Teal', 'teal'], ['Pink', 'pink'], ['Blue', 'blue']]) },
@@ -133,7 +138,12 @@ export const CONTROLS: Control[] = [
     ['Superhero cape', 'a bright superhero costume with a long flowing cape, fully covered'], ['Wizard robe', 'a long star-covered wizard robe and pointed hat'], ['Pirate coat', 'a long pirate captain coat with a tricorn hat'],
     ['Mascot suit', 'a fluffy full-body sports mascot costume'], ['Glitter tracksuit', 'a sparkly glitter tracksuit'], ['Flower jacket', 'a jacket completely covered in colourful flowers'],
     ['Giant bow-tie suit', 'a tailored suit with a giant bow tie'], ['Knight armour', 'a shiny full suit of costume knight armour'], ['Space suit', 'a chunky retro space suit with a round helmet under the arm'],
-    ['Banana costume', 'a full-body banana costume'], ['Duck rain gear', 'a yellow raincoat with a duck-shaped hood and rubber boots'], ['Patchwork coat', 'a long colourful patchwork coat']]) },
+    ['Banana costume', 'a full-body banana costume'], ['Duck rain gear', 'a yellow raincoat with a duck-shaped hood and rubber boots'], ['Patchwork coat', 'a long colourful patchwork coat'],
+    ['Athletic leggings', 'full-length opaque stretchy athletic leggings with a long loose sports top that covers the hips'], ['Cycling shorts kit', 'knee-length stretchy athletic cycling shorts with a loose long-sleeved cycling jersey that covers the waist'],
+    ['Ruffle top', 'an oversized ruffled blouse with big layered ruffles and plain trousers'], ['Puffy sleeve top', 'a top with enormous puffy balloon sleeves and plain trousers'], ['Mismatched top', 'a novelty top with two completely different mismatched sleeves and plain trousers'],
+    ['Giant collar shirt', 'a shirt with a gigantic oversized pointed collar and plain trousers'], ['Neon windbreaker', 'a bright neon windbreaker over a plain long-sleeved top with trousers'],
+    ['Novelty sweater', 'an oversized novelty knitted sweater with a bold abstract pattern and no writing, with trousers'], ['Tiered ruffle dress', 'a long dress with many layers of colourful ruffles'],
+    ['Oversized puffer', 'an enormous oversized puffer jacket in a bright colour with trousers'], ['Patterned jumpsuit', 'a loose long-sleeved jumpsuit in a loud geometric pattern, fully covered']]) },
   { id: 'height', title: 'Height', ui: 'body', applies: 'all', default: 'average', options: mk([['Short', 'short in height'], ['Average', ''], ['Tall', 'tall']]) },
   { id: 'proportions', title: 'Proportions', ui: 'body', applies: 'all', default: 'balanced', options: mk([
     ['Balanced', ''], ['Long legs', 'long legs'], ['Long torso', 'a long torso'], ['Broad shoulders', 'broad shoulders'], ['Narrow shoulders', 'narrow shoulders'],
@@ -177,9 +187,13 @@ export const CONTROLS: Control[] = [
     ['Tiny umbrella', 'holding a tiny umbrella'], ['Balloon bunch', 'holding a big bunch of colourful balloons'], ['Trumpet', 'holding a shiny trumpet'], ['Skateboard', 'holding a skateboard under one arm'],
     ['Teapot', 'holding a large teapot'], ['Cardboard crown', 'wearing a cardboard crown'], ['Bubbles', 'surrounded by floating soap bubbles'], ['Pet frog', 'with a small pet frog on one shoulder'],
     ['Stack of books', 'carrying a tall stack of books'], ['Giant donut', 'holding a giant donut'], ['Megaphone', 'holding a toy megaphone']]) },
+  { id: 'shoes', title: 'Shoes', ui: 'acc', applies: 'all', default: 'none', options: mk([
+    ['None', ''], ['Clown-length shoes', 'extremely long exaggerated clown-length shoes, twice the length of the feet'], ['Curly-toe shoes', 'pointed shoes with long upward-curling toes'], ['Platform boots', 'very tall chunky platform boots'],
+    ['Giant sneakers', 'comically oversized bright sneakers'], ['Rocket boots', 'chunky retro-futuristic boots with fins'], ['Duck-foot shoes', 'wide flat duck-foot shaped shoes'], ['Striped boots', 'tall boots with bold rainbow stripes'],
+    ['Spring shoes', 'shoes with big coiled springs under the soles']]) },
 ];
 /** Options added by plan 28: only drawn when the slider is above Realistic. */
-const SILLY_FROM: Record<string, string> = { hairStyle: 'stair_step_cut', outfit: 'inflatable_dino', proportions: 'giant_head', background: 'candy_land', renderStyle: 'cartoon', prop: 'oversized_sunglasses' };
+const SILLY_FROM: Record<string, string> = { hairStyle: 'stair_step_cut', outfit: 'inflatable_dino', proportions: 'giant_head', background: 'candy_land', renderStyle: 'cartoon', prop: 'oversized_sunglasses', shoes: 'clown_length_shoes' };
 for (const c of CONTROLS) { const from = SILLY_FROM[c.id]; if (!from) continue; const i = c.options.findIndex(o => o.id === from); for (const o of c.options.slice(i)) o.silly = true; }
 export const CONTROL_BY_ID = new Map(CONTROLS.map(c => [c.id, c]));
 
@@ -218,6 +232,16 @@ export const PRESETS: { id: string; label: string; patch: Record<string, string 
   { id: 'fox_trumpeter', label: 'Fox Trumpeter', silly: true, patch: { type: 'fox_person', outfit: 'smart_blazer', prop: 'trumpet', background: 'disco_room', silliness: 3 } },
   { id: 'duck_rain', label: 'Rainy-Day Duck Hood', silly: true, patch: { type: 'non_binary', outfit: 'duck_rain_gear', prop: 'tiny_umbrella', silliness: 3 } },
   { id: 'balloon_wizard', label: 'Balloon Wizard', silly: true, patch: { type: 'male', outfit: 'wizard_robe', prop: 'balloon_bunch', hairStyle: 'long_braid', silliness: 3 } },
+  { id: 'long_shoe_larry', label: 'Long-Shoe Larry', silly: true, patch: { type: 'male', shoes: 'clown_length_shoes', outfit: 'clown_style_suit', hairStyle: 'rainbow_mohawk', silliness: 4 } },
+  { id: 'curly_toe_queen', label: 'Curly-Toe Queen', silly: true, patch: { type: 'female', shoes: 'curly_toe_shoes', outfit: 'tiered_ruffle_dress', hairStyle: 'hair_crown_braid', silliness: 3 } },
+  { id: 'platform_pete', label: 'Platform Pete', silly: true, patch: { type: 'male', shoes: 'platform_boots', outfit: 'neon_windbreaker', hairStyle: 'tornado_swirl', silliness: 3 } },
+  { id: 'cycling_clara', label: 'Cycling Clara', silly: true, patch: { type: 'female', outfit: 'cycling_shorts_kit', hairStyle: 'fountain_ponytail', shoes: 'giant_sneakers', background: 'park', silliness: 2 } },
+  { id: 'legging_lou', label: 'Legging Lou', silly: true, patch: { type: 'non_binary', outfit: 'athletic_leggings', hairStyle: 'double_mohawk', shoes: 'striped_boots', silliness: 3 } },
+  { id: 'ruffle_rosa', label: 'Ruffle Rosa', silly: true, patch: { type: 'female', outfit: 'ruffle_top', hairStyle: 'giant_curl_spring', silliness: 3 } },
+  { id: 'puffy_percy', label: 'Puffy Percy', silly: true, patch: { type: 'male', outfit: 'puffy_sleeve_top', hairStyle: 'pancake_bun_stack', silliness: 3 } },
+  { id: 'mismatch_max', label: 'Mismatch Max', silly: true, patch: { type: 'male', outfit: 'mismatched_top', hairStyle: 'half_and_half', silliness: 3 } },
+  { id: 'collar_connie', label: 'Giant-Collar Connie', silly: true, patch: { type: 'female', outfit: 'giant_collar_shirt', hairStyle: 'wave_crest', silliness: 3 } },
+  { id: 'spring_steps', label: 'Spring-Step Sam', silly: true, patch: { type: 'non_binary', shoes: 'spring_shoes', outfit: 'oversized_puffer', hairStyle: 'pointy_spikes', silliness: 4 } },
   { id: 'space_buns', label: 'Space Buns Skater', silly: true, patch: { type: 'female', hairStyle: 'space_buns', outfit: 'sport_set', prop: 'skateboard', silliness: 2 } },
 ];
 

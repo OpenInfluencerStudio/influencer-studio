@@ -385,7 +385,7 @@ function LivePreview({ ch, seed, pv, schema, type, opts, msel, unlocked, jobs, s
   // Realistic placeholder: the generated full-body photo for this type and body size, else the type picture, else a plain card.
   const sizeId = ch.bodySize ?? 'medium';
   const hasPhoto = humanType(type) || type === 'alien' || type === 'monster'; // playful creature types have no example photo until their thumbnails are generated
-  const ph = !hasPhoto ? null : pickPreview(pv, 'bodySize', sizeId, type, 0) ?? pv.get('type/' + (type === 'trans_woman' ? 'female' : type === 'trans_man' ? 'male' : type))?.[0] ?? pv.get('type/female')?.[0] ?? null;
+  const ph = !hasPhoto ? (pv.get('type/' + type)?.[0] ?? null) : pickPreview(pv, 'bodySize', sizeId, type, 0) ?? pv.get('type/' + (type === 'trans_woman' ? 'female' : type === 'trans_man' ? 'male' : type))?.[0] ?? pv.get('type/female')?.[0] ?? null;
   const typeLabel = schema.types.find((t: any) => t.id === type)?.label ?? '';
   const failed = job && ['failed', 'cancelled', 'interrupted'].includes(job.status);
   return <div class="stage card glow" id="live-preview">

@@ -639,6 +639,106 @@
       "age": 30
     }
   },
+  "preset/long_shoe_larry": {
+    "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a bright rainbow-coloured mohawk in dark brown, extremely long exaggerated clown-length shoes, twice the length of the feet, wearing well-fitted, modest everyday clothing, fully covered: a baggy polka-dot suit with an oversized bow tie, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/curly_toe_queen": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a huge braided crown of hair rising above the head in dark brown, pointed shoes with long upward-curling toes, wearing well-fitted, modest everyday clothing, fully covered: a long dress with many layers of colourful ruffles, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/platform_pete": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, hair spun up into a tall tornado-shaped swirl in dark brown, very tall chunky platform boots, wearing well-fitted, modest everyday clothing, fully covered: a bright neon windbreaker over a plain long-sleeved top with trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/cycling_clara": {
+    "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a high ponytail fountaining up and falling around the head in dark brown, comically oversized bright sneakers, wearing well-fitted, modest everyday clothing, fully covered: knee-length stretchy athletic cycling shorts with a loose long-sleeved cycling jersey that covers the waist, a soft smile, soft daylight, a sunny park. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/legging_lou": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, two parallel tall mohawk ridges in dark brown, tall boots with bold rainbow stripes, wearing well-fitted, modest everyday clothing, fully covered: full-length opaque stretchy athletic leggings with a long loose sports top that covers the hips, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/ruffle_rosa": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, long hair in huge spring-like corkscrew curls in dark brown, wearing well-fitted, modest everyday clothing, fully covered: an oversized ruffled blouse with big layered ruffles and plain trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/puffy_percy": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a tall stack of three round buns on top of the head in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a top with enormous puffy balloon sleeves and plain trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/mismatch_max": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, hair split in two very different styles, long and wavy on one side and short and spiky on the other in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a novelty top with two completely different mismatched sleeves and plain trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/collar_connie": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, hair swept up into a giant ocean-wave crest in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a shirt with a gigantic oversized pointed collar and plain trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/spring_steps": {
+    "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, hair in a ring of tall pointy spikes like a crown in dark brown, shoes with big coiled springs under the soles, wearing well-fitted, modest everyday clothing, fully covered: an enormous oversized puffer jacket in a bright colour with trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
   "preset/space_buns": {
     "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, two big space buns in dark brown, holding a skateboard under one arm, wearing well-fitted, modest everyday clothing, fully covered: a long-sleeved sports top and full-length sports trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
     "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
