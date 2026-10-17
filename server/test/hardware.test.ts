@@ -50,3 +50,11 @@ describe('models.json registry', () => {
     expect(validateRegistry(bad).length).toBe(2);
   });
 });
+
+describe('tier names', () => {
+  it('every tier has a unique readable name, ladder in order', () => {
+    const names = limits.tiers.map((t: any) => t.name);
+    expect(names).toEqual(['Minimal', 'Basic', 'Standard', 'Enhanced', 'Pro', 'Elite', 'Mega', 'Ultra', 'Extreme', 'Max']);
+    expect(new Set(names).size).toBe(names.length);
+  });
+});

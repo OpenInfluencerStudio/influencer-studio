@@ -9,6 +9,7 @@ import { scanHardware, buildProfile, HardwareProfile, Exec } from './hardware.js
 import { bestFit, InstalledFn } from './recommend.js';
 import { checkJob, CheckCtx, JobFacts, Settings } from './enforce.js';
 import { ComfyClient } from './comfy.js';
+import { CustomSchema, CUSTOM_DEFAULT, customProfile, type Custom } from './custom.js';
 import { ComfyProgress, ProgressTracker } from './comfy-ws.js';
 import { JobQueue, Job, Runner } from './queue.js';
 import { mockImageSvg } from './mock.js';
@@ -29,6 +30,7 @@ export class Services {
   limits: Limits; registry: Registry; templates: Map<string, Template>;
   dataDir: string; comfy: ComfyClient; mock: boolean; modelsDir?: string;
   settings: Settings = { unlock_unsupported: false };
+  custom: Custom | null = null; private allowRemote = false;
   queue: JobQueue; refs: RefStore; downloads: DownloadManager; modelsDirSource: 'config' | 'env' | 'setting' | 'none' = 'none';
   private profile?: { p: HardwareProfile; at: number };
   private comfyOnline = false; private comfyAt = 0;
@@ -38,13 +40,15 @@ export class Services {
     this.dataDir = cfg.dataDir ?? defaultDataDir();
     fs.mkdirSync(this.dataDir, { recursive: true });
     this.limits = loadLimits(cfg.limitsFile); this.registry = loadRegistry(cfg.registryFile); this.templates = loadTemplates(cfg.workflowsDir);
+    this.allowRemote = !!cfg.allowRemoteComfy;
     this.comfy = new ComfyClient({ baseUrl: cfg.comfyUrl ?? process.env.COMFYUI_URL ?? 'http://127.0.0.1:8288', allowRemote: cfg.allowRemoteComfy });
     this.mock = cfg.mock ?? process.env.INFLUENCER_STUDIO_MOCK === '1';
     this.settingsFile = path.join(this.dataDir, 'settings.json');
     this.libraryFile = path.join(this.dataDir, 'library.json');
     // Settings live in memory after load; a file edit while running only takes effect after restart (plan 21.6c).
-    const s = readJsonSafe<{ unlock_unsupported?: unknown; models_dir?: unknown }>(this.settingsFile, {});
+    const s = readJsonSafe<{ unlock_unsupported?: unknown; models_dir?: unknown; custom?: unknown }>(this.settingsFile, {});
     this.settings = { unlock_unsupported: s.unlock_unsupported === true };
+    const cp = CustomSchema.safeParse((s as { custom?: unknown }).custom); if (cp.success) this.custom = cp.data;
     const fromSetting = typeof s.models_dir === 'string' && path.isAbsolute(s.models_dir) ? s.models_dir : undefined;
     this.modelsDir = cfg.modelsDir ?? process.env.INFLUENCER_STUDIO_MODELS_DIR ?? fromSetting;
     this.modelsDirSource = cfg.modelsDir ? 'config' : process.env.INFLUENCER_STUDIO_MODELS_DIR ? 'env' : fromSetting ? 'setting' : 'none';
@@ -72,6 +76,22 @@ export class Services {
     const vram = t.id === 'T0' ? 0 : t.minVramGb;
     return buildProfile({ gpus: vram ? [{ index: 0, name: `Pretend ${t.label} GPU`, vramGb: vram }] : [], ramGb: Math.max(8, vram * 2), freeDiskGb: base.freeDiskGb ?? 500, source: 'fixture' }, this.limits);
   }
+  /** The profile every check uses: the scan, or the user's Custom numbers while Custom is on. */
+  async effectiveHardware(): Promise<HardwareProfile> { const real = await this.hardware(); return this.custom?.enabled ? customProfile(real, this.custom, this.limits) : real; }
+  /** Validate and save the Custom profile. Remote ComfyUI needs the explicit remote flag AND the Advanced unlock. Models folder can be fixed by the launcher. */
+  saveCustom(input: unknown): Custom {
+    const c = CustomSchema.parse(input);
+    if (c.comfyUrl) {
+      const remoteOk = c.allowRemoteComfy && this.settings.unlock_unsupported;
+      let client: ComfyClient;
+      try { client = new ComfyClient({ baseUrl: c.comfyUrl, allowRemote: remoteOk || this.allowRemote }); } catch (e) { throw Object.assign(new Error((e as Error).message + (c.allowRemoteComfy && !this.settings.unlock_unsupported ? ' (Turn on Advanced > Unlock unsupported options first.)' : '')), { status: 400, code: 'bad_comfy_url' }); }
+      if (c.enabled) { this.comfy = client; this.allowRemote = remoteOk || this.allowRemote; this.comfyAt = 0; }
+    }
+    if (c.modelsDir && c.enabled) this.setModelsDir(c.modelsDir);
+    this.custom = c; this.persistSettings();
+    return c;
+  }
+  customDefaults() { return CUSTOM_DEFAULT; }
   async comfyHealth(): Promise<boolean> {
     if (Date.now() - this.comfyAt > 5000) { this.comfyOnline = (await this.comfy.health()).online; this.comfyAt = Date.now(); }
     return this.comfyOnline;
@@ -82,7 +102,7 @@ export class Services {
   }
   private persistSettings() {
     const prev = readJsonSafe<{ unlock_changed_at?: string }>(this.settingsFile, {});
-    writeJsonAtomic(this.settingsFile, { schemaVersion: 1, ...this.settings, ...(this.modelsDirSource === 'setting' && this.modelsDir ? { models_dir: this.modelsDir } : {}), unlock_changed_at: prev.unlock_changed_at ?? new Date().toISOString() });
+    writeJsonAtomic(this.settingsFile, { schemaVersion: 1, ...this.settings, ...(this.custom ? { custom: this.custom } : {}), ...(this.modelsDirSource === 'setting' && this.modelsDir ? { models_dir: this.modelsDir } : {}), unlock_changed_at: prev.unlock_changed_at ?? new Date().toISOString() });
   }
   /** Choose where models are installed (only when not fixed by the environment). */
   setModelsDir(dir: string) {
@@ -93,13 +113,13 @@ export class Services {
     this.modelsDir = d; this.modelsDirSource = 'setting'; this.persistSettings();
   }
   checkCtx(profile: HardwareProfile, comfyOnline: boolean): CheckCtx {
-    return { profile, limits: this.limits, registry: this.registry, settings: this.settings, installed: this.installed, templates: new Map([...this.templates].map(([k, v]) => [k, v.manifest])), comfyOnline, comfyUrl: this.comfy.baseUrl, mockGenerator: this.mock };
+    return { profile, limits: this.limits, registry: this.registry, settings: this.settings, installed: this.installed, templates: new Map([...this.templates].map(([k, v]) => [k, v.manifest])), comfyOnline, comfyUrl: this.comfy.baseUrl, mockGenerator: this.mock, custom: this.custom };
   }
-  async check(facts: JobFacts) { return checkJob(facts, this.checkCtx(await this.hardware(), await this.comfyHealth())); }
+  async check(facts: JobFacts) { return checkJob(facts, this.checkCtx(await this.effectiveHardware(), await this.comfyHealth())); }
   /** Sync re-check at job start using cached hardware. */
   private recheck(j: Job) {
     if (!this.profile) return null;
-    const r = checkJob({ template: j.template, variantId: j.variantId, width: j.width, height: j.height, frames: j.frames, refs: j.styleRef || j.edit || j.video ? 1 : 0 }, this.checkCtx(this.profile.p, this.comfyOnline || this.mock));
+    const r = checkJob({ template: j.template, variantId: j.variantId, width: j.width, height: j.height, frames: j.frames, refs: j.styleRef || j.edit || j.video ? 1 : 0, batch: j.batch, steps: j.steps }, this.checkCtx(this.custom?.enabled ? customProfile(this.profile.p, this.custom, this.limits) : this.profile.p, this.comfyOnline || this.mock));
     return r.ok ? null : (r.httpStatus === 403 ? r.soft : r.hard.length && !r.hard.every(x => x.code === 'COMFY_OFFLINE') ? r.hard : null);
   }
 
@@ -140,7 +160,7 @@ export class Services {
     const wf = fillTemplate(tpl, values);
     ctx.update(4, 'Sending to ComfyUI');
     const clientId = crypto.randomUUID();
-    const prog = new ComfyProgress(this.comfy.baseUrl, clientId, this.cfg.allowRemoteComfy);
+    const prog = new ComfyProgress(this.comfy.baseUrl, clientId, this.allowRemote);
     const wsOk = await prog.connect();
     const tracker = new ProgressTracker(wf); tracker.stepsHint = job.steps ?? tpl.manifest.params.steps?.default as number ?? 4;
     let id: string | undefined; let wsError: string | undefined; let sawWs = false;

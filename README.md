@@ -37,7 +37,7 @@ Try it with no GPU: `INFLUENCER_STUDIO_MOCK=1 npm start`.
 
 ## What works today
 
-- Hardware scan on launch (GPU and VRAM through `nvidia-smi`, RAM, free disk, OS), graceful when there is no GPU. Mapped to tiers T0 to T9 from `data/limits.json`.
+- Hardware scan on launch (GPU and VRAM through `nvidia-smi`, RAM, free disk, OS), graceful when there is no GPU. Mapped to ten hardware levels from `data/limits.json`: Minimal (no usable GPU), Basic (under 8 GB), Standard (8 GB), Enhanced (12 GB), Pro (16 GB), Elite (24 GB), Mega (32 GB), Ultra (48 GB), Extreme (64 to 80 GB), Max (96 GB and above).
 - Hardware locks: options your PC cannot run are greyed with the real numbers ("Needs 12 GB VRAM (you have 8 GB)"). The Advanced setting "Unlock unsupported options at my own risk" releases soft limits; hard limits (no GPU, missing files, disk full, ComfyUI offline) always stay on. The server checks every job.
 - `models.json` registry: licence, source, sha256, per-variant VRAM and RAM tiers, best-fitting file suggested automatically.
 - Character builder with Type (Man, Woman, Non-binary, Trans woman, Trans man, Alien, Monster; default "Surprise me"), species for Alien and Monster, six Body sizes, age (21+), hair, face, outfit and more, shuffle with per-section locks, presets and a saved library.

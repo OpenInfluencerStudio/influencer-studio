@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { repoRoot } from './paths.js';
 
 const TierRow = z.object({
-  id: z.string().regex(/^T[0-9]$/), minVramGb: z.number(), label: z.string(),
+  id: z.string().regex(/^T[0-9]$/), name: z.string().min(1).max(20), minVramGb: z.number(), label: z.string(),
   maxImagePx: z.number(), maxVideoPx: z.number(), maxVideoFrames: z.number(), maxRefs: z.number(), estimated: z.boolean(),
 }).strict();
 export const LimitsSchema = z.object({

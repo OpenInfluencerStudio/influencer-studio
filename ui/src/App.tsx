@@ -4,6 +4,8 @@ import { SameCharacter, SaveAsCharacter, RefThumb } from './SameCharacter';
 import { VideoCard } from './VideoCard';
 import { Models } from './Models';
 import { type Mode, type VideoInput, MODE_KEY, INPUT_KEY, parseMode, parseInput, load, save, navIndex, videoInputs } from './modes';
+import { SEL_KEY, parseSel, effective, toggle, gate, pick } from './modelsel';
+import { CustomPanel } from './CustomPanel';
 import { Portrait, FullBody, Lazy, Avatar, SKIN, HAIRC, EYEC } from './Art';
 
 type Screen = 'scan' | 'home' | 'builder' | 'generate' | 'models';
@@ -16,7 +18,7 @@ type Reason = { code: string; hard: boolean; text: string };
 type Variant = { id: string; label: string; format: string; sizeGb: number; license: string; minVramGb: number; state: string; reasons: Reason[]; installed: boolean | null; sources: string[]; downloadable: boolean; est: boolean };
 type ModelOpt = { id: string; name: string; kind: string; bestVariantId: string | null; variants: Variant[] };
 type Res = { px: number; width: number; height: number; state: string; reason: string | null };
-type Opts = { profile: any; pretend: string | null; realTier: string; tier: { id: string; label: string; estimated: boolean }; models: ModelOpt[]; resolutions: Res[]; settings: { unlock_unsupported: boolean }; comfyOnline: boolean; mock: boolean; summary: string };
+type Opts = { custom: any; customActive: boolean; profile: any; pretend: string | null; realTier: string; realTierName: string; tier: { id: string; name: string; label: string; estimated: boolean }; models: ModelOpt[]; resolutions: Res[]; settings: { unlock_unsupported: boolean }; comfyOnline: boolean; mock: boolean; summary: string };
 export type Job = { id: string; status: string; progress: number; message?: string; error?: string; label: string; prompt: string; seed: number; width: number; height: number; mock: boolean; unsupported: boolean; outputs: { index: number; mime: string }[]; createdAt: string; character?: any; edit?: any; video?: any };
 type Ch = Record<string, any>;
 
@@ -31,6 +33,8 @@ export function App() {
   const [vin, setVinS] = useState<VideoInput>(() => load(INPUT_KEY, parseInput));
   const setMode = (m: Mode) => { setModeS(m); save(MODE_KEY, m); if (m === 'video') setScreen(s => (s === 'home' || s === 'builder' ? 'generate' : s)); };
   const setVin = (v: VideoInput) => { setVinS(v); save(INPUT_KEY, v); };
+  const [msel, setMselS] = useState<string[] | null>(() => load(SEL_KEY, parseSel));
+  const setMsel = (v: string[]) => { setMselS(v); save(SEL_KEY, JSON.stringify(v)); };
   const [schema, setSchema] = useState<Schema | null>(null);
   const [opts, setOpts] = useState<Opts | null>(null);
   const [pretend, setPretend] = useState<string | null>(null);
@@ -66,7 +70,9 @@ export function App() {
   const generate = async () => {
     setNotice(null);
     try {
-      const body: any = { character: ch, seed, width: opts.resolutions.find(r => r.px === px)!.width, height: px, batch };
+      const pk = pick(opts.models as any, msel, unlocked, 'image');
+      if (pk.blocked) { setNotice({ text: pk.blocked }); setScreen('generate'); return; }
+      const body: any = { ...(pk.variantId ? { variantId: pk.variantId } : {}), character: ch, seed, width: opts.resolutions.find(r => r.px === px)!.width, height: px, batch };
       if (styleRef) { body.styleRef = styleRef.id; delete body.width; delete body.height; delete body.batch; }
       await api('POST', '/api/jobs', body);
       setSeed(Math.floor(Math.random() * 1e9)); setScreen('generate');
@@ -76,7 +82,7 @@ export function App() {
       setScreen('generate');
     }
   };
-  const ctx = { mode, setMode, vin, setVin, setNotice, styleRef, setStyleRef, schema, opts, adv, unlocked, setUnlock, pretend, setPretend, ch, setCh, seed, setSeed, px, setPx, batch, setBatch, jobs, generate, notice, go: setScreen, loadOpts };
+  const ctx = { mode, setMode, vin, setVin, setNotice, styleRef, setStyleRef, schema, opts, adv, unlocked, setUnlock, pretend, setPretend, ch, setCh, seed, setSeed, px, setPx, batch, setBatch, jobs, generate, notice, go: setScreen, loadOpts, msel, setMsel };
 
   return (
     <div class={'shell' + (adv ? ' adv' : '')}>
@@ -89,7 +95,7 @@ export function App() {
         <div class="right">
           {unlocked && <button class="chip warnchip" onClick={() => setUnlock(false)} title="Click to lock again">Unlocked: unsupported options on</button>}
           <Toggle label="Advanced" on={adv} set={setAdv} />
-          <span class="pill" title="Detected hardware">{gpu ? `${gpu.name.replace('NVIDIA ', '').replace('GeForce ', '')} · ${gpu.vramGb} GB` : 'No GPU found'} · {opts.profile.tier}</span>
+          <span class="pill" title="Detected hardware">{gpu ? `${gpu.name.replace('NVIDIA ', '').replace('GeForce ', '')} · ${gpu.vramGb} GB` : 'No GPU found'} · {opts.tier.name}</span>
         </div>
       </header>
       {!opts.comfyOnline && !opts.mock && <div class="banner" role="status">ComfyUI is offline at its configured address. You can still build characters; generation resumes when ComfyUI is running.</div>}
@@ -139,14 +145,36 @@ function Confirm({ onYes, onNo }: { onYes: () => void; onNo: () => void }) {
   </div></div>;
 }
 
+function ModelList(p: Ctx) {
+  const { opts } = p; const [msg, setMsg] = useState('');
+  const eff = effective(opts.models as any, p.msel, p.unlocked);
+  const click = (m: ModelOpt) => {
+    const g = gate(m as any, p.unlocked);
+    if (!g.selectable) { setMsg(`${m.name}: ${g.reason}`); return; }
+    const n = toggle(opts.models as any, eff, m.id, p.unlocked); if (n) { p.setMsel(n); setMsg(`${m.name} ${n.includes(m.id) ? 'selected' : 'not selected'}.`); }
+  };
+  return <>
+    <p class="muted small" id="mlist-help">Tick the models the app should use. Only one model per kind is used. Recommended models are ticked for you; your choice is remembered.</p>
+    <ul class="lst mlist" role="group" aria-label="Models to use" aria-describedby="mlist-help">{opts.models.map((m: ModelOpt) => {
+      const v = m.variants.find(x => x.id === m.bestVariantId) ?? m.variants[0]!; const g = gate(m as any, p.unlocked); const on = eff.includes(m.id);
+      const eff2 = p.unlocked && v.state === 'locked_soft'; const tip = g.reason || (on ? 'Selected: used for ' + m.kind + ' jobs' : 'Click to use this model');
+      return (<li key={m.id} class={g.locked ? (eff2 ? 'unl-on' : 'locked') : ''}>
+        <button type="button" role="checkbox" aria-checked={on} aria-disabled={!g.selectable} title={tip} data-model={m.id} class={'mrow' + (on ? ' on' : '')} onClick={() => click(m)}>
+          <span class="ico">{on ? '✓' : g.locked ? (eff2 ? '⚠' : '🔒') : '○'}</span>
+          <span class="mbody"><b>{m.name}</b> <em>{m.kind}</em> <StateChip s={v.state} />
+            <small>{v.label} · {v.sizeGb} GB{v.reasons.length ? ' · ' + v.reasons.map(r => r.text).join('; ') : ''}{eff2 ? ' · Unsupported on your PC: may crash or freeze' : ''}</small></span>
+        </button></li>); })}</ul>
+    <p class="muted small" role="status" aria-live="polite" id="mlist-msg">{msg}</p></>;
+}
+
 function Scan(p: Ctx) {
   const { opts } = p; const pr = opts.profile;
-  const [step, setStep] = useState(0); const [run, setRun] = useState(0); const [ask, setAsk] = useState(false);
+  const [showCustom, setShowCustom] = useState(false); const [step, setStep] = useState(0); const [run, setRun] = useState(0); const [ask, setAsk] = useState(false);
   useEffect(() => { setStep(0); const t = setInterval(() => setStep(s => (s < 6 ? s + 1 : s)), 350); return () => clearInterval(t); }, [run]);
   const g = pr.gpus.find((x: any) => x.index === pr.selectedGpu);
-  const rows: [string, string][] = [['Operating system', `${pr.os.platform} ${pr.os.arch}`], ['GPU', g ? g.name : 'No usable GPU found'], ['VRAM', g ? g.vramGb + ' GB' : '0 GB'], ['System RAM', pr.ramGb + ' GB'], ['Free disk', pr.freeDiskGb === null ? 'unknown' : pr.freeDiskGb + ' GB'], ['Performance tier', `${pr.tier} · ${opts.tier.label}${opts.tier.estimated ? ' (estimated)' : ''}`]];
+  const rows: [string, string][] = [['Operating system', `${pr.os.platform} ${pr.os.arch}`], ['GPU', g ? g.name : 'No usable GPU found'], ['VRAM', g ? g.vramGb + ' GB' : '0 GB'], ['System RAM', pr.ramGb + ' GB'], ['Free disk', pr.freeDiskGb === null ? 'unknown' : pr.freeDiskGb + ' GB'], ['Hardware level', `${opts.tier.name} · ${opts.tier.label}${opts.tier.estimated ? ' (estimated)' : ''}`]];
   const rec = opts.models.filter((m: ModelOpt) => m.bestVariantId);
-  const tiers = [['My PC', null], ['T0', 'T0'], ['T1', 'T1'], ['T4', 'T4'], ['T5', 'T5'], ['T9', 'T9']] as [string, string | null][];
+  const tiers = [['My PC', null], ['Minimal', 'T0'], ['Basic', 'T1'], ['Standard', 'T2'], ['Enhanced', 'T3'], ['Pro', 'T4'], ['Elite', 'T5'], ['Mega', 'T6'], ['Ultra', 'T7'], ['Extreme', 'T8'], ['Max', 'T9']] as [string, string | null][];
   return (
     <section class="grid2">
       <div class="card">
@@ -160,18 +188,14 @@ function Scan(p: Ctx) {
       </div>
       <div class="card">
         <h2>What your hardware can run</h2>
-        <div class="seg" role="group" aria-label="Pretend my GPU (preview only)">{tiers.map(([l, v]) => <button key={l} class={p.pretend === v ? 'on' : ''} onClick={() => p.setPretend(v)}>{l}</button>)}</div>
-        {p.pretend && <p class="muted small">Preview only: you are looking at tier {p.pretend}. The server still checks every job against your real PC ({opts.realTier}).</p>}
+        <div class="seg" role="group" aria-label="Pretend my GPU (preview only)">{tiers.map(([l, v]) => <button key={l} class={p.pretend === v ? 'on' : ''} onClick={() => p.setPretend(v)}>{l}</button>)}<button class={opts.customActive ? 'on' : ''} aria-expanded={showCustom} onClick={() => { p.setPretend(null); setShowCustom(!showCustom); }}>Custom{opts.customActive ? ' ✓' : ''}</button></div>
+        {showCustom && <CustomPanel adv={p.adv} onDone={() => p.loadOpts(null)} />}
+        {p.pretend && <p class="muted small">Preview only: you are looking at the {opts.tier.name} level. The server still checks every job against your real PC ({opts.realTierName}).</p>}
         {p.adv ? <div class="unl"><Toggle label="Unlock unsupported options at my own risk" on={p.unlocked} set={v => (v ? setAsk(true) : p.setUnlock(false))} />
           <p class="muted small">Lets you pick models and sizes your PC probably cannot run. Hard limits (no GPU, missing files) stay on.</p>{p.unlocked && <p class="warn">Unlocked options may be very slow or crash. The server still checks each job.</p>}</div>
           : <p class="muted small">Locked items need more VRAM or RAM than this PC has. Switch on Advanced (top right) to find the unlock setting.</p>}
         {ask && <Confirm onNo={() => setAsk(false)} onYes={() => { setAsk(false); p.setUnlock(true); }} />}
-        <ul class="lst">{opts.models.map((m: ModelOpt) => { const v = m.variants.find(x => x.id === m.bestVariantId) ?? m.variants[0]; const eff = p.unlocked && v.state === 'locked_soft'; return (
-          <li key={m.id} class={v.state === 'locked_soft' || v.state === 'blocked_hard' ? (eff ? 'unl-on' : 'locked') : ''} aria-disabled={(v.state === 'locked_soft' && !p.unlocked) || v.state === 'blocked_hard'}>
-            <span class="ico">{v.state === 'locked_soft' || v.state === 'blocked_hard' ? (eff ? '⚠' : '🔒') : '✓'}</span>
-            <div><b>{m.name}</b> <em>{m.kind}</em> <StateChip s={v.state} />
-              <small>{v.label} · {v.sizeGb} GB{v.reasons.length ? ' · ' + v.reasons.map(r => r.text).join('; ') : ''}{eff ? ' · Unsupported on your PC: may crash or freeze' : ''}</small></div>
-          </li>); })}</ul>
+        <ModelList {...p} />
         <h3>Resolution levels</h3>
         <div class="chips">{opts.resolutions.map((r: Res) => <span key={r.px} class={'chip static' + (r.state === 'locked_soft' ? ' locked' : '')} title={r.reason ?? ''}>{r.state === 'locked_soft' ? '🔒 ' : ''}{r.px} px</span>)}</div>
         <div class="scan-cta"><button class="primary" onClick={() => p.go('builder')}>Continue to the builder</button></div>
@@ -369,8 +393,8 @@ function Generate(p: Ctx) {
           <h3>Compiled prompt</h3><pre class="prompt-pre" tabIndex={0}>{prompt}</pre></>}
         <p class="muted small">Camera and look presets arrive in a later milestone.</p>
       </div>}
-      {!video && <SameCharacter schema={p.schema} setNotice={p.setNotice} />}
-      {video && (curIn.id === 'i2v' && curIn.available ? <VideoCard schema={p.schema} opts={opts} jobs={jobs} unlocked={p.unlocked} adv={p.adv} setNotice={p.setNotice} go={p.go} />
+      {!video && <SameCharacter schema={p.schema} setNotice={p.setNotice} opts={opts} msel={p.msel} unlocked={p.unlocked} />}
+      {video && (curIn.id === 'i2v' && curIn.available ? <VideoCard msel={p.msel} schema={p.schema} opts={opts} jobs={jobs} unlocked={p.unlocked} adv={p.adv} setNotice={p.setNotice} go={p.go} />
         : <div class="card" id="vin-panel" role="tabpanel" aria-labelledby={'vin-' + curIn.id}><h2>🔒 {curIn.label}</h2><p class="muted">{curIn.reason === 'Coming soon' ? 'Coming soon. It will appear here once a compatible open model is installed on a PC that can run it.' : curIn.reason}</p>{curIn.reason !== 'Coming soon' && <button class="ghost" onClick={() => p.go('models')}>Open Models</button>}</div>)}
       <div class="card stage2">
         <div class="preview glow">

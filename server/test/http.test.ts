@@ -184,7 +184,7 @@ describe('server-side enforcement over HTTP (no GPU needed; fake ComfyUI)', () =
     const real = await (await t.call('GET', '/api/options')).json();
     expect(real.tier.id).toBe('T4'); expect(real.resolutions.find((x: any) => x.px === 2048).state).toBe('locked_soft');
     const weak = await (await t.call('GET', '/api/options?pretend=T1')).json();
-    expect(weak.tier.id).toBe('T1'); expect(weak.realTier).toBe('T4');
+    expect(weak.tier.id).toBe('T1'); expect(weak.tier.name).toBe('Basic'); expect(weak.realTierName).toBe('Pro'); expect(weak.realTier).toBe('T4');
     const qwen = weak.models.find((m: any) => m.id === 'qwen-image-edit-2511').variants[0];
     expect(qwen.state).toBe('locked_soft'); expect(qwen.reasons[0].text).toMatch(/Needs 12 GB VRAM \(you have 1 GB\)/);
     await t.app.close();

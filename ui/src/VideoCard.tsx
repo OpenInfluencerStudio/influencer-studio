@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'preact/hooks';
+import { pick } from './modelsel';
 import { api, ApiError, fetchBlobUrl } from './api';
 import { RefThumb } from './SameCharacter';
 
@@ -13,7 +14,7 @@ function JobThumb({ id }: { id: string }) {
 }
 
 /** Video mode: animate a saved character picture or a recent result with Wan 2.2 TI2V-5B. Durations and sizes are capped by the hardware tier. */
-export function VideoCard({ schema, opts, jobs, unlocked, adv, setNotice, go }: { schema: any; opts: any; jobs: any[]; unlocked: boolean; adv: boolean; setNotice: (n: any) => void; go: (s: any) => void }) {
+export function VideoCard({ msel, schema, opts, jobs, unlocked, adv, setNotice, go }: { msel: string[] | null; schema: any; opts: any; jobs: any[]; unlocked: boolean; adv: boolean; setNotice: (n: any) => void; go: (s: any) => void }) {
   const vs = schema.video; const tier = opts.tier;
   const model = opts.models.find((m: any) => m.id === 'wan22-ti2v-5b'); const variant = model?.variants?.[0];
   const hard = variant?.state === 'blocked_hard';
@@ -38,7 +39,8 @@ export function VideoCard({ schema, opts, jobs, unlocked, adv, setNotice, go }: 
       let refId = cur.refId;
       if (!refId && cur.jobId) refId = (await api('POST', '/api/refs/from-job', { jobId: cur.jobId, index: 0 })).id;
       const video: any = { refId, motion, camera, seconds, size, ...(note.trim() ? { note: note.trim() } : {}) };
-      await api('POST', '/api/jobs', { character: cur.character && Object.keys(cur.character).length ? cur.character : { type: 'surprise' }, video });
+      const pk = pick(opts.models, msel, unlocked, 'video'); if (pk.blocked) { setNotice({ text: pk.blocked }); return; }
+      await api('POST', '/api/jobs', { ...(pk.variantId ? { variantId: pk.variantId } : {}), character: cur.character && Object.keys(cur.character).length ? cur.character : { type: 'surprise' }, video });
     } catch (e) { const a = e as ApiError; setNotice({ text: a.message, reasons: a.body?.reasons }); }
     finally { setBusy(false); }
   };

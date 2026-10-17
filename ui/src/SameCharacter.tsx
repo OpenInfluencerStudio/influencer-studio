@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'preact/hooks';
 import { api, ApiError, fetchBlobUrl } from './api';
+import { pick } from './modelsel';
 
 type Opt = { id: string; label: string };
 export type EditSchema = { poses: Opt[]; azimuths: Opt[]; elevations: Opt[]; distances: Opt[] };
@@ -13,7 +14,7 @@ export function RefThumb({ id, alt }: { id: string; alt: string }) {
 }
 
 /** Same character, new scene / outfit / pose, or a new camera angle. Uses the saved picture of a library character (Qwen-Image-Edit-2511). */
-export function SameCharacter({ schema, setNotice, setErr: _x }: { schema: any; setNotice: (n: any) => void; setErr?: unknown }) {
+export function SameCharacter({ schema, setNotice, opts, msel, unlocked }: { schema: any; setNotice: (n: any) => void; opts: any; msel: string[] | null; unlocked: boolean }) {
   const es: EditSchema = schema.edit;
   const [items, setItems] = useState<Lib[]>([]);
   const [sel, setSel] = useState('');
@@ -34,7 +35,8 @@ export function SameCharacter({ schema, setNotice, setErr: _x }: { schema: any; 
     const edit: any = mode === 'scene'
       ? { kind: 'scene', refId: cur.refImage, ...(outfit ? { outfit } : {}), ...(background ? { background } : {}), ...(pose ? { pose } : {}), ...(lighting ? { lighting } : {}), ...(note.trim() ? { note: note.trim() } : {}) }
       : { kind: 'angle', refId: cur.refImage, azimuth: az, elevation: el, distance: dist };
-    try { await api('POST', '/api/jobs', { character: cur.character, edit }); }
+    const pk = pick(opts.models, msel, unlocked, 'image-edit'); if (pk.blocked) { setNotice({ text: pk.blocked }); setBusy(false); return; }
+    try { await api('POST', '/api/jobs', { ...(pk.variantId ? { variantId: pk.variantId } : {}), character: cur.character, edit }); }
     catch (e) { const a = e as ApiError; setNotice({ text: a.message, reasons: a.body?.reasons }); }
     finally { setBusy(false); }
   };

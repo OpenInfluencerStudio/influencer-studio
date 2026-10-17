@@ -8,6 +8,7 @@ import { CharacterSchema, compileCharacter, randomise, applyPreset, SafetyError 
 import { CONTROLS, TYPE_OPTS, SPECIES_BY_TYPE, SIZE_OPTS, AGE_BANDS, PRESETS } from './compiler/schema.js';
 import { repoRoot } from './paths.js';
 import { MAX_REF_BYTES } from './refs.js';
+import { customTier, precisionMatch } from './custom.js';
 import { compileEdit, templateForEdit, POSES, AZIMUTHS, ELEVATIONS, DISTANCES } from './edit.js';
 import { R } from './reasons.js';
 import { DlError } from './downloads.js';
@@ -82,6 +83,11 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
       if (b.models_dir !== undefined) { try { services.setModelsDir(b.models_dir); } catch (e) { const x = e as { status?: number; code?: string; message: string }; throw new HttpError(x.status ?? 400, x.code ?? 'bad_models_dir', x.message); } }
       if (b.unlock_unsupported !== undefined) services.saveSettings({ unlock_unsupported: b.unlock_unsupported });
       return send(res, 200, services.settings);
+    }
+    if (m === 'GET' && p === '/api/custom') return send(res, 200, { profile: services.custom ?? services.customDefaults(), saved: !!services.custom });
+    if (m === 'POST' && p === '/api/custom') {
+      try { return send(res, 200, { profile: services.saveCustom(await readJson(req)), saved: true }); }
+      catch (e) { if (e instanceof z.ZodError) throw new HttpError(400, 'bad_custom', 'Check the numbers: ' + e.issues.map(i => `${i.path.join('.')}: ${i.message}`).join('; ')); const x = e as { status?: number; code?: string; message: string }; if (x.status) throw new HttpError(x.status, x.code ?? 'bad_custom', x.message); throw e; }
     }
     if (m === 'GET' && p === '/api/downloads') return send(res, 200, { modelsDir: services.modelsDir ?? null, modelsDirSource: services.modelsDirSource, items: services.downloads.list() });
     if (m === 'POST' && p === '/api/downloads') {
@@ -188,7 +194,7 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
     if (b.video && vref) { ({ width, height } = videoDims(vref.info.width, vref.info.height, b.video.size)); frames = framesFor(b.video.seconds); try { editPrompt = compileVideo(b.video); } catch (e) { if (e instanceof SafetyError) throw e; throw new HttpError(400, 'bad_params', (e as Error).message); } }
      // the edit template takes its size from the reference (about 1 megapixel)
     void profile;
-    const verdict = await services.check({ template, variantId, width, height, frames, refs: b.styleRef || b.edit || b.video ? 1 : 0 }); // reference count is derived on the server, never taken from the request
+    const verdict = await services.check({ template, variantId, width, height, frames, refs: b.styleRef || b.edit || b.video ? 1 : 0, batch: b.batch, steps: b.steps }); // reference count is derived on the server, never taken from the request
     if (!verdict.ok) {
       throw new HttpError(verdict.httpStatus, verdict.code, verdict.code === 'locked_by_hardware' ? 'Locked on this PC. Turn on Advanced > Unlock unsupported options to try anyway.' : 'This job cannot run on this PC.', { reasons: [...verdict.hard, ...verdict.soft] });
     }
@@ -262,11 +268,14 @@ function serveStatic(res: http.ServerResponse, root: string, pathname: string, c
 const RES_PX = [512, 768, 1024, 1536, 2048, 3072, 4096];
 async function optionsPayload(s: Services, pretend: string | null) {
   const real = await s.hardware();
-  const profile = pretend ? s.pretend(pretend, real) ?? real : real;
-  const t = s.limits.tiers.find(x => x.id === profile.tier)!;
+  const useCustom = !pretend && !!s.custom?.enabled;
+  const profile = pretend ? s.pretend(pretend, real) ?? real : await s.effectiveHardware();
+  const baseT = s.limits.tiers.find(x => x.id === profile.tier)!;
+  const t = useCustom ? customTier(baseT, s.custom!) : baseT;
   const models = s.registry.models.map(m => {
     const fit = s.bestVariant(m.id, profile);
-    return { ...m, bestVariantId: fit.variantId, variants: s.registry.variants.filter(v => v.modelId === m.id).map(v => {
+    const pv = useCustom ? s.registry.variants.find(v => v.modelId === m.id && precisionMatch(v.format, s.custom!.precision)) : undefined;
+    return { ...m, bestVariantId: pv && fit.variantId ? pv.id : fit.variantId, variants: s.registry.variants.filter(v => v.modelId === m.id).map(v => {
       const st = fit.states.find(x => x.variantId === v.id)!;
       return { id: v.id, label: v.label, format: v.format, sizeGb: v.sizeGb, license: v.license, minVramGb: v.minVramGb, recommendedVramGb: v.recommendedVramGb, minRamGb: v.minRamGb, est: v.est, template: v.template,
         state: st.state, reasons: st.reasons, installed: st.installed, sources: [...new Set(v.files.map(f => f.source))], licenseInfo: s.registry.licenses[v.license] ?? null, files: v.files.map(f => ({ name: f.name, folder: f.folder, sizeBytes: f.sizeBytes })),
@@ -275,9 +284,9 @@ async function optionsPayload(s: Services, pretend: string | null) {
   });
   const resolutions = RES_PX.map(px => {
     const locked = !s.mock && (profile.tier === 'T0' || px > t.maxImagePx);
-    return { px, width: Math.round((px * 0.75) / 16) * 16, height: px, state: locked ? 'locked_soft' : 'runs', reason: locked ? (profile.tier === 'T0' ? R.noGpu().text : R.res(px, t.maxImagePx, t.id).text) : null };
+    return { px, width: Math.round((px * 0.75) / 16) * 16, height: px, state: locked ? 'locked_soft' : 'runs', reason: locked ? (profile.tier === 'T0' ? R.noGpu().text : R.res(px, t.maxImagePx, t.name).text) : null };
   });
-  return { profile, pretend: pretend ?? null, realTier: real.tier, tier: { id: t.id, label: t.label, maxImagePx: t.maxImagePx, maxVideoPx: t.maxVideoPx, maxVideoFrames: t.maxVideoFrames, estimated: t.estimated }, models, resolutions, settings: s.settings, comfyOnline: await s.comfyHealth(), mock: s.mock,
+  return { profile, pretend: pretend ?? null, custom: s.custom ?? null, customActive: useCustom, realTier: real.tier, realTierName: s.limits.tiers.find(x => x.id === real.tier)!.name, tier: { id: t.id, name: t.name, label: t.label, maxImagePx: t.maxImagePx, maxVideoPx: t.maxVideoPx, maxVideoFrames: t.maxVideoFrames, estimated: t.estimated }, models, resolutions, settings: s.settings, comfyOnline: await s.comfyHealth(), mock: s.mock,
     summary: profile.tier === 'T0' ? 'This computer cannot run local generation models. Generation is locked; you can still explore the character builder.' : `Your PC: ${profile.gpus.find(g => g.index === profile.selectedGpu)?.name ?? 'GPU'}, ${profile.vramGb} GB VRAM, ${profile.ramGb} GB RAM. We enabled what runs well and locked the rest.` };
 }
 function schemaPayload(s: Services) {

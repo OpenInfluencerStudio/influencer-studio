@@ -57,3 +57,6 @@ Download the new zip and extract it next to the old one. Your characters and pic
 ## Privacy and safety
 
 The app only listens on your own computer and needs its private link. It contacts the internet only when you press Download (Hugging Face model hosts, over HTTPS). It never uploads your pictures. See `SAFETY.md`.
+
+## Hardware levels
+The app sorts your GPU by VRAM into Minimal (no usable GPU), Basic (under 8 GB), Standard (8 GB), Enhanced (12 GB), Pro (16 GB), Elite (24 GB), Mega (32 GB), Ultra (48 GB), Extreme (64 to 80 GB) and Max (96 GB and above).
