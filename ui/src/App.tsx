@@ -289,7 +289,8 @@ function Builder(p: Ctx) {
                         swc ? <i class="sw" style={{ background: swc }} /> :
                           <div class="ph">{(() => {
                             const ctl = s.id === 'species' ? 'species' : s.id; const opt = s.id === 'species' ? `${type}_${o.id}` : o.id;
-                            const pi = ['pill', 'swatch'].includes(s.ui) ? null : pickPreview(pv, ctl, opt, type, s.options.findIndex(x => x.id === o.id));
+                            const baseT = type === 'trans_woman' ? 'female' : type === 'trans_man' ? 'male' : type === 'surprise' ? 'male' : type;
+                            const pi = ['pill', 'swatch'].includes(s.ui) ? null : pickPreview(pv, ctl, opt, type, s.options.findIndex(x => x.id === o.id)) ?? (BASE_OPT.has(o.id) ? (pv.get('type/' + baseT)?.[0] ?? pv.get('type/male')?.[0] ?? null) : null);
                             const fb = <Lazy cls="ph"><Tile s={s} o={o} look={look} size={sizeIdx} type={type} schema={schema} /></Lazy>;
                             return <><Thumb item={pi} alt={o.label} fallback={fb} />{pi && s.id === 'bodySize' && <span class="silb" aria-hidden="true"><FullBody {...look} size={schema.sizes.findIndex(z => z.id === o.id)} /></span>}</>;
                           })()}</div>}
@@ -331,6 +332,8 @@ function StyleRefBox({ ref_, set }: { ref_: { id: string; url: string; name: str
 }
 
 /** Generated preview thumbnail (webp, lazy) with the SVG art as the fallback when no file exists or it fails to load. */
+/** Default/none options show the plain reference photo for the current type instead of drawn art. */
+const BASE_OPT = new Set(['none', 'average', 'balanced', 'unspecified']);
 function Thumb({ item, alt, fallback }: { item: PreviewItem | null; alt: string; fallback: any }) {
   const [bad, setBad] = useState(false);
   if (!item || bad) return fallback;

@@ -12,7 +12,7 @@ const sl = p.locator('#silly-range'); ok(await sl.count() === 1, 'slider present
 await sl.focus(); for (let i = 0; i < 4; i++) await p.keyboard.press('ArrowRight');
 ok((await sl.getAttribute('aria-valuetext')) === 'Ridiculous', 'slider keyboard to Ridiculous');
 await p.click('#silly-pack .chip:has-text("Captain Frog")'); await p.waitForTimeout(800);
-ok(await p.locator('#live-preview .phempty').count() === 1, 'creature type has honest placeholder, not a human photo');
+ok(await p.locator('#live-preview img.phimg[src*="type/frog_person"]').count() === 1, 'creature type shows its own generated type photo as placeholder');
 await p.screenshot({ path: out + '/11-silly-preset-1280.png' });
 await p.click('#live-preview button:has-text("Preview")'); await p.waitForTimeout(4500);
 ok(await p.locator('#live-preview img[alt^="Generated preview"]').count() === 1, 'Preview produced an image in the panel');
