@@ -5,8 +5,13 @@
   "description": "Local open-weights influencer content studio for ComfyUI",
   "license": "Apache-2.0",
   "type": "module",
-  "engines": { "node": ">=20" },
-  "workspaces": ["server", "ui"],
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "server",
+    "ui"
+  ],
   "scripts": {
     "build": "npm run build -w ui && npm run build -w server",
     "start": "node server/dist/index.js",
@@ -14,5 +19,8 @@
     "dev:ui": "npm run dev -w ui",
     "test": "npm test -w server",
     "typecheck": "npm run typecheck -w server && npm run build -w ui"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
   }
 }

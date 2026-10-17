@@ -19,3 +19,4 @@ dist/
 docs-shots-local/
 data/runtime/
 .runtime/
+dist-release/
