@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'preact/hooks';
-import { api, ApiError, initToken, subscribe, fetchBlobUrl } from './api';
+import { api, ApiError, initToken, subscribe, fetchBlobUrl, uploadRef, loadPreviews, pickPreview, type PreviewItem } from './api';
 import { Portrait, FullBody, Lazy, Avatar, SKIN, HAIRC, EYEC } from './Art';
 
 type Screen = 'scan' | 'home' | 'builder' | 'generate' | 'models';
@@ -33,6 +33,7 @@ export function App() {
   const [px, setPx] = useState(1024);
   const [batch, setBatch] = useState(1);
   const [notice, setNotice] = useState<{ text: string; reasons?: Reason[] } | null>(null);
+  const [styleRef, setStyleRef] = useState<{ id: string; url: string; name: string } | null>(null);
 
   const loadOpts = useCallback(async (p: string | null, refresh = false) => {
     try { if (refresh) await api('GET', '/api/hardware?refresh=1'); setOpts(await api('GET', '/api/options' + (p ? '?pretend=' + p : ''))); } catch (e) { setErr((e as Error).message); }
@@ -58,6 +59,7 @@ export function App() {
     setNotice(null);
     try {
       const body: any = { character: ch, seed, width: opts.resolutions.find(r => r.px === px)!.width, height: px, batch };
+      if (styleRef) { body.styleRef = styleRef.id; delete body.width; delete body.height; delete body.batch; }
       await api('POST', '/api/jobs', body);
       setSeed(Math.floor(Math.random() * 1e9)); setScreen('generate');
     } catch (e) {
@@ -66,7 +68,7 @@ export function App() {
       setScreen('generate');
     }
   };
-  const ctx = { schema, opts, adv, unlocked, setUnlock, pretend, setPretend, ch, setCh, seed, setSeed, px, setPx, batch, setBatch, jobs, generate, notice, go: setScreen, loadOpts };
+  const ctx = { styleRef, setStyleRef, schema, opts, adv, unlocked, setUnlock, pretend, setPretend, ch, setCh, seed, setSeed, px, setPx, batch, setBatch, jobs, generate, notice, go: setScreen, loadOpts };
 
   return (
     <div class={'shell' + (adv ? ' adv' : '')}>
@@ -177,6 +179,8 @@ function Builder(p: Ctx) {
   const { schema, ch, setCh } = p as { schema: Schema; ch: Ch; setCh: (c: Ch) => void };
   const [open, setOpen] = useState<Record<string, boolean>>({ type: true, species: true, bodySize: true, hairStyle: true });
   const [lock, setLock] = useState<Record<string, boolean>>({});
+  const [pv, setPv] = useState<Map<string, PreviewItem[]>>(new Map());
+  useEffect(() => { loadPreviews().then(setPv); }, []);
   const type = ch.type as string;
   const human = humanType(type);
   const secs: Section[] = [
@@ -214,6 +218,7 @@ function Builder(p: Ctx) {
       <aside class="panel" aria-label="Character builder">
         <div class="ptabs" role="tablist">{['Create Influencer', 'Motion'].map((t, i) => <button key={t} role="tab" aria-selected={i === 0} disabled={i === 1} title={i === 1 ? 'Motion transfer arrives in a later milestone' : ''} class={i === 0 ? 'on' : ''}>{t}</button>)}</div>
         <div class="pscroll">
+          <StyleRefBox ref_={p.styleRef} set={p.setStyleRef} />
           {secs.map(s => {
             const isOpen = open[s.id]; const cur = curOf(s); const flat = ['swatch', 'pill'].includes(s.ui);
             const sw = (o: Opt) => s.id === 'skinTone' ? SKIN[o.label] : s.id === 'hairColor' ? HAIRC[o.label] : s.id === 'eyeColor' ? EYEC[o.label] : '';
@@ -227,9 +232,15 @@ function Builder(p: Ctx) {
                   <div class="tg" role={s.multi ? 'group' : 'radiogroup'} aria-label={s.title}>{s.options.map(o => {
                     const on = s.multi ? (cur as string[]).includes(o.id) : cur === o.id; const swc = sw(o);
                     return <button key={o.id} role={s.multi ? 'checkbox' : 'radio'} aria-checked={on} class={'bt' + (on ? ' on' : '') + (flat || (s.ui === 'type' && humanType(o.id)) ? ' flat' : '')} onClick={() => choose(s, o)}>
-                      {s.ui === 'type' ? (o.id === 'alien' || o.id === 'monster' ? <Lazy cls="ph"><Portrait type={o.id === 'alien' ? 'Alien' : 'Monster'} species={schema.species[o.id][0].label} zoom="bust" /></Lazy> : <span class="gsym" aria-hidden="true">{SYM[o.id]}</span>) :
+                      {s.ui === 'type' ? ((): any => { const pi = pv.get('type/' + (o.id === 'trans_woman' ? 'female' : o.id === 'trans_man' ? 'male' : o.id))?.[0] ?? null; const sym = <span class="gsym" aria-hidden="true">{SYM[o.id]}</span>;
+                        return o.id === 'alien' || o.id === 'monster' ? <div class="ph"><Thumb item={pi} alt={o.label} fallback={<Lazy cls="ph"><Portrait type={o.id === 'alien' ? 'Alien' : 'Monster'} species={schema.species[o.id][0].label} zoom="bust" /></Lazy>} /></div> : pi ? <div class="ph"><Thumb item={pi} alt={o.label} fallback={sym} /><span class="symb" aria-hidden="true">{SYM[o.id]}</span></div> : sym; })() :
                         swc ? <i class="sw" style={{ background: swc }} /> :
-                          <Lazy cls="ph"><Tile s={s} o={o} look={look} size={sizeIdx} type={type} schema={schema} /></Lazy>}
+                          <div class="ph">{(() => {
+                            const ctl = s.id === 'species' ? 'species' : s.id; const opt = s.id === 'species' ? `${type}_${o.id}` : o.id;
+                            const pi = ['pill', 'swatch'].includes(s.ui) ? null : pickPreview(pv, ctl, opt, type, s.options.findIndex(x => x.id === o.id));
+                            const fb = <Lazy cls="ph"><Tile s={s} o={o} look={look} size={sizeIdx} type={type} schema={schema} /></Lazy>;
+                            return <><Thumb item={pi} alt={o.label} fallback={fb} />{pi && s.id === 'bodySize' && <span class="silb" aria-hidden="true"><FullBody {...look} size={schema.sizes.findIndex(z => z.id === o.id)} /></span>}</>;
+                          })()}</div>}
                       <span class="tl">{o.label}</span>
                     </button>;
                   })}</div>)}
@@ -243,13 +254,39 @@ function Builder(p: Ctx) {
           <div class="bigart"><FullBody {...look} size={sizeIdx} /></div>
           <div class="cap">{typeLabel}{sp ? ' · ' + sp : ''} · {schema.sizes[sizeIdx]?.label}</div>
           <SaveBar ch={ch} seed={p.seed} />
-          <small class="muted">Schematic preview. Generated previews come with the thumbnail library. Adults only, SFW, fully clothed.</small>
+          <small class="muted">Schematic preview; option tiles use generated thumbnails where the library has them. Adults only, SFW, fully clothed.</small>
         </div>
         <Library setCh={setCh} />
         <div class="card"><h2>Presets</h2><div class="chips">{schema.presets.map(x => <button key={x.id} class="chip" onClick={async () => setCh(await api('POST', '/api/preset', { character: ch, preset: x.id }))}>{x.label}</button>)}</div></div>
       </div>
     </section>
   );
+}
+function StyleRefBox({ ref_, set }: { ref_: { id: string; url: string; name: string } | null; set: (r: { id: string; url: string; name: string } | null) => void }) {
+  const input = useRef<HTMLInputElement>(null); const [msg, setMsg] = useState(''); const [busy, setBusy] = useState(false); const [over, setOver] = useState(false);
+  const take = async (f?: File) => {
+    if (!f) return; setMsg('');
+    if (!/^image\/(png|jpeg|webp)$/.test(f.type)) { setMsg('Use a PNG, JPEG or WebP image.'); return; }
+    if (f.size > 8 * 1024 * 1024) { setMsg('The image must be under 8 MB.'); return; }
+    setBusy(true);
+    try { const r = await uploadRef(f); if (ref_) { URL.revokeObjectURL(ref_.url); api('DELETE', '/api/refs/' + ref_.id).catch(() => {}); } set({ id: r.id, url: URL.createObjectURL(f), name: f.name.slice(0, 40) }); }
+    catch (e) { setMsg((e as Error).message); } finally { setBusy(false); }
+  };
+  const remove = () => { if (!ref_) return; URL.revokeObjectURL(ref_.url); api('DELETE', '/api/refs/' + ref_.id).catch(() => {}); set(null); setMsg(''); };
+  return <div class={'drop' + (over ? ' over' : '')} onDragOver={e => { e.preventDefault(); setOver(true); }} onDragLeave={() => setOver(false)} onDrop={e => { e.preventDefault(); setOver(false); take(e.dataTransfer?.files?.[0]); }}>
+    {ref_ ? <div class="refrow"><img class="refimg" src={ref_.url} alt="Your style reference" /><div class="refmeta"><b>Style reference</b><small>{ref_.name}</small><small>Next images follow this person and look. Image size is set by the reference.</small><div class="row"><button class="ghost tiny" onClick={() => input.current?.click()}>Replace</button><button class="ghost tiny" onClick={remove}>Remove</button></div></div></div>
+      : <button class="dropbtn" disabled={busy} onClick={() => input.current?.click()} aria-label="Add style reference image"><span class="plus" aria-hidden="true">+</span><b>{busy ? 'Adding…' : 'Add style reference'}</b><small>Optional · PNG, JPEG or WebP · drop a file here</small></button>}
+    <input ref={input} type="file" accept="image/png,image/jpeg,image/webp" hidden onChange={e => { take((e.target as HTMLInputElement).files?.[0]); (e.target as HTMLInputElement).value = ''; }} />
+    {msg && <small class="warn" role="alert">{msg}</small>}
+    {!ref_ && <small class="muted">Use images you have the right to use. Adults only, SFW.</small>}
+  </div>;
+}
+
+/** Generated preview thumbnail (webp, lazy) with the SVG art as the fallback when no file exists or it fails to load. */
+function Thumb({ item, alt, fallback }: { item: PreviewItem | null; alt: string; fallback: any }) {
+  const [bad, setBad] = useState(false);
+  if (!item || bad) return fallback;
+  return <img class={'pimg ' + item.framing} src={'/previews/' + item.file} width={item.w} height={item.h} alt={alt} loading="lazy" decoding="async" onError={() => setBad(true)} />;
 }
 function Tile({ s, o, look, size, type, schema }: { s: Section; o: Opt; look: any; size: number; type: string; schema: Schema }) {
   const L = { ...look }; const nh = !humanType(type);
@@ -297,6 +334,7 @@ function Generate(p: Ctx) {
         <h3>Resolution (long side)</h3>
         <div class="chips">{opts.resolutions.map((r: Res) => { const lk = r.state === 'locked_soft'; const dis = lk && !p.unlocked; return <button key={r.px} class={'chip' + (p.px === r.px ? ' on' : '') + (lk ? ' locked' : '')} disabled={dis} aria-disabled={dis} title={r.reason ?? ''} onClick={() => p.setPx(r.px)}>{lk ? (p.unlocked ? '⚠ ' : '🔒 ') : ''}{r.px}</button>; })}</div>
         {opts.resolutions.some((r: Res) => r.state === 'locked_soft') && <p class="muted small">Locked sizes need a stronger GPU. {p.adv ? 'You can unlock them on the Hardware screen.' : 'Advanced mode shows the unlock setting.'}</p>}
+        {p.styleRef && <p class="muted small">Style reference is on: the image size follows your reference (about 1 megapixel) and one image is made per run.</p>}
         <h3>Images per run</h3>
         <div class="chips">{[1, 2, 4].map(n => <button key={n} class={'chip' + (p.batch === n ? ' on' : '')} onClick={() => p.setBatch(n)}>{n}</button>)}</div>
         {p.adv && <><h3>Seed</h3><div class="row"><input class="num" type="number" min={0} max={4294967295} value={p.seed} onInput={e => p.setSeed(Math.max(0, Math.min(4294967295, Math.floor(Number((e.target as HTMLInputElement).value) || 0))))} /><button class="ghost" onClick={() => p.setSeed(Math.floor(Math.random() * 1e9))}>🎲</button></div>

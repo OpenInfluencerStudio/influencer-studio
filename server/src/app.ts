@@ -7,6 +7,7 @@ import { Services, JobRequestSchema, Config } from './services.js';
 import { CharacterSchema, compileCharacter, randomise, applyPreset, SafetyError } from './compiler/index.js';
 import { CONTROLS, TYPE_OPTS, SPECIES_BY_TYPE, SIZE_OPTS, AGE_BANDS, PRESETS } from './compiler/schema.js';
 import { repoRoot } from './paths.js';
+import { MAX_REF_BYTES } from './refs.js';
 import { R } from './reasons.js';
 import type { Job } from './queue.js';
 
@@ -14,7 +15,7 @@ const MAX_BODY = 256 * 1024;
 const CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'";
 // style-src 'unsafe-inline' is required today for the style attributes the Preact UI sets (colour swatches, widths); scripts stay strict.
 
-export interface AppOpts extends Config { token?: string; port?: number; uiDir?: string }
+export interface AppOpts extends Config { token?: string; port?: number; uiDir?: string; previewsDir?: string }
 export interface RunningApp { server: http.Server; token: string; port: number; services: Services; close: () => Promise<void>; url: string }
 
 class HttpError extends Error { constructor(public status: number, public code: string, message: string, public extra?: unknown) { super(message); } }
@@ -30,12 +31,25 @@ async function readJson(req: http.IncomingMessage): Promise<unknown> {
   for await (const c of req) { n += (c as Buffer).length; if (n > MAX_BODY) throw new HttpError(413, 'too_large', 'Request too large'); chunks.push(c as Buffer); }
   try { return JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}'); } catch { throw new HttpError(400, 'bad_json', 'Invalid JSON'); }
 }
+async function readImageBody(req: http.IncomingMessage): Promise<Buffer> {
+  if (!/^image\/(png|jpeg|webp)$/.test(req.headers['content-type'] ?? '')) throw new HttpError(415, 'ref_bad_type', 'Use a PNG, JPEG or WebP image');
+  const chunks: Buffer[] = []; let n = 0;
+  let over = false;
+  for await (const c of req) {
+    n += (c as Buffer).length;
+    if (n > 64 * 1024 * 1024) { req.destroy(); break; } // refuse to drain more than 64 MB
+    if (n > MAX_REF_BYTES) over = true; else chunks.push(c as Buffer); // keep reading (and discarding) so the connection stays usable
+  }
+  if (over) throw new HttpError(413, 'ref_too_large', 'The image must be under 8 MB');
+  return Buffer.concat(chunks);
+}
 const tEq = (a: string, b: string) => { const x = Buffer.from(a), y = Buffer.from(b); return x.length === y.length && crypto.timingSafeEqual(x, y); };
 
 export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
   const services = new Services(opts);
   const token = opts.token ?? process.env.INFLUENCER_STUDIO_TOKEN ?? crypto.randomBytes(32).toString('base64url');
   const uiDir = opts.uiDir ?? path.join(repoRoot(), 'ui', 'dist');
+  const previewsDir = opts.previewsDir ?? process.env.INFLUENCER_STUDIO_PREVIEWS ?? path.join(repoRoot(), 'assets', 'previews');
   const sseClients = new Set<http.ServerResponse>();
   let port = 0;
   const submitTimes: number[] = [];
@@ -84,7 +98,7 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
       const j = services.queue.get(mm[1]); if (!j) throw new HttpError(404, 'not_found', 'No such job');
       if (!['failed', 'interrupted', 'cancelled'].includes(j.status)) throw new HttpError(409, 'not_retryable', 'Job is not finished');
       // A retry goes through the full check again (new job).
-      return createJob({ character: j.character, seed: j.seed, variantId: j.variantId, template: j.template, width: j.width, height: j.height, batch: j.batch, ...(j.steps ? { steps: j.steps } : {}) }, res);
+      return createJob({ character: j.character, seed: j.seed, variantId: j.variantId, template: j.template, ...(j.styleRef ? { styleRef: j.styleRef } : {}), width: j.width, height: j.height, batch: j.batch, ...(j.steps ? { steps: j.steps } : {}) }, res);
     }
     if (m === 'GET' && (mm = p.match(/^\/api\/outputs\/([0-9a-f-]{36})\/([0-3])$/))) {
       const o = services.queue.outputPath(mm[1], Number(mm[2])); if (!o) throw new HttpError(404, 'not_found', 'No such output');
@@ -98,6 +112,16 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
       req.on('close', () => { clearInterval(ka); sseClients.delete(res); });
       return;
     }
+    if (m === 'POST' && p === '/api/refs') {
+      try { const { id, info } = services.refs.save(await readImageBody(req)); return send(res, 201, { id, width: info.width, height: info.height, mime: info.mime }); }
+      catch (e) { if (e instanceof HttpError) throw e; const x = e as { code?: string; status?: number; message: string }; if (x.status) throw new HttpError(x.status, x.code ?? 'bad_ref', x.message); throw e; }
+    }
+    if (m === 'GET' && (mm = p.match(/^\/api\/refs\/([0-9a-f-]{36})$/))) {
+      const r = services.refs.get(mm[1]); if (!r) throw new HttpError(404, 'not_found', 'No such reference image');
+      res.writeHead(200, { 'content-type': r.info.mime, 'cache-control': 'private, max-age=3600', 'content-disposition': 'inline', 'content-security-policy': "default-src 'none'", 'x-content-type-options': 'nosniff' });
+      return void fs.createReadStream(r.file).pipe(res);
+    }
+    if (m === 'DELETE' && (mm = p.match(/^\/api\/refs\/([0-9a-f-]{36})$/))) return send(res, 200, { ok: services.refs.remove(mm[1]) });
     if (m === 'GET' && p === '/api/characters') return send(res, 200, services.library());
     if (m === 'POST' && p === '/api/characters') {
       const b = z.object({ name: z.string().max(60), character: z.record(z.unknown()), seed: z.number().int().min(0).max(4294967295).default(0) }).strict().parse(await readJson(req));
@@ -119,22 +143,24 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
     const character = CharacterSchema.parse(b.character);
     const compiled = compileCharacter(character, seed);
     const profile = await services.hardware();
-    const template = b.template ?? 'klein_t2i';
+    if (b.styleRef && !services.refs.get(b.styleRef)) throw new HttpError(400, 'bad_ref', 'The style reference image was not found. Add it again.');
+    const template = b.styleRef ? 'klein_edit' : (b.template ?? 'klein_t2i');
+    if (b.styleRef && b.template && b.template !== 'klein_edit') throw new HttpError(400, 'bad_params', 'A style reference needs the image edit template');
     const tpl = services.templates.get(template);
     const variantId = b.variantId ?? (tpl ? tpl.manifest.variantIds[0] : '');
-    const width = b.width ?? 768, height = b.height ?? 1024;
+    const width = b.width ?? 768, height = b.height ?? 1024; // the edit template takes its size from the reference (about 1 megapixel)
     void profile;
-    const verdict = await services.check({ template, variantId, width, height, refs: b.refs ?? 0 });
+    const verdict = await services.check({ template, variantId, width, height, refs: b.styleRef ? 1 : 0 }); // reference count is derived on the server, never taken from the request
     if (!verdict.ok) {
       throw new HttpError(verdict.httpStatus, verdict.code, verdict.code === 'locked_by_hardware' ? 'Locked on this PC. Turn on Advanced > Unlock unsupported options to try anyway.' : 'This job cannot run on this PC.', { reasons: [...verdict.hard, ...verdict.soft] });
     }
     // Dry-run the template fill so bad parameters fail now, not mid-queue.
-    if (tpl) { try { const { fillTemplate } = await import('./workflows.js'); fillTemplate(tpl, { prompt: compiled.positive, width, height, seed, batch: b.batch ?? 1, ...(b.steps ? { steps: b.steps } : {}) }); } catch (e) { throw new HttpError(400, 'bad_params', (e as Error).message); } }
+    if (tpl) { try { const { fillTemplate } = await import('./workflows.js'); fillTemplate(tpl, { prompt: compiled.positive, seed, ...('width' in tpl.manifest.params ? { width, height, batch: b.batch ?? 1 } : {}), ...(b.steps ? { steps: b.steps } : {}) }); } catch (e) { throw new HttpError(400, 'bad_params', (e as Error).message); } }
     submitTimes.push(now);
     const job = services.queue.enqueue({
       template, variantId, prompt: compiled.positive, negative: compiled.negative, seed, width, height, batch: b.batch ?? 1, steps: b.steps,
       character: character as Record<string, unknown>, label: `${compiled.resolved.type}${compiled.resolved.species ? ' / ' + compiled.resolved.species : ''} / ${compiled.resolved.bodySize}`,
-      mock: services.mock, unsupported: verdict.soft.length > 0, softReasons: verdict.soft,
+      styleRef: b.styleRef, mock: services.mock, unsupported: verdict.soft.length > 0, softReasons: verdict.soft,
     });
     send(res, 202, publicJob(job));
   }
@@ -148,6 +174,7 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
       const url = new URL(req.url ?? '/', `http://${req.headers.host}`);
       if (url.pathname.startsWith('/api/')) return await handleApi(req, res, url);
       if (req.method !== 'GET' && req.method !== 'HEAD') throw new HttpError(405, 'method', 'Method not allowed');
+      if (url.pathname.startsWith('/previews/')) return serveStatic(res, previewsDir, url.pathname.slice('/previews'.length), 'public, max-age=3600');
       return serveStatic(res, uiDir, url.pathname);
     } catch (e) {
       if (e instanceof HttpError) return send(res, e.status, { error: e.code, message: e.message, ...(e.extra as object ?? {}) });
@@ -178,19 +205,19 @@ function publicJob(j: Job) {
 }
 
 const MIME: Record<string, string> = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.json': 'application/json', '.ico': 'image/x-icon' };
-function serveStatic(res: http.ServerResponse, root: string, pathname: string) {
+function serveStatic(res: http.ServerResponse, root: string, pathname: string, cache?: string) {
   let rel: string;
   try { rel = decodeURIComponent(pathname); } catch { return send(res, 400, { error: 'bad_path' }); }
   if (rel.includes('\0') || rel.includes('\\')) return send(res, 400, { error: 'bad_path' });
   if (rel === '/' || rel === '') rel = '/index.html';
   const full = path.resolve(root, '.' + rel);
   if (!full.startsWith(path.resolve(root) + path.sep) || !fs.existsSync(full) || !fs.statSync(full).isFile()) {
-    if (!fs.existsSync(path.join(root, 'index.html'))) return send(res, 503, { error: 'ui_missing', message: 'UI is not built. Run: npm run build' });
+    if (!cache && !fs.existsSync(path.join(root, 'index.html'))) return send(res, 503, { error: 'ui_missing', message: 'UI is not built. Run: npm run build' });
     return send(res, 404, { error: 'not_found' });
   }
   const real = fs.realpathSync(full);
   if (!real.startsWith(fs.realpathSync(root) + path.sep)) return send(res, 403, { error: 'forbidden' });
-  res.writeHead(200, { 'content-type': MIME[path.extname(full)] ?? 'application/octet-stream', 'cache-control': rel.startsWith('/assets/') ? 'public, max-age=31536000, immutable' : 'no-cache' });
+  res.writeHead(200, { 'content-type': MIME[path.extname(full)] ?? 'application/octet-stream', 'cache-control': cache && !rel.endsWith('.json') ? cache : rel.startsWith('/assets/') ? 'public, max-age=31536000, immutable' : 'no-cache' });
   fs.createReadStream(full).pipe(res);
 }
 

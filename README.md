@@ -26,6 +26,7 @@ Settings (environment variables):
 | `PORT` | `8787` | Local port (the server only listens on `127.0.0.1`). |
 | `INFLUENCER_STUDIO_MODELS_DIR` | unset | Your ComfyUI `models` folder, so installed files are detected. |
 | `INFLUENCER_STUDIO_DATA` | `.runtime/` | Where settings, the job queue, the library and outputs are stored. |
+| `INFLUENCER_STUDIO_PREVIEWS` | `assets/previews/` | Folder with the generated option thumbnails (webp) and `manifest.json`. Missing files fall back to drawn previews. |
 | `INFLUENCER_STUDIO_MOCK` | off | `1` = **mock generator**: draws labelled placeholder images, no AI. For trying the UI without a GPU or ComfyUI. |
 
 Try it with no GPU: `INFLUENCER_STUDIO_MOCK=1 npm start`.
@@ -37,12 +38,17 @@ Try it with no GPU: `INFLUENCER_STUDIO_MOCK=1 npm start`.
 - `models.json` registry: licence, source, sha256, per-variant VRAM and RAM tiers, best-fitting file suggested automatically.
 - Character builder with Type (Man, Woman, Non-binary, Trans woman, Trans man, Alien, Monster; default "Surprise me"), species for Alien and Monster, six Body sizes, age (21+), hair, face, outfit and more, shuffle with per-section locks, presets and a saved library.
 - Prompt compiler with safety rules (adults only, fully clothed, respectful wording, blocked-terms filter) and golden snapshot tests.
-- Job queue (saved to disk, progress over server-sent events), ComfyUI client, bundled workflow template (FLUX.2 klein text-to-image) with parameter slots only.
+- Job queue (saved to disk, progress over server-sent events), ComfyUI client, bundled workflow templates (FLUX.2 klein text-to-image and image edit) with parameter slots only.
+- Real generation through your ComfyUI, with live step-by-step progress over ComfyUI's WebSocket ("Reading your prompt", "Drawing, step 3 of 4"). Falls back to polling if the socket is not available.
+- "Add style reference": drop a PNG, JPEG or WebP (up to 8 MB, checked by content, stored under a random name) and new images follow that person and look through the FLUX.2 klein edit template. Use images you have the right to use; adults only.
+- Preview thumbnails: generated with FLUX.2 klein 4B on one synthetic adult per look (Man, Woman, Non-binary, Alien, Monster), webp, lazy-loaded, with drawn SVG art as the fallback for anything not generated yet. The manifest (`server/src/thumbs.ts`) lists every thumbnail with its prompt, framing and seed; `scripts/thumbs/` generates and packs them.
 - Local security: loopback only, per-session token, Origin and Host checks, strict CSP, input validation, no outgoing network calls except to your ComfyUI.
 
 ## Not built yet
 
-Video, motion transfer, lip-sync, audio, camera and look presets, in-app model downloads, generated preview thumbnails (the builder uses simple drawn previews), step-by-step progress from ComfyUI (progress is coarse), packaging for Windows, macOS and Linux.
+Video, motion transfer, lip-sync, audio, camera and look presets, in-app model downloads, the complete thumbnail library (a first set exists; the rest falls back to drawn previews), an automatic image safety check on style references and outputs, packaging for Windows, macOS and Linux.
+
+Honest limit: body size. With text prompts alone the model clearly separates Larger / Medium / Slim, but "Very slim" and "Extra slim" look nearly alike. Each size tile therefore shows a small silhouette badge next to the generated preview.
 
 ## Develop
 

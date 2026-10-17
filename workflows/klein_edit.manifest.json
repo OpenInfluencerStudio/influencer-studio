@@ -1,0 +1,73 @@
+{
+  "id": "klein_edit",
+  "label": "FLUX.2 klein 4B image edit (style/identity reference)",
+  "mode": "image-edit",
+  "kind": "image",
+  "variantIds": [
+    "flux2-klein-4b-bf16"
+  ],
+  "allowedClassTypes": [
+    "UNETLoader",
+    "CLIPLoader",
+    "VAELoader",
+    "LoadImage",
+    "ImageScaleToTotalPixels",
+    "GetImageSize",
+    "VAEEncode",
+    "CLIPTextEncode",
+    "ConditioningZeroOut",
+    "ReferenceLatent",
+    "EmptyFlux2LatentImage",
+    "Flux2Scheduler",
+    "KSamplerSelect",
+    "RandomNoise",
+    "CFGGuider",
+    "SamplerCustomAdvanced",
+    "VAEDecode",
+    "SaveImage"
+  ],
+  "params": {
+    "prompt": {
+      "node": "8",
+      "input": "text",
+      "type": "string",
+      "maxLength": 2400
+    },
+    "image": {
+      "node": "4",
+      "input": "image",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,64}\\.(png|jpg|webp)$"
+    },
+    "megapixels": {
+      "node": "5",
+      "input": "megapixels",
+      "type": "float",
+      "min": 0.25,
+      "max": 2,
+      "default": 1
+    },
+    "seed": {
+      "node": "15",
+      "input": "noise_seed",
+      "type": "int",
+      "min": 0,
+      "max": 4294967295
+    },
+    "steps": {
+      "node": "13",
+      "input": "steps",
+      "type": "int",
+      "min": 1,
+      "max": 12,
+      "default": 4
+    },
+    "prefix": {
+      "node": "19",
+      "input": "filename_prefix",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,40}$",
+      "default": "influencer_studio_ref"
+    }
+  }
+}

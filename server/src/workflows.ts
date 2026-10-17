@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { repoRoot } from './paths.js';
 
 const ParamSchema = z.object({
-  node: z.string().regex(/^[0-9]+$/), input: z.string().regex(/^[A-Za-z0-9_]+$/), type: z.enum(['string', 'int']),
+  node: z.string().regex(/^[0-9]+$/), input: z.string().regex(/^[A-Za-z0-9_]+$/), type: z.enum(['string', 'int', 'float']),
   min: z.number().optional(), max: z.number().optional(), multipleOf: z.number().optional(), maxLength: z.number().optional(),
   pattern: z.string().optional(), default: z.union([z.string(), z.number()]).optional(), axis: z.enum(['width', 'height']).optional(),
 }).strict();
@@ -38,7 +38,10 @@ export function fillTemplate(t: Template, values: Record<string, string | number
   for (const [name, p] of Object.entries(t.manifest.params)) {
     let v = values[name] ?? p.default;
     if (v === undefined) continue; // keep the template's own value
-    if (p.type === 'int') {
+    if (p.type === 'float') {
+      if (typeof v !== 'number' || !Number.isFinite(v)) throw new Error(`Parameter ${name} must be a number`);
+      if ((p.min !== undefined && v < p.min) || (p.max !== undefined && v > p.max)) throw new Error(`Parameter ${name} out of range`);
+    } else if (p.type === 'int') {
       if (typeof v !== 'number' || !Number.isInteger(v)) throw new Error(`Parameter ${name} must be an integer`);
       if ((p.min !== undefined && v < p.min) || (p.max !== undefined && v > p.max)) throw new Error(`Parameter ${name} out of range`);
       if (p.multipleOf && v % p.multipleOf !== 0) throw new Error(`Parameter ${name} must be a multiple of ${p.multipleOf}`);

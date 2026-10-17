@@ -45,3 +45,30 @@ export async function fetchBlobUrl(path: string): Promise<string> {
   if (!r.ok) throw new Error('image');
   return URL.createObjectURL(await r.blob());
 }
+/** Upload a style reference image (PNG, JPEG or WebP, up to 8 MB). The server validates it again by content. */
+export async function uploadRef(file: File): Promise<{ id: string; width: number; height: number }> {
+  const r = await fetch('/api/refs', { method: 'POST', headers: { authorization: 'Bearer ' + sessionStorage.getItem(KEY), 'content-type': file.type }, body: file });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new ApiError(r.status, j);
+  return j;
+}
+
+// ---- preview thumbnails (generated webp files served from /previews, with SVG art as the fallback) ----
+export type PreviewItem = { control: string; option: string; look: string; shared: boolean; file: string; framing: 'face' | 'upper' | 'full'; w: number; h: number };
+let previews: Promise<Map<string, PreviewItem[]>> | null = null;
+export function loadPreviews(): Promise<Map<string, PreviewItem[]>> {
+  previews ??= fetch('/previews/manifest.json', { cache: 'no-cache' }).then(r => (r.ok ? r.json() : { items: [] })).catch(() => ({ items: [] }))
+    .then((m: { items?: PreviewItem[] }) => { const map = new Map<string, PreviewItem[]>(); for (const i of m.items ?? []) { const k = i.control + '/' + i.option; map.set(k, [...(map.get(k) ?? []), i]); } return map; });
+  return previews;
+}
+export const LOOK_FOR_TYPE: Record<string, string> = { male: 'man', trans_man: 'man', female: 'woman', trans_woman: 'woman', non_binary: 'nonbinary', alien: 'alien', monster: 'monster' };
+/** Pick the thumbnail for a control option and the current character type. Returns null when none exists (caller draws the SVG fallback). */
+export function pickPreview(map: Map<string, PreviewItem[]>, control: string, option: string, type: string, index: number): PreviewItem | null {
+  const items = map.get(control + '/' + option); if (!items?.length) return null;
+  if (items.length === 1) return items[0];
+  const want = LOOK_FOR_TYPE[type];
+  if (want) return items.find(i => i.look === want) ?? null;
+  // "Surprise me": vary the person across the grid instead of always showing one look.
+  const humans = items.filter(i => ['man', 'woman', 'nonbinary'].includes(i.look)); const pool = humans.length ? humans : items;
+  return pool[index % pool.length];
+}

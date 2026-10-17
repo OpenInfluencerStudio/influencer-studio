@@ -61,6 +61,15 @@ export class ComfyClient {
     if (buf.length > 64 * 1024 * 1024) throw new Error('Output image too large');
     return buf;
   }
+  /** Upload one reference image into ComfyUI's input folder under the given (already validated) name. */
+  async uploadImage(name: string, data: Buffer, mime: string): Promise<string> {
+    const fd = new FormData();
+    fd.set('image', new Blob([new Uint8Array(data)], { type: mime }), name); fd.set('type', 'input'); fd.set('overwrite', 'true');
+    const r = await this.req('/upload/image', { method: 'POST', body: fd }, 30000);
+    const j = (await r.json().catch(() => ({}))) as { name?: string };
+    if (!r.ok || !j.name) throw new Error('ComfyUI did not accept the reference image');
+    return j.name;
+  }
   async cancel(promptId: string, running: boolean): Promise<void> {
     try {
       if (running) await this.req('/interrupt', { method: 'POST' });

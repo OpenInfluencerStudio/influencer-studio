@@ -50,12 +50,12 @@ export const SPECIES_BY_TYPE: Record<string, Opt[]> = { alien: ALIEN_SPECIES, mo
 
 /** Six body sizes. Ids are internal and never shown; labels are respectful and relabelable (plan 23.2). */
 export const SIZE_OPTS: Opt[] = [
-  { id: 'ultra_fat', label: 'Very large', frag: 'a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes' },
-  { id: 'fat', label: 'Larger', frag: 'a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes' },
-  { id: 'medium', label: 'Medium', frag: 'an average build' },
-  { id: 'thin', label: 'Slim', frag: 'a slim build with a narrow torso' },
-  { id: 'skinny', label: 'Very slim', frag: 'a very slim, narrow frame' },
-  { id: 'stick_thin', label: 'Extra slim', frag: 'an extra slim, slender frame with a very narrow torso' },
+  { id: 'ultra_fat', label: 'Very large', frag: 'a very large, very round and full figure with a very broad torso, very wide waist and hips, a rounded face and full arms' },
+  { id: 'fat', label: 'Larger', frag: 'a large, full and rounded figure with a broad torso, wide waist and a fuller face' },
+  { id: 'medium', label: 'Medium', frag: 'an average build with a balanced torso' },
+  { id: 'thin', label: 'Slim', frag: 'a slim figure with a narrow torso, narrow waist and slim arms' },
+  { id: 'skinny', label: 'Very slim', frag: 'a very slim, slight figure with narrow shoulders, a very narrow torso, thin arms and a slender face' },
+  { id: 'stick_thin', label: 'Extra slim', frag: 'an extra slim, very slender figure with very narrow shoulders, a very narrow torso, very thin arms and legs and a slender face' },
 ];
 export const SIZE_ORDER = SIZE_OPTS.map(s => s.id);
 

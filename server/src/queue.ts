@@ -10,7 +10,7 @@ export interface JobOutput { file: string; mime: string }
 export interface Job {
   id: string; createdAt: string; updatedAt: string; status: JobStatus; progress: number; message?: string;
   template: string; variantId: string; prompt: string; negative: string; seed: number; width: number; height: number; batch: number; steps?: number;
-  character: Record<string, unknown>; label: string;
+  character: Record<string, unknown>; label: string; styleRef?: string;
   mock: boolean; unsupported: boolean; softReasons: Reason[];
   outputs: JobOutput[]; error?: string;
 }
