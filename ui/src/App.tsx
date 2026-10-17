@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'preact/hooks';
 import { api, ApiError, initToken, subscribe, fetchBlobUrl, uploadRef, loadPreviews, pickPreview, type PreviewItem } from './api';
 import { SameCharacter, SaveAsCharacter, RefThumb } from './SameCharacter';
 import { VideoCard } from './VideoCard';
+import { Models } from './Models';
 import { Portrait, FullBody, Lazy, Avatar, SKIN, HAIRC, EYEC } from './Art';
 
 type Screen = 'scan' | 'home' | 'builder' | 'generate' | 'models';
@@ -321,7 +322,7 @@ function Img({ job, idx }: { job: Job; idx: number }) {
   const [url, setUrl] = useState('');
   const isVideo = job.outputs[idx]?.mime?.startsWith('video/');
   useEffect(() => { let u = ''; let dead = false; fetchBlobUrl(`/api/outputs/${job.id}/${idx}`).then(x => { u = x; if (!dead) setUrl(x); else URL.revokeObjectURL(x); }).catch(() => {}); return () => { dead = true; if (u) URL.revokeObjectURL(u); }; }, [job.id, idx]);
-  if (url && isVideo) return <div class="vidwrap"><video src={url} controls loop muted playsInline preload="metadata" aria-label={`Generated video: ${job.label}`} /><a class="ghost tiny dl" href={url} download={`influencer-studio-${job.id.slice(0, 8)}.mp4`}>Save video</a></div>;
+  if (url && isVideo) return <div class="vidwrap"><video src={url} controls loop muted playsInline preload="metadata" aria-label={`Generated video: ${job.label}`} /><a class="ghost tiny savevid" href={url} download={`influencer-studio-${job.id.slice(0, 8)}.mp4`}>Save video</a></div>;
   return url ? <img src={url} alt={`Generated image ${idx + 1}: ${job.label}`} decoding="async" loading="lazy" /> : <div class="imgph" aria-hidden="true" />;
 }
 
@@ -371,26 +372,6 @@ function Generate(p: Ctx) {
           <small>{j.label}</small>
           {(j.status === 'failed' || j.status === 'interrupted' || j.status === 'cancelled') && <button class="ghost tiny" onClick={() => api('POST', `/api/jobs/${j.id}/retry`, {}).catch(() => {})}>Retry</button>}
         </div>)}</div>}
-      </div>
-    </section>
-  );
-}
-
-function Models(p: Ctx) {
-  const { opts } = p as { opts: Opts };
-  return (
-    <section>
-      <h1>Models</h1>
-      <p class="muted">{opts.summary} Only permissively licensed models are listed. In-app downloads (progress, resume, checksum) arrive in a later milestone; for now place files in your ComfyUI model folders and set <code>INFLUENCER_STUDIO_MODELS_DIR</code> so installs are detected.</p>
-      <div class="dl">
-        {opts.models.flatMap((m: ModelOpt) => m.variants.map(v => { const lk = v.state === 'locked_soft' || v.state === 'blocked_hard'; return (
-          <div key={v.id} class={'card dli' + (lk ? ' locked' : '')} aria-disabled={lk}>
-            <div><b>{m.name}</b> <em>{m.kind}</em> {m.bestVariantId === v.id && <span class="badge">Suggested</span>}
-              <small>{v.label} · {v.sizeGb} GB · Licence: {v.license} · Source: {v.sources.map(s => s.replace('https://', '')).join(', ')}</small>
-              <small>Checksum: {v.downloadable ? 'sha256 listed in models.json' : 'not yet verified'} · {v.est ? 'hardware numbers are estimates' : 'measured on the reference PC'}</small></div>
-            <div><StateChip s={v.state} />{v.reasons.map(r => <small key={r.text} class="rsn">{r.text}</small>)}</div>
-            <div class="act"><span class="muted">{v.installed === null ? 'Install status unknown' : v.installed ? '✓ Installed' : 'Not installed'}</span><button class="ghost" disabled title="Downloads arrive in a later milestone">Download</button></div>
-          </div>); }))}
       </div>
     </section>
   );

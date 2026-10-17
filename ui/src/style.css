@@ -100,8 +100,12 @@ nav{display:flex;gap:4px;flex:1}nav button{background:none;border:0;padding:8px 
 #same-character .lbl{display:block;margin-top:10px;font-size:12px;color:var(--mut)}
 
 /* ---- video ---- */
-.vidwrap{position:relative;width:100%}.vidwrap video{width:100%;max-height:70vh;border-radius:12px;display:block;background:#000}.vidwrap .dl{display:inline-block;margin-top:6px;text-decoration:none}
+.vidwrap{position:relative;width:100%}.vidwrap video{width:100%;max-height:70vh;border-radius:12px;display:block;background:#000}.vidwrap .savevid{display:inline-block;margin-top:6px;text-decoration:none}
 .gi video{width:100%;border-radius:12px;display:block}
 #video-card .field h3{margin:10px 0 4px;font-size:13px;opacity:.8}
 #video-card .lib{display:flex;gap:8px;flex-wrap:wrap}#video-card .libb{border:2px solid transparent;border-radius:12px;padding:4px;color:inherit;cursor:pointer;max-width:84px}#video-card .libb.on{border-color:var(--ac)}
 #video-card input.txt{width:100%;background:#232327;border:1.5px solid #2e2e33;border-radius:10px;padding:8px 10px;color:var(--tx);margin:4px 0 12px}
+
+/* ---- downloads ---- */
+.dlp{margin-top:8px;display:grid;gap:4px}.dlp .prog{height:6px;background:#26262a;border-radius:99px;overflow:hidden}.dlp .prog i{display:block;height:100%;background:var(--ac)}
+.dialog input[type=checkbox]{width:18px;height:18px;accent-color:var(--ac)}.dialog .lst{max-height:200px;overflow:auto}.dialog a{color:var(--ac);margin-right:8px}
