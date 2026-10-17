@@ -67,7 +67,20 @@ const HUMAN_LOOKS: RefLook[] = ['man', 'woman', 'nonbinary'];
 export const TEXT_CONTROLS = new Set(['headShape', 'eyeShape', 'neck', 'height', 'shoes']);
 export const TEXT_OPTIONS = new Set(['features/dimples', 'features/round_ears', 'features/high_cheekbones', 'features/rosy_cheeks', 'features/laugh_lines', 'distinctive/different_coloured_eyes', 'outfit/athletic_leggings', 'outfit/cycling_shorts_kit', 'proportions/long_legs', 'proportions/long_torso', 'proportions/broad_shoulders', 'proportions/narrow_shoulders']);
 /** Stronger wording per option for the text-to-image thumbnails (thumbnail only; the app prompt is unchanged). */
+export const SPECIES_STRONG: Record<string, string> = { insect_person_moth: 'a human face with two large feathery moth antennae on the forehead, soft pale fuzzy skin, large dark eyes, small pale-grey moth wings visible behind the shoulders; still clearly a human adult, not an animal' };
 export const STRONG: Record<string, string> = {
+  'outfit/inflatable_dino': 'a loose, baggy, oversized green inflatable dinosaur costume worn over a plain long-sleeved shirt and trousers, with a big hood, spikes down the back and a tail, fully covering the body',
+  'outfit/cycling_shorts_kit': 'a long-sleeved navy cycling jersey and knee-length dark navy cycling shorts that reach to just above the knee, with plain ankle socks',
+  'prop/skateboard': 'holding a full-size colourful skateboard upright in front of the body with both hands, the whole deck and wheels clearly visible',
+  'prop/pet_frog': 'a clearly visible large green frog sitting on one shoulder right next to the face',
+  'shoes/clown_length_shoes': 'enormous clown shoes about three times longer than normal feet, very long flat red shoes pointing forward',
+  'shoes/curly_toe_shoes': 'elf-style shoes with long toes that curl up and back in a spiral at the tips, bright gold',
+  'shoes/platform_boots': 'extremely tall chunky platform boots with soles about fifteen centimetres thick',
+  'shoes/giant_sneakers': 'comically oversized bright neon green and orange sneakers, each as big as a loaf of bread',
+  'shoes/rocket_boots': 'chunky retro-futuristic silver boots with big red rocket fins on the sides and jets at the heels',
+  'shoes/duck_foot_shoes': 'wide flat bright orange shoes shaped like duck feet with webbed toes',
+  'shoes/striped_boots': 'tall boots covered in bold rainbow stripes',
+  'shoes/spring_shoes': 'shoes with big metal coil springs attached under the soles',
   'headShape/oval': 'a clearly oval face, about one and a half times as tall as it is wide, with a softly rounded chin', 'headShape/round': 'a clearly round, full face as wide as it is tall, with a soft round chin and full cheeks',
   'headShape/square': 'a clearly square face with a strong flat square jawline and a wide forehead', 'headShape/heart': 'a clearly heart-shaped face with a wide forehead, high cheekbones and a narrow pointed chin',
   'headShape/long': 'a clearly long, narrow face that is much taller than it is wide', 'headShape/diamond': 'a clearly diamond-shaped face with wide cheekbones and a narrow forehead and chin',
@@ -120,7 +133,7 @@ export function buildThumbManifest(): ThumbItem[] {
         if (isBase(c, o)) continue;
         if (TEXT_CONTROLS.has(c.id) || TEXT_OPTIONS.has(`${c.id}/${o.id}`) || c.id === 'proportions' || (c.id === 'hairStyle' && o.id === 'bald' && look !== 'man')) continue; // generated as text-to-image below
         const multi = looks.length > 1;
-        add({ control: c.id, option: o.id, look, shared: !multi, framing: rule.framing, mode: 'edit', fragment: o.frag, prompt: EDIT_SCAFFOLD.replace('{fragment}', THUMB_FRAG[`${c.id}/${o.id}`] ?? o.frag),
+        add({ control: c.id, option: o.id, look, shared: !multi, framing: rule.framing, mode: 'edit', fragment: o.frag, prompt: EDIT_SCAFFOLD.replace('{fragment}', THUMB_FRAG[`${c.id}/${o.id}`] ?? STRONG[`${c.id}/${o.id}`] ?? o.frag),
           seed: seedFor(look, rule.framing), file: `${c.id}/${o.id}${multi ? '__' + look : ''}.webp`, loose: rule.loose, group: c.id });
       }
     }
@@ -142,7 +155,7 @@ export function buildThumbManifest(): ThumbItem[] {
         else if (c.id === 'headShape') { framing = 'face'; prompt = `${FRAMINGS.face.text} of ${subj}, ${hairBack} so the whole face outline is visible, ${strong}, front view, neutral relaxed expression, ${REF_OUTFIT}, ${REF_TAIL}`; }
         else if (c.id === 'neck') { framing = 'upper'; prompt = `${FRAMINGS.upper.text} of ${subj}, ${hairBack}, ${strong}, the whole neck and shoulders clearly visible above the t-shirt collar, front view, neutral relaxed expression, ${REF_OUTFIT}, ${REF_TAIL}`; }
         else if (c.id === 'height') { framing = 'full'; prompt = `full-length photo of ${subj}, standing straight next to a plain standard interior door, ${strong}, neutral relaxed expression, ${REF_OUTFIT}, plain dark blue trousers, plain black shoes, ${REF_TAIL.replace('plain mid-grey studio background, ', 'plain light-grey wall, ')}`; }
-        else if (c.id === 'shoes') { framing = 'full'; prompt = `full-length photo from head to toe of ${subj}, standing straight, wearing a plain bright pure-white cotton crew-neck t-shirt and plain dark blue trousers, ${strong}, both shoes fully visible and in focus at the bottom of the frame, ${REF_TAIL}`; }
+        else if (c.id === 'shoes') { framing = 'full'; prompt = `close-up photo of the lower legs and feet of a person from the knees down, standing on a plain light-grey studio floor, wearing plain dark blue trousers, ${strong}, both shoes large, centred, and fully in focus, plain mid-grey studio background, soft even light, sharp focus. Adult, fully clothed, modest everyday clothing.`; }
         else if (c.id === 'outfit') { framing = 'full'; prompt = `full-length photo from head to toe of ${subj}, standing straight, wearing ${strong}, plain black shoes, neutral relaxed expression, ${REF_TAIL}`; }
         else if (c.id === 'proportions') { framing = 'full'; prompt = `${FRAMINGS.full.text} of ${subj}, ${strong}, standing straight, arms relaxed, neutral relaxed expression, ${REF_OUTFIT}, plain dark blue trousers, ${REF_TAIL}`; }
         else { framing = 'face'; prompt = `${FRAMINGS.face.text} of ${subj}, ${strong}, neutral relaxed expression, ${REF_OUTFIT}, ${REF_TAIL}`; }
@@ -171,7 +184,7 @@ export function buildThumbManifest(): ThumbItem[] {
   }
   for (const [tid, list] of [['insect_person', INSECT_SPECIES], ['bird_person', BIRD_SPECIES]] as const) for (const sp of list) {
     const t = TYPE_OPTS.find(x => x.id === tid)!;
-    add({ control: 'species', option: `${tid}_${sp.id}`, look: 'creature', shared: true, framing: 'upper', mode: 't2i', fragment: sp.frag, prompt: `${FRAMINGS.upper.text} of ${t.phrase}, ${sp.frag}, calm friendly expression, a plain bright pure-white cotton crew-neck t-shirt, plain mid-grey studio background, soft even light, sharp focus. Adult, fully clothed, modest everyday clothing.`, seed: 7500 + list.indexOf(sp) * 17 + (tid === 'bird_person' ? 3 : 0), file: `species/${tid}_${sp.id}.webp`, group: 'species' });
+    add({ control: 'species', option: `${tid}_${sp.id}`, look: 'creature', shared: true, framing: 'upper', mode: 't2i', fragment: sp.frag, prompt: `${FRAMINGS.upper.text} of ${t.phrase}, ${SPECIES_STRONG[`${tid}_${sp.id}`] ?? sp.frag}, calm friendly expression, a plain bright pure-white cotton crew-neck t-shirt, plain mid-grey studio background, soft even light, sharp focus. Adult, fully clothed, modest everyday clothing.`, seed: 7500 + list.indexOf(sp) * 17 + (tid === 'bird_person' ? 3 : 0), file: `species/${tid}_${sp.id}.webp`, group: 'species' });
   }
   // 3) Species tiles (text-to-image, head and shoulders)
   for (const [kind, list] of [['alien', ALIEN_SPECIES], ['monster', MONSTER_SPECIES]] as const) for (const sp of list) {
