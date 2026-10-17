@@ -180,7 +180,7 @@ describe('server-side enforcement over HTTP (no GPU needed; fake ComfyUI)', () =
     await t.app.close();
   });
   it('options endpoint shows lock reasons per tier and pretend profiles only affect the preview', async () => {
-    const t = await boot({ mock: true, hardwareOverride: fixture(16) });
+    const t = await boot({ mock: false, hardwareOverride: fixture(16) });
     const real = await (await t.call('GET', '/api/options')).json();
     expect(real.tier.id).toBe('T4'); expect(real.resolutions.find((x: any) => x.px === 2048).state).toBe('locked_soft');
     const weak = await (await t.call('GET', '/api/options?pretend=T1')).json();

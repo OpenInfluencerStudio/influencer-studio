@@ -209,7 +209,7 @@ async function optionsPayload(s: Services, pretend: string | null) {
     }) };
   });
   const resolutions = RES_PX.map(px => {
-    const locked = profile.tier === 'T0' || px > t.maxImagePx;
+    const locked = !s.mock && (profile.tier === 'T0' || px > t.maxImagePx);
     return { px, width: Math.round((px * 0.75) / 16) * 16, height: px, state: locked ? 'locked_soft' : 'runs', reason: locked ? (profile.tier === 'T0' ? R.noGpu().text : R.res(px, t.maxImagePx, t.id).text) : null };
   });
   return { profile, pretend: pretend ?? null, realTier: real.tier, tier: { id: t.id, label: t.label, maxImagePx: t.maxImagePx, estimated: t.estimated }, models, resolutions, settings: s.settings, comfyOnline: await s.comfyHealth(), mock: s.mock,
