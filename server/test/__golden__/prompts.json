@@ -1,0 +1,1082 @@
+{
+  "male/ultra_fat": {
+    "positive": "studio portrait photo, an adult man in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "male/fat": {
+    "positive": "studio portrait photo, an adult man in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "male/medium": {
+    "positive": "studio portrait photo, an adult man in their early thirties, an average build, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "male/thin": {
+    "positive": "studio portrait photo, an adult man in their early thirties, a slim build with a narrow torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "male/skinny": {
+    "positive": "studio portrait photo, an adult man in their early thirties, a very slim, narrow frame, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "male/stick_thin": {
+    "positive": "studio portrait photo, an adult man in their early thirties, an extra slim, slender frame with a very narrow torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "female/ultra_fat": {
+    "positive": "studio portrait photo, an adult woman in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "female/fat": {
+    "positive": "studio portrait photo, an adult woman in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "female/medium": {
+    "positive": "studio portrait photo, an adult woman in their early thirties, an average build, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "female/thin": {
+    "positive": "studio portrait photo, an adult woman in their early thirties, a slim build with a narrow torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "female/skinny": {
+    "positive": "studio portrait photo, an adult woman in their early thirties, a very slim, narrow frame, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "female/stick_thin": {
+    "positive": "studio portrait photo, an adult woman in their early thirties, an extra slim, slender frame with a very narrow torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "non_binary/ultra_fat": {
+    "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "non_binary/fat": {
+    "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "non_binary/medium": {
+    "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, an average build, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "non_binary/thin": {
+    "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a slim build with a narrow torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "non_binary/skinny": {
+    "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a very slim, narrow frame, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "non_binary/stick_thin": {
+    "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, an extra slim, slender frame with a very narrow torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "trans_woman/ultra_fat": {
+    "positive": "studio portrait photo, an adult woman in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "trans_woman",
+      "species": null,
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "trans_woman/fat": {
+    "positive": "studio portrait photo, an adult woman in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "trans_woman",
+      "species": null,
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "trans_woman/medium": {
+    "positive": "studio portrait photo, an adult woman in their early thirties, an average build, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "trans_woman",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "trans_woman/thin": {
+    "positive": "studio portrait photo, an adult woman in their early thirties, a slim build with a narrow torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "trans_woman",
+      "species": null,
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "trans_woman/skinny": {
+    "positive": "studio portrait photo, an adult woman in their early thirties, a very slim, narrow frame, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "trans_woman",
+      "species": null,
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "trans_woman/stick_thin": {
+    "positive": "studio portrait photo, an adult woman in their early thirties, an extra slim, slender frame with a very narrow torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "trans_woman",
+      "species": null,
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "trans_man/ultra_fat": {
+    "positive": "studio portrait photo, an adult man in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "trans_man",
+      "species": null,
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "trans_man/fat": {
+    "positive": "studio portrait photo, an adult man in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "trans_man",
+      "species": null,
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "trans_man/medium": {
+    "positive": "studio portrait photo, an adult man in their early thirties, an average build, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "trans_man",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "trans_man/thin": {
+    "positive": "studio portrait photo, an adult man in their early thirties, a slim build with a narrow torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "trans_man",
+      "species": null,
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "trans_man/skinny": {
+    "positive": "studio portrait photo, an adult man in their early thirties, a very slim, narrow frame, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "trans_man",
+      "species": null,
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "trans_man/stick_thin": {
+    "positive": "studio portrait photo, an adult man in their early thirties, an extra slim, slender frame with a very narrow torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "trans_man",
+      "species": null,
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "surprise/ultra_fat@seed12345": {
+    "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "surprise/fat@seed12345": {
+    "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "surprise/medium@seed12345": {
+    "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, an average build, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "surprise/thin@seed12345": {
+    "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a slim build with a narrow torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "surprise/skinny@seed12345": {
+    "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a very slim, narrow frame, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "surprise/stick_thin@seed12345": {
+    "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, an extra slim, slender frame with a very narrow torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "alien/starborn/ultra_fat": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, Starborn species with pale luminous skin, faint constellation freckles and large dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "starborn",
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "alien/starborn/fat": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, Starborn species with pale luminous skin, faint constellation freckles and large dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "starborn",
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "alien/starborn/medium": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, an average build, Starborn species with pale luminous skin, faint constellation freckles and large dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "starborn",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "alien/starborn/thin": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a slim build with a narrow torso, Starborn species with pale luminous skin, faint constellation freckles and large dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "starborn",
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "alien/starborn/skinny": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a very slim, narrow frame, Starborn species with pale luminous skin, faint constellation freckles and large dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "starborn",
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "alien/starborn/stick_thin": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, an extra slim, slender frame with a very narrow torso, Starborn species with pale luminous skin, faint constellation freckles and large dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "starborn",
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "alien/verdant/ultra_fat": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, Verdant species with leaf-green skin, vine-like hair and plant-fibre textures, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "verdant",
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "alien/verdant/fat": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, Verdant species with leaf-green skin, vine-like hair and plant-fibre textures, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "verdant",
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "alien/verdant/medium": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, an average build, Verdant species with leaf-green skin, vine-like hair and plant-fibre textures, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "verdant",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "alien/verdant/thin": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a slim build with a narrow torso, Verdant species with leaf-green skin, vine-like hair and plant-fibre textures, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "verdant",
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "alien/verdant/skinny": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a very slim, narrow frame, Verdant species with leaf-green skin, vine-like hair and plant-fibre textures, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "verdant",
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "alien/verdant/stick_thin": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, an extra slim, slender frame with a very narrow torso, Verdant species with leaf-green skin, vine-like hair and plant-fibre textures, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "verdant",
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "alien/aquan/ultra_fat": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, Aquan species with blue-teal skin, small fin-like ear ridges and pearly eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "aquan",
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "alien/aquan/fat": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, Aquan species with blue-teal skin, small fin-like ear ridges and pearly eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "aquan",
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "alien/aquan/medium": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, an average build, Aquan species with blue-teal skin, small fin-like ear ridges and pearly eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "aquan",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "alien/aquan/thin": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a slim build with a narrow torso, Aquan species with blue-teal skin, small fin-like ear ridges and pearly eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "aquan",
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "alien/aquan/skinny": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a very slim, narrow frame, Aquan species with blue-teal skin, small fin-like ear ridges and pearly eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "aquan",
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "alien/aquan/stick_thin": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, an extra slim, slender frame with a very narrow torso, Aquan species with blue-teal skin, small fin-like ear ridges and pearly eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "aquan",
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "alien/ember/ultra_fat": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, Ember species with warm copper skin and soft glowing amber markings, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "ember",
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "alien/ember/fat": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, Ember species with warm copper skin and soft glowing amber markings, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "ember",
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "alien/ember/medium": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, an average build, Ember species with warm copper skin and soft glowing amber markings, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "ember",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "alien/ember/thin": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a slim build with a narrow torso, Ember species with warm copper skin and soft glowing amber markings, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "ember",
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "alien/ember/skinny": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a very slim, narrow frame, Ember species with warm copper skin and soft glowing amber markings, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "ember",
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "alien/ember/stick_thin": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, an extra slim, slender frame with a very narrow torso, Ember species with warm copper skin and soft glowing amber markings, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "ember",
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "alien/lumen/ultra_fat": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, Lumen species with smooth silver skin, faint glowing patterns and crystal-like hair, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "lumen",
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "alien/lumen/fat": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, Lumen species with smooth silver skin, faint glowing patterns and crystal-like hair, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "lumen",
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "alien/lumen/medium": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, an average build, Lumen species with smooth silver skin, faint glowing patterns and crystal-like hair, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "lumen",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "alien/lumen/thin": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a slim build with a narrow torso, Lumen species with smooth silver skin, faint glowing patterns and crystal-like hair, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "lumen",
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "alien/lumen/skinny": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a very slim, narrow frame, Lumen species with smooth silver skin, faint glowing patterns and crystal-like hair, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "lumen",
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "alien/lumen/stick_thin": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, an extra slim, slender frame with a very narrow torso, Lumen species with smooth silver skin, faint glowing patterns and crystal-like hair, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "lumen",
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "alien/dusk/ultra_fat": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, Dusk species with violet-grey skin, simple large eyes and soft antennae, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "dusk",
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "alien/dusk/fat": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, Dusk species with violet-grey skin, simple large eyes and soft antennae, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "dusk",
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "alien/dusk/medium": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, an average build, Dusk species with violet-grey skin, simple large eyes and soft antennae, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "dusk",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "alien/dusk/thin": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a slim build with a narrow torso, Dusk species with violet-grey skin, simple large eyes and soft antennae, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "dusk",
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "alien/dusk/skinny": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, a very slim, narrow frame, Dusk species with violet-grey skin, simple large eyes and soft antennae, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "dusk",
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "alien/dusk/stick_thin": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, an extra slim, slender frame with a very narrow torso, Dusk species with violet-grey skin, simple large eyes and soft antennae, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "dusk",
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "monster/stonekin/ultra_fat": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, Stonekin species with grey stone-textured skin and a broad build, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "stonekin",
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "monster/stonekin/fat": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, Stonekin species with grey stone-textured skin and a broad build, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "stonekin",
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "monster/stonekin/medium": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, an average build, Stonekin species with grey stone-textured skin and a broad build, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "stonekin",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "monster/stonekin/thin": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a slim build with a narrow torso, Stonekin species with grey stone-textured skin and a broad build, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "stonekin",
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "monster/stonekin/skinny": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a very slim, narrow frame, Stonekin species with grey stone-textured skin and a broad build, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "stonekin",
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "monster/stonekin/stick_thin": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, an extra slim, slender frame with a very narrow torso, Stonekin species with grey stone-textured skin and a broad build, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "stonekin",
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "monster/hollowhorn/ultra_fat": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, Hollowhorn species with small curved horns, fur-trimmed ears and warm eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "hollowhorn",
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "monster/hollowhorn/fat": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, Hollowhorn species with small curved horns, fur-trimmed ears and warm eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "hollowhorn",
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "monster/hollowhorn/medium": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, an average build, Hollowhorn species with small curved horns, fur-trimmed ears and warm eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "hollowhorn",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "monster/hollowhorn/thin": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a slim build with a narrow torso, Hollowhorn species with small curved horns, fur-trimmed ears and warm eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "hollowhorn",
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "monster/hollowhorn/skinny": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a very slim, narrow frame, Hollowhorn species with small curved horns, fur-trimmed ears and warm eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "hollowhorn",
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "monster/hollowhorn/stick_thin": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, an extra slim, slender frame with a very narrow torso, Hollowhorn species with small curved horns, fur-trimmed ears and warm eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "hollowhorn",
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "monster/wolfkin/ultra_fat": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, Wolfkin species with wolf-like ears, a softened muzzle and fur on the face and hands, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "wolfkin",
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "monster/wolfkin/fat": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, Wolfkin species with wolf-like ears, a softened muzzle and fur on the face and hands, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "wolfkin",
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "monster/wolfkin/medium": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, an average build, Wolfkin species with wolf-like ears, a softened muzzle and fur on the face and hands, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "wolfkin",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "monster/wolfkin/thin": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a slim build with a narrow torso, Wolfkin species with wolf-like ears, a softened muzzle and fur on the face and hands, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "wolfkin",
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "monster/wolfkin/skinny": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a very slim, narrow frame, Wolfkin species with wolf-like ears, a softened muzzle and fur on the face and hands, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "wolfkin",
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "monster/wolfkin/stick_thin": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, an extra slim, slender frame with a very narrow torso, Wolfkin species with wolf-like ears, a softened muzzle and fur on the face and hands, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "wolfkin",
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "monster/drakekin/ultra_fat": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, Drakekin species with fine scales, small horns and friendly gold eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "drakekin",
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "monster/drakekin/fat": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, Drakekin species with fine scales, small horns and friendly gold eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "drakekin",
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "monster/drakekin/medium": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, an average build, Drakekin species with fine scales, small horns and friendly gold eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "drakekin",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "monster/drakekin/thin": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a slim build with a narrow torso, Drakekin species with fine scales, small horns and friendly gold eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "drakekin",
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "monster/drakekin/skinny": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a very slim, narrow frame, Drakekin species with fine scales, small horns and friendly gold eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "drakekin",
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "monster/drakekin/stick_thin": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, an extra slim, slender frame with a very narrow torso, Drakekin species with fine scales, small horns and friendly gold eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "drakekin",
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "monster/gloomwing/ultra_fat": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, Gloomwing species with soft moth-like wings or antennae and a dusty wing pattern, clothing fitted around the wings, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "gloomwing",
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "monster/gloomwing/fat": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, Gloomwing species with soft moth-like wings or antennae and a dusty wing pattern, clothing fitted around the wings, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "gloomwing",
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "monster/gloomwing/medium": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, an average build, Gloomwing species with soft moth-like wings or antennae and a dusty wing pattern, clothing fitted around the wings, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "gloomwing",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "monster/gloomwing/thin": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a slim build with a narrow torso, Gloomwing species with soft moth-like wings or antennae and a dusty wing pattern, clothing fitted around the wings, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "gloomwing",
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "monster/gloomwing/skinny": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a very slim, narrow frame, Gloomwing species with soft moth-like wings or antennae and a dusty wing pattern, clothing fitted around the wings, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "gloomwing",
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "monster/gloomwing/stick_thin": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, an extra slim, slender frame with a very narrow torso, Gloomwing species with soft moth-like wings or antennae and a dusty wing pattern, clothing fitted around the wings, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "gloomwing",
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  },
+  "monster/boarkin/ultra_fat": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a very large, soft, rounded build with a much wider torso and waist, comfortable in well-fitted clothes, Boarkin species with small tusks, tufted ears and sturdy friendly features, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "boarkin",
+      "bodySize": "ultra_fat",
+      "age": 30
+    }
+  },
+  "monster/boarkin/fat": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a larger, soft, rounded build with a wider torso and waist, comfortable in well-fitted clothes, Boarkin species with small tusks, tufted ears and sturdy friendly features, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "boarkin",
+      "bodySize": "fat",
+      "age": 30
+    }
+  },
+  "monster/boarkin/medium": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, an average build, Boarkin species with small tusks, tufted ears and sturdy friendly features, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "boarkin",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "monster/boarkin/thin": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a slim build with a narrow torso, Boarkin species with small tusks, tufted ears and sturdy friendly features, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "boarkin",
+      "bodySize": "thin",
+      "age": 30
+    }
+  },
+  "monster/boarkin/skinny": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, a very slim, narrow frame, Boarkin species with small tusks, tufted ears and sturdy friendly features, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "boarkin",
+      "bodySize": "skinny",
+      "age": 30
+    }
+  },
+  "monster/boarkin/stick_thin": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, an extra slim, slender frame with a very narrow torso, Boarkin species with small tusks, tufted ears and sturdy friendly features, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "boarkin",
+      "bodySize": "stick_thin",
+      "age": 30
+    }
+  }
+}
