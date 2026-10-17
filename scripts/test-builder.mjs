@@ -1,0 +1,25 @@
+// Real-click test of the builder: silly slider, silly preset pack, realistic preview panel (mock mode). Usage: node test-builder.mjs <url> <outdir>
+import { chromium } from 'playwright';
+const [url, out] = process.argv.slice(2); const fail = []; const ok = (c, m) => { if (!c) fail.push(m); console.log(c ? 'PASS' : 'FAIL', m); };
+const b = await chromium.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox'] }); const p = await b.newPage({ viewport: { width: 1280, height: 800 } });
+const errs = []; p.on('pageerror', e => errs.push(e.message));
+await p.goto(url); await p.waitForTimeout(1500); await p.click('nav >> text=Character'); await p.waitForSelector('#live-preview'); await p.waitForTimeout(800);
+ok(await p.locator('.bigart svg').count() === 0 && await p.locator('#live-preview svg').count() === 0, 'schematic figure removed');
+ok(!(await p.locator('#live-preview').innerText()).includes('Schematic'), 'schematic caption removed');
+ok(await p.locator('#live-preview img.phimg').count() === 1, 'realistic placeholder photo shown for default type');
+await p.screenshot({ path: out + '/10-builder-placeholder.png' });
+const sl = p.locator('#silly-range'); ok(await sl.count() === 1, 'slider present');
+await sl.focus(); for (let i = 0; i < 4; i++) await p.keyboard.press('ArrowRight');
+ok((await sl.getAttribute('aria-valuetext')) === 'Ridiculous', 'slider keyboard to Ridiculous');
+await p.click('#silly-pack .chip:has-text("Captain Frog")'); await p.waitForTimeout(800);
+ok(await p.locator('#live-preview .phempty').count() === 1, 'creature type has honest placeholder, not a human photo');
+await p.screenshot({ path: out + '/11-silly-preset-1280.png' });
+await p.click('#live-preview button:has-text("Preview")'); await p.waitForTimeout(4500);
+ok(await p.locator('#live-preview img[alt^="Generated preview"]').count() === 1, 'Preview produced an image in the panel');
+await p.screenshot({ path: out + '/12-preview-generated-1280.png' });
+await p.click('#silly-pack .chip:has-text("Sir Pompadour")'); await p.waitForTimeout(600);
+ok((await p.locator('#live-preview').innerText()).includes('selection has changed'), 'cached preview marked stale after change');
+await p.reload(); await p.waitForTimeout(1500); await p.click('nav >> text=Character'); await p.waitForTimeout(1500);
+ok(await p.locator('#live-preview img[alt^="Generated preview"]').count() === 1, 'last preview cached across reload');
+ok(errs.length === 0, 'no page errors ' + errs.join('|'));
+await b.close(); process.exit(fail.length ? 1 : 0);

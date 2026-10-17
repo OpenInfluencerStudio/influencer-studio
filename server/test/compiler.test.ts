@@ -87,7 +87,7 @@ describe('type and size rules', () => {
     expect(() => compileCharacter({ type: 'alien', species: 'stonekin' })).toThrow();
     expect(() => compileCharacter({ type: 'male', species: 'aquan' })).toThrow();
     expect(() => compileCharacter({ type: 'alien', species: 'made_up' })).toThrow();
-    expect(Object.keys(SPECIES_BY_TYPE)).toEqual(['alien', 'monster']);
+    expect(Object.keys(SPECIES_BY_TYPE)).toEqual(['alien', 'monster', 'insect_person', 'bird_person']);
   });
   it('trans types compile to plain adult descriptors with no body-focused terms', () => {
     expect(compileCharacter({ type: 'trans_woman' }, 0).positive).toMatch(/an? adult woman/);

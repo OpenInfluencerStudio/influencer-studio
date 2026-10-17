@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import {
   CONTROLS, CONTROL_BY_ID, TYPE_OPTS, SPECIES_BY_TYPE, SIZE_OPTS, SIZE_ORDER, HUMAN_TYPES, MIN_AGE, ageFragment,
-  CLOTHING_PHRASE, CONSTRAINT_TAIL, NEGATIVE_PROMPT, PRESETS, type Control,
+  CLOTHING_PHRASE, CONSTRAINT_TAIL, NEGATIVE_PROMPT, PRESETS, SILLINESS, CREATURE_TYPES, CREATURE_FRAG, type Control,
 } from './schema.js';
 import { SafetyError, validateName, validateNotes, assertSafeText } from '../safety/index.js';
 
@@ -20,6 +20,7 @@ export const CharacterSchema = z.object({
   height: id.optional(), proportions: id.optional(), headShape: id.optional(), neck: id.optional(), eyeShape: id.optional(), eyeColor: id.optional(),
   features: z.array(id).max(3).optional(), facialHair: id.optional(), distinctive: id.optional(), accessory: id.optional(),
   expression: id.optional(), lighting: id.optional(), background: id.optional(), renderStyle: id.optional(),
+  prop: id.optional(), silliness: z.number().int().min(0).max(4).default(0),
 }).strict();
 export type CharacterInput = z.input<typeof CharacterSchema>;
 export type Character = z.output<typeof CharacterSchema>;
@@ -35,7 +36,10 @@ const pick = <T,>(r: () => number, a: readonly T[]): T => a[Math.floor(r() * a.l
 
 export function resolveType(c: Character, seed: number): string {
   if (c.type !== 'surprise') return c.type;
-  return pick(rng(seed ^ 0x9e3779b9), HUMAN_TYPES);
+  const r = rng(seed ^ 0x9e3779b9);
+  // Above Realistic, Surprise sometimes picks a playful creature type (never at level 0, so older results do not change).
+  if (c.silliness > 0 && r() < 0.12 * c.silliness) return pick(r, CREATURE_TYPES);
+  return pick(r, HUMAN_TYPES);
 }
 
 function optFrag(ctl: Control, optId: string | undefined): string {
@@ -77,9 +81,11 @@ export function compileCharacter(input: CharacterInput, seed = 0): Compiled {
   const hairColor = f('hairColor'), hairStyle = f('hairStyle');
   const hairPhrase = hairStyle.includes('bald') || !isHuman ? hairStyle : `${hairStyle} in ${hairColor}`;
   const parts: (string | false)[] = [
-    f('renderStyle'),
+    c.renderStyle === undefined && c.silliness >= 3 ? CONTROL_BY_ID.get('renderStyle')!.options.find(o => o.id === '3d_toy')!.frag : f('renderStyle'),
+    SILLINESS[c.silliness]!.frag,
     `${article(typeOpt.phrase)} ${typeOpt.phrase} ${ageFragment(c.age)}`,
     size.frag,
+    CREATURE_FRAG[type] ?? '',
     speciesFrag,
     isHuman && f('ethnicity'),
     isHuman && f('skinTone'),
@@ -89,7 +95,7 @@ export function compileCharacter(input: CharacterInput, seed = 0): Compiled {
     isHuman && f('facialHair'),
     ...featureFrags,
     isHuman && f('distinctive'),
-    f('accessory'),
+    f('accessory'), f('prop'),
     `${CLOTHING_PHRASE}: ${f('outfit')}`,
     f('expression'), f('lighting'), f('background'),
   ];
@@ -102,23 +108,25 @@ export function compileCharacter(input: CharacterInput, seed = 0): Compiled {
 }
 
 /** Randomise with locks; draws only from allowed sets (plan 14.7 rule 8). */
-export function randomise(base: Character, locks: Set<string>, seed: number, mode: 'realistic' | 'quirky' | 'chaos' = 'realistic'): Character {
+export function randomise(base: Character, locks: Set<string>, seed: number, mode: 'realistic' | 'quirky' | 'chaos' | 'silly' = 'realistic'): Character {
   const r = rng(seed);
   const out: Record<string, unknown> = { ...base };
   const lock = (k: string) => locks.has(k);
   if (!lock('type')) {
     // Human types and non-human types are drawn evenly so results are never always one type.
-    out.type = pick(r, [...HUMAN_TYPES, 'alien', 'monster']);
+    out.type = pick(r, mode === 'silly' ? [...HUMAN_TYPES, 'alien', 'monster', ...CREATURE_TYPES] : [...HUMAN_TYPES, 'alien', 'monster']);
     delete out.species;
   }
   const t = out.type as string;
   if (SPECIES_BY_TYPE[t]) { if (!lock('species') || !out.species) out.species = pick(r, SPECIES_BY_TYPE[t]).id; } else delete out.species;
   if (!lock('bodySize')) out.bodySize = pick(r, mode === 'realistic' ? SIZE_ORDER.slice(1, 5) : SIZE_ORDER);
+  if (!lock('silliness') && mode === 'silly') out.silliness = 2 + Math.floor(r() * 3);
   if (!lock('age')) out.age = 21 + Math.floor(r() * 50);
   for (const ctl of CONTROLS) {
     if (lock(ctl.id)) continue;
-    if (ctl.multi) { const n = Math.floor(r() * (mode === 'realistic' ? 2 : 4)); out[ctl.id] = [...new Set(Array.from({ length: n }, () => pick(r, ctl.options).id))].slice(0, ctl.maxSelected ?? 3); }
-    else out[ctl.id] = pick(r, ctl.options).id;
+    const opts = mode === 'silly' ? ctl.options : ctl.options.filter(o => !o.silly);
+    if (ctl.multi) { const n = Math.floor(r() * (mode === 'realistic' ? 2 : 4)); out[ctl.id] = [...new Set(Array.from({ length: n }, () => pick(r, opts).id))].slice(0, ctl.maxSelected ?? 3); }
+    else out[ctl.id] = pick(r, opts).id;
   }
   return CharacterSchema.parse(out);
 }

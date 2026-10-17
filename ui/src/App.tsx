@@ -6,14 +6,15 @@ import { Models } from './Models';
 import { type Mode, type VideoInput, MODE_KEY, INPUT_KEY, parseMode, parseInput, load, save, navIndex, videoInputs } from './modes';
 import { SEL_KEY, parseSel, effective, toggle, gate, pick } from './modelsel';
 import { CustomPanel } from './CustomPanel';
+import { hue } from './Art';
 import { Portrait, FullBody, Lazy, Avatar, SKIN, HAIRC, EYEC } from './Art';
 
 type Screen = 'scan' | 'home' | 'builder' | 'generate' | 'models';
 const NAV: [Screen, string][] = [['scan', 'Hardware'], ['home', 'Home'], ['builder', 'Character'], ['generate', 'Generate'], ['models', 'Models']];
 
-type Opt = { id: string; label: string };
+type Opt = { id: string; label: string; silly?: boolean };
 type Ctl = { id: string; title: string; ui: string; multi: boolean; maxSelected: number; applies: 'all' | 'human'; default: string | string[]; options: Opt[] };
-type Schema = { video: { motions: Opt[]; cameras: Opt[]; seconds: number[]; sizes: number[] }; types: (Opt & { human: boolean })[]; species: Record<string, Opt[]>; sizes: Opt[]; ageBands: (Opt & { age: number })[]; controls: Ctl[]; presets: Opt[]; edit: { poses: Opt[]; azimuths: Opt[]; elevations: Opt[]; distances: Opt[] } };
+type Schema = { video: { motions: Opt[]; cameras: Opt[]; seconds: number[]; sizes: number[] }; types: (Opt & { human: boolean })[]; species: Record<string, Opt[]>; sizes: Opt[]; ageBands: (Opt & { age: number })[]; controls: Ctl[]; presets: (Opt & { silly?: boolean })[]; silliness: Opt[]; edit: { poses: Opt[]; azimuths: Opt[]; elevations: Opt[]; distances: Opt[] } };
 type Reason = { code: string; hard: boolean; text: string };
 type Variant = { id: string; label: string; format: string; sizeGb: number; license: string; minVramGb: number; state: string; reasons: Reason[]; installed: boolean | null; sources: string[]; downloadable: boolean; est: boolean };
 type ModelOpt = { id: string; name: string; kind: string; bestVariantId: string | null; variants: Variant[] };
@@ -22,7 +23,8 @@ type Opts = { custom: any; customActive: boolean; profile: any; pretend: string 
 export type Job = { id: string; status: string; progress: number; message?: string; error?: string; label: string; prompt: string; seed: number; width: number; height: number; mock: boolean; unsupported: boolean; outputs: { index: number; mime: string }[]; createdAt: string; character?: any; edit?: any; video?: any };
 type Ch = Record<string, any>;
 
-const humanType = (t: string) => t !== 'alien' && t !== 'monster';
+const NONHUMAN = new Set(['alien', 'monster', 'cat_person', 'dog_person', 'fox_person', 'frog_person', 'insect_person', 'bird_person', 'rodent_person', 'reptile_person', 'robot', 'plush_person']);
+const humanType = (t: string) => !NONHUMAN.has(t);
 const STATE_TXT: Record<string, string> = { recommended: 'Recommended for your GPU', runs: 'Fits your GPU', slow: 'Slow on your PC', locked_soft: 'Locked', blocked_hard: 'Not available' };
 
 export function App() {
@@ -219,7 +221,7 @@ function Home(p: Ctx) {
   );
 }
 
-const SYM: Record<string, string> = { surprise: '◌', male: '♂', female: '♀', non_binary: '⚲', trans_woman: '⚧', trans_man: '⚧' };
+const SYM: Record<string, string> = { surprise: '◌', male: '♂', female: '♀', non_binary: '⚲', trans_woman: '⚧', trans_man: '⚧', cat_person: '🐱', dog_person: '🐶', fox_person: '🦊', frog_person: '🐸', insect_person: '🦋', bird_person: '🦉', rodent_person: '🐹', reptile_person: '🦎', robot: '🤖', plush_person: '🧸' };
 type Section = { id: string; title: string; ui: string; options: Opt[]; multi?: boolean; max?: number };
 
 function Builder(p: Ctx) {
@@ -232,7 +234,7 @@ function Builder(p: Ctx) {
   const human = humanType(type);
   const secs: Section[] = [
     { id: 'type', title: 'Character type', ui: 'type', options: schema.types },
-    ...(schema.species[type] ? [{ id: 'species', title: type === 'alien' ? 'Alien species' : 'Monster species', ui: 'species', options: schema.species[type] }] : []),
+    ...(schema.species[type] ? [{ id: 'species', title: (schema.types.find(t => t.id === type)?.label ?? 'Character') + ' species', ui: 'species', options: schema.species[type] }] : []),
     { id: 'bodySize', title: 'Body size', ui: 'size', options: schema.sizes },
     { id: 'age', title: 'Age', ui: 'pill', options: schema.ageBands },
     ...schema.controls.filter(c => human || c.applies === 'all').filter(c => p.adv || !['expression', 'lighting', 'background', 'renderStyle'].includes(c.id) || true).map(c => ({ id: c.id, title: c.title, ui: c.ui, options: c.options, multi: c.multi, max: c.maxSelected })),
@@ -254,7 +256,7 @@ function Builder(p: Ctx) {
   };
   const shuffle = async () => {
     const locks = Object.keys(lock).filter(k => lock[k]);
-    try { setCh(await api('POST', '/api/randomise', { character: ch, locks: locks.map(l => (l === 'age' ? 'age' : l)), seed: Math.floor(Math.random() * 4294967295), mode: 'realistic' })); } catch { /* ignore */ }
+    try { setCh(await api('POST', '/api/randomise', { character: ch, locks: locks.map(l => (l === 'age' ? 'age' : l)), seed: Math.floor(Math.random() * 4294967295), mode: (ch.silliness ?? 0) > 0 ? 'silly' : 'realistic' })); } catch { /* ignore */ }
   };
   const sizeIdx = Math.max(0, schema.sizes.findIndex(s => s.id === ch.bodySize));
   const sp = schema.species[type]?.find(o => o.id === (ch.species ?? schema.species[type]?.[0].id))?.label ?? '';
@@ -265,6 +267,9 @@ function Builder(p: Ctx) {
       <aside class="panel" aria-label="Character builder">
         <div class="ptabs" role="tablist">{['Create Influencer', 'Motion'].map((t, i) => <button key={t} role="tab" aria-selected={i === 0} disabled={i === 1} title={i === 1 ? 'Motion transfer arrives in a later milestone' : ''} class={i === 0 ? 'on' : ''}>{t}</button>)}</div>
         <div class="pscroll">
+          <div class="sec slider" id="silly-slider"><label for="silly-range"><b>Realism ↔ Ridiculous</b> <span class="muted">{schema.silliness[ch.silliness ?? 0]?.label}</span></label>
+            <input id="silly-range" type="range" min={0} max={schema.silliness.length - 1} step={1} value={ch.silliness ?? 0} aria-valuetext={schema.silliness[ch.silliness ?? 0]?.label} onInput={e => setCh({ ...ch, silliness: Number((e.target as HTMLInputElement).value) })} />
+            <div class="ticks" aria-hidden="true">{schema.silliness.map(l => <span key={l.id}>{l.label}</span>)}</div></div>
           <StyleRefBox ref_={p.styleRef} set={p.setStyleRef} />
           {secs.map(s => {
             const isOpen = open[s.id]; const cur = curOf(s); const flat = ['swatch', 'pill'].includes(s.ui);
@@ -278,7 +283,7 @@ function Builder(p: Ctx) {
                 {isOpen && (s.ui === 'pill' ? <div class="pills" role={s.multi ? 'group' : 'radiogroup'} aria-label={s.title}>{s.options.map(o => <button key={o.id} role={s.multi ? 'checkbox' : 'radio'} aria-checked={cur === o.id} class={'pillb' + (cur === o.id ? ' on' : '')} onClick={() => choose(s, o)}>{o.label}</button>)}</div> :
                   <div class="tg" role={s.multi ? 'group' : 'radiogroup'} aria-label={s.title}>{s.options.map(o => {
                     const on = s.multi ? (cur as string[]).includes(o.id) : cur === o.id; const swc = sw(o);
-                    return <button key={o.id} role={s.multi ? 'checkbox' : 'radio'} aria-checked={on} class={'bt' + (on ? ' on' : '') + (flat || (s.ui === 'type' && humanType(o.id)) ? ' flat' : '')} onClick={() => choose(s, o)}>
+                    return <button key={o.id} role={s.multi ? 'checkbox' : 'radio'} aria-checked={on} class={'bt' + (on ? ' on' : '') + (flat || (s.ui === 'type' && o.id !== 'alien' && o.id !== 'monster') ? ' flat' : '')} onClick={() => choose(s, o)}>
                       {s.ui === 'type' ? ((): any => { const pi = pv.get('type/' + (o.id === 'trans_woman' ? 'female' : o.id === 'trans_man' ? 'male' : o.id))?.[0] ?? null; const sym = <span class="gsym" aria-hidden="true">{SYM[o.id]}</span>;
                         return o.id === 'alien' || o.id === 'monster' ? <div class="ph"><Thumb item={pi} alt={o.label} fallback={<Lazy cls="ph"><Portrait type={o.id === 'alien' ? 'Alien' : 'Monster'} species={schema.species[o.id][0].label} zoom="bust" /></Lazy>} /></div> : pi ? <div class="ph"><Thumb item={pi} alt={o.label} fallback={sym} /><span class="symb" aria-hidden="true">{SYM[o.id]}</span></div> : sym; })() :
                         swc ? <i class="sw" style={{ background: swc }} /> :
@@ -297,14 +302,10 @@ function Builder(p: Ctx) {
         <div class="gbar"><button class="shuf" aria-label="Shuffle character" title="Shuffle (locked sections stay)" onClick={shuffle}>⤮</button><button class="gen-btn" onClick={p.generate}>Generate ✨</button></div>
       </aside>
       <div class="canvas">
-        <div class="stage card glow">
-          <div class="bigart"><FullBody {...look} size={sizeIdx} /></div>
-          <div class="cap">{typeLabel}{sp ? ' · ' + sp : ''} · {schema.sizes[sizeIdx]?.label}</div>
-          <SaveBar ch={ch} seed={p.seed} />
-          <small class="muted">Schematic preview; option tiles use generated thumbnails where the library has them. Adults only, SFW, fully clothed.</small>
-        </div>
+        <LivePreview ch={ch} seed={p.seed} pv={pv} schema={schema} type={type} opts={p.opts} msel={p.msel} unlocked={p.unlocked} jobs={p.jobs} setNotice={p.setNotice} />
         <Library setCh={setCh} />
-        <div class="card"><h2>Presets</h2><div class="chips">{schema.presets.map(x => <button key={x.id} class="chip" onClick={async () => setCh(await api('POST', '/api/preset', { character: ch, preset: x.id }))}>{x.label}</button>)}</div></div>
+        <div class="card"><h2>Presets</h2><div class="chips">{schema.presets.filter(x => !x.silly).map(x => <button key={x.id} class="chip" onClick={async () => setCh(await api('POST', '/api/preset', { character: ch, preset: x.id }))}>{x.label}</button>)}</div></div>
+        <div class="card" id="silly-pack"><h2>Silly preset pack <small class="muted">{schema.presets.filter(x => x.silly).length} presets</small></h2><div class="chips">{schema.presets.filter(x => x.silly).map(x => <button key={x.id} class="chip" onClick={async () => setCh(await api('POST', '/api/preset', { character: ch, preset: x.id }))}>{x.label}</button>)}</div><small class="muted">One click fills the builder. Everything stays editable.</small></div>
       </div>
     </section>
   );
@@ -335,9 +336,16 @@ function Thumb({ item, alt, fallback }: { item: PreviewItem | null; alt: string;
   if (!item || bad) return fallback;
   return <img class={'pimg ' + item.framing} src={'/previews/' + item.file} width={item.w} height={item.h} alt={alt} loading="lazy" decoding="async" onError={() => setBad(true)} />;
 }
+const SILLY_ICON: Record<string, string> = { hairStyle: '💇', outfit: '🧥', proportions: '🔍', background: '🌈', renderStyle: '🎨', prop: '🎈' };
+/** Drawn fallback for the playful options until their generated thumbnail exists (plan 28). */
+function SillyTile({ s, o }: { s: Section; o: Opt }) {
+  const h = hue(o.label);
+  return <svg viewBox="0 0 48 48" class="art" role="img" aria-label={o.label}><rect width="48" height="48" rx="8" fill={`hsl(${h} 70% 88%)`} /><circle cx="24" cy="22" r="14" fill={`hsl(${(h + 40) % 360} 75% 70%)`} /><text x="24" y="29" font-size="18" text-anchor="middle">{SILLY_ICON[s.id] ?? '✨'}</text></svg>;
+}
 function Tile({ s, o, look, size, type, schema }: { s: Section; o: Opt; look: any; size: number; type: string; schema: Schema }) {
   const L = { ...look }; const nh = !humanType(type);
   const k = s.ui;
+  if (o.silly) return <SillyTile s={s} o={o} />;
   if (s.id === 'species') return <Portrait {...L} species={o.label} zoom="bust" />;
   if (k === 'hair') return <Portrait {...L} hairStyle={o.label} zoom="bust" />;
   if (k === 'outfit') return <FullBody {...L} outfit={o.label} size={size} />;
@@ -349,6 +357,50 @@ function Tile({ s, o, look, size, type, schema }: { s: Section; o: Opt; look: an
   if (k === 'acc') return <Portrait {...L} accessory={o.label} zoom="bust" />;
   if (k === 'face') return <Portrait {...L} {...(s.id === 'facialHair' ? { facial: o.label } : { feature: o.label })} zoom="bust" />;
   void nh; return null;
+}
+const PREVIEW_KEY = 'is_preview';
+const sigOf = (ch: Ch, seed: number) => JSON.stringify([ch, seed]);
+/** Real preview: a realistic placeholder before any generation, and a real generated image of the current selection after pressing Preview (last result cached). */
+function LivePreview({ ch, seed, pv, schema, type, opts, msel, unlocked, jobs, setNotice }: any) {
+  const [pseed] = useState(() => seed);
+  const [cache, setCache] = useState<{ sig: string; jobId: string } | null>(() => { try { return JSON.parse(localStorage.getItem(PREVIEW_KEY) ?? 'null'); } catch { return null; } });
+  const [url, setUrl] = useState(''); const [busy, setBusy] = useState(false); const [err, setErr] = useState('');
+  const job = cache ? jobs.find((j: Job) => j.id === cache.jobId) : null;
+  const done = job?.status === 'done'; const running = !!job && ['queued', 'running'].includes(job.status);
+  useEffect(() => {
+    if (!cache || !done) { setUrl(''); return; }
+    let u = ''; let dead = false;
+    fetchBlobUrl(`/api/outputs/${cache.jobId}/0`).then(x => { u = x; if (!dead) setUrl(x); else URL.revokeObjectURL(x); }).catch(() => {});
+    return () => { dead = true; if (u) URL.revokeObjectURL(u); };
+  }, [cache?.jobId, done]);
+  const sig = sigOf(ch, pseed); const stale = !!cache && cache.sig !== sig;
+  const run = async () => {
+    setErr(''); setBusy(true); setNotice(null);
+    try {
+      const pk = pick(opts.models, msel, unlocked, 'image'); if (pk.blocked) { setErr(pk.blocked); return; }
+      const j = await api<Job>('POST', '/api/jobs', { ...(pk.variantId ? { variantId: pk.variantId } : {}), character: ch, seed: pseed, width: 576, height: 768, batch: 1 });
+      const c = { sig, jobId: j.id }; setCache(c); try { localStorage.setItem(PREVIEW_KEY, JSON.stringify(c)); } catch { /* storage blocked */ }
+    } catch (e) { const a = e as ApiError; setErr(a.message + (a.body?.reasons?.length ? ': ' + a.body.reasons.map((r: Reason) => r.text).join('; ') : '')); } finally { setBusy(false); }
+  };
+  // Realistic placeholder: the generated full-body photo for this type and body size, else the type picture, else a plain card.
+  const sizeId = ch.bodySize ?? 'medium';
+  const hasPhoto = humanType(type) || type === 'alien' || type === 'monster'; // playful creature types have no example photo until their thumbnails are generated
+  const ph = !hasPhoto ? null : pickPreview(pv, 'bodySize', sizeId, type, 0) ?? pv.get('type/' + (type === 'trans_woman' ? 'female' : type === 'trans_man' ? 'male' : type))?.[0] ?? pv.get('type/female')?.[0] ?? null;
+  const typeLabel = schema.types.find((t: any) => t.id === type)?.label ?? '';
+  const failed = job && ['failed', 'cancelled', 'interrupted'].includes(job.status);
+  return <div class="stage card glow" id="live-preview">
+    <div class="bigart real" aria-live="polite">
+      {url ? <img src={url} alt={`Generated preview: ${typeLabel}`} />
+        : ph ? <img src={'/previews/' + ph.file} alt={`Example photo for ${typeLabel}, ${schema.sizes.find((z: Opt) => z.id === sizeId)?.label ?? ''} (not your exact selection)`} class="phimg" />
+          : <div class="phempty">No example photo for this playful type yet.<br />Press Preview to see it.</div>}
+      {running && <div class="pvbusy" role="status"><i class="spin" />Generating… {Math.round(job!.progress)}%</div>}
+    </div>
+    <div class="pvrow"><button class="primary" disabled={busy || running} onClick={run}>{running ? 'Generating…' : url ? 'Update preview' : 'Preview'}</button></div>
+    <small class="muted" role="status">{url ? (stale ? 'Last preview. Your selection has changed since; press Update preview.' : 'Preview of your current selection.') : 'Example photo shown until you press Preview.'}</small>
+    {(err || failed) && <small class="warn" role="alert">{err || job?.error || 'The preview did not finish.'}</small>}
+    <SaveBar ch={ch} seed={seed} />
+    <small class="muted">Adults only, SFW, fully clothed.</small>
+  </div>;
 }
 function SaveBar({ ch, seed }: { ch: Ch; seed: number }) {
   const [name, setName] = useState(''); const [msg, setMsg] = useState('');

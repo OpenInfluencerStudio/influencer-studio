@@ -50,6 +50,7 @@ export const RULES: Record<string, CtlRule> = {
   expression: { framing: 'face', looks: 'rotate' },
   neck: { framing: 'upper', looks: 'rotate', humanOnly: true, loose: true },
   accessory: { framing: 'upper', looks: 'rotate' },
+  prop: { framing: 'upper', looks: 'rotate' },
   lighting: { framing: 'upper', looks: 'rotate' },
   background: { framing: 'upper', looks: 'rotate' },
   renderStyle: { framing: 'upper', looks: 'rotate' },

@@ -8,6 +8,7 @@ import { CharacterSchema, compileCharacter, randomise, applyPreset, SafetyError 
 import { CONTROLS, TYPE_OPTS, SPECIES_BY_TYPE, SIZE_OPTS, AGE_BANDS, PRESETS } from './compiler/schema.js';
 import { repoRoot } from './paths.js';
 import { MAX_REF_BYTES } from './refs.js';
+import { SILLINESS } from './compiler/schema.js';
 import { customTier, precisionMatch } from './custom.js';
 import { compileEdit, templateForEdit, POSES, AZIMUTHS, ELEVATIONS, DISTANCES } from './edit.js';
 import { R } from './reasons.js';
@@ -105,7 +106,7 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
       return send(res, 200, compileCharacter(b.character, b.seed));
     }
     if (m === 'POST' && p === '/api/randomise') {
-      const b = z.object({ character: z.record(z.unknown()), locks: z.array(z.string().max(30)).max(40).default([]), seed: z.number().int().min(0).max(4294967295), mode: z.enum(['realistic', 'quirky', 'chaos']).default('realistic') }).strict().parse(await readJson(req));
+      const b = z.object({ character: z.record(z.unknown()), locks: z.array(z.string().max(30)).max(40).default([]), seed: z.number().int().min(0).max(4294967295), mode: z.enum(['silly', 'realistic', 'quirky', 'chaos']).default('realistic') }).strict().parse(await readJson(req));
       return send(res, 200, randomise(CharacterSchema.parse(b.character), new Set(b.locks), b.seed, b.mode));
     }
     if (m === 'POST' && p === '/api/preset') {
@@ -295,8 +296,9 @@ function schemaPayload(s: Services) {
     species: Object.fromEntries(Object.entries(SPECIES_BY_TYPE).map(([k, v]) => [k, v.map(o => ({ id: o.id, label: o.label }))])),
     sizes: SIZE_OPTS.map(o => ({ id: o.id, label: o.label })),
     ageBands: AGE_BANDS.map(a => ({ id: a.id, label: a.label, age: a.age })),
-    controls: CONTROLS.map(c => ({ id: c.id, title: c.title, ui: c.ui, multi: !!c.multi, maxSelected: c.maxSelected ?? 1, applies: c.applies, default: c.default, options: c.options.map(o => ({ id: o.id, label: o.label })) })),
-    presets: PRESETS.map(p => ({ id: p.id, label: p.label })),
+    controls: CONTROLS.map(c => ({ id: c.id, title: c.title, ui: c.ui, multi: !!c.multi, maxSelected: c.maxSelected ?? 1, applies: c.applies, default: c.default, options: c.options.map(o => ({ id: o.id, label: o.label, ...(o.silly ? { silly: true } : {}) })) })),
+    silliness: SILLINESS.map(({ id, label }) => ({ id, label })),
+    presets: PRESETS.map(p => ({ id: p.id, label: p.label, silly: !!p.silly })),
     edit: { poses: POSES.map(({ id, label }) => ({ id, label })), azimuths: AZIMUTHS.map(({ id, label }) => ({ id, label })), elevations: ELEVATIONS.map(({ id, label }) => ({ id, label })), distances: DISTANCES.map(({ id, label }) => ({ id, label })) },
     video: { motions: MOTIONS.map(({ id, label }) => ({ id, label })), cameras: CAMERAS.map(({ id, label }) => ({ id, label })), seconds: DURATIONS, sizes: VIDEO_SIZES },
     templates: [...s.templates.values()].map(t => ({ id: t.manifest.id, label: t.manifest.label, mode: t.manifest.mode, kind: t.manifest.kind })),

@@ -1,0 +1,652 @@
+{
+  "level0/male": {
+    "positive": "studio portrait photo, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level0/female": {
+    "positive": "studio portrait photo, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level0/non_binary": {
+    "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level0/alien": {
+    "positive": "studio portrait photo, an adult-appearing humanoid alien in their early thirties, an average build with a balanced torso, Starborn species with pale luminous skin, faint constellation freckles and large dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "starborn",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level0/monster": {
+    "positive": "studio portrait photo, an adult-appearing friendly humanoid fantasy creature in their early thirties, an average build with a balanced torso, Stonekin species with grey stone-textured skin and a broad build, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "stonekin",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level1/male": {
+    "positive": "studio portrait photo, slightly stylised, with gently exaggerated features, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level1/female": {
+    "positive": "studio portrait photo, slightly stylised, with gently exaggerated features, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level1/non_binary": {
+    "positive": "studio portrait photo, slightly stylised, with gently exaggerated features, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level1/alien": {
+    "positive": "studio portrait photo, slightly stylised, with gently exaggerated features, an adult-appearing humanoid alien in their early thirties, an average build with a balanced torso, Starborn species with pale luminous skin, faint constellation freckles and large dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "starborn",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level1/monster": {
+    "positive": "studio portrait photo, slightly stylised, with gently exaggerated features, an adult-appearing friendly humanoid fantasy creature in their early thirties, an average build with a balanced torso, Stonekin species with grey stone-textured skin and a broad build, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "stonekin",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level2/male": {
+    "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level2/female": {
+    "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level2/non_binary": {
+    "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level2/alien": {
+    "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult-appearing humanoid alien in their early thirties, an average build with a balanced torso, Starborn species with pale luminous skin, faint constellation freckles and large dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "starborn",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level2/monster": {
+    "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult-appearing friendly humanoid fantasy creature in their early thirties, an average build with a balanced torso, Stonekin species with grey stone-textured skin and a broad build, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "stonekin",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level3/male": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level3/female": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level3/non_binary": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level3/alien": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing humanoid alien in their early thirties, an average build with a balanced torso, Starborn species with pale luminous skin, faint constellation freckles and large dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "starborn",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level3/monster": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly humanoid fantasy creature in their early thirties, an average build with a balanced torso, Stonekin species with grey stone-textured skin and a broad build, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "stonekin",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level4/male": {
+    "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level4/female": {
+    "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level4/non_binary": {
+    "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level4/alien": {
+    "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult-appearing humanoid alien in their early thirties, an average build with a balanced torso, Starborn species with pale luminous skin, faint constellation freckles and large dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "alien",
+      "species": "starborn",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "level4/monster": {
+    "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult-appearing friendly humanoid fantasy creature in their early thirties, an average build with a balanced torso, Stonekin species with grey stone-textured skin and a broad build, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "monster",
+      "species": "stonekin",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "creature/cat_person": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic cat character in their early thirties, an average build with a balanced torso, a cat character with pointed furry ears, whiskers, a small nose and soft fur, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "cat_person",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "creature/dog_person": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic dog character in their early thirties, an average build with a balanced torso, a dog character with floppy furry ears, a friendly snout and soft fur, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "dog_person",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "creature/fox_person": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic fox character in their early thirties, an average build with a balanced torso, a fox character with pointed ears, a narrow snout, a bushy tail and russet fur, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "fox_person",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "creature/frog_person": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic frog character in their early thirties, an average build with a balanced torso, a frog character with smooth green skin, wide-set round eyes and a wide friendly mouth, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "frog_person",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "creature/insect_person": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic insect character in their early thirties, an average build with a balanced torso, beetle features with a glossy shell-like collar, small antennae and round dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "insect_person",
+      "species": "beetle",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "creature/bird_person": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic bird character in their early thirties, an average build with a balanced torso, owl features with a round feathered face, big round amber eyes and a small beak, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "bird_person",
+      "species": "owl",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "creature/rodent_person": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic rodent character in their early thirties, an average build with a balanced torso, a mouse-like character with round ears, small whiskers, a tiny pink nose and soft fur, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "rodent_person",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "creature/reptile_person": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic reptile character in their early thirties, an average build with a balanced torso, a lizard character with fine scales, a gentle snout and bright eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "reptile_person",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "creature/robot": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly retro humanoid robot character in their early thirties, an average build with a balanced torso, a retro robot character with a metal head, round lens eyes, antenna and a panelled body, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "robot",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "creature/plush_person": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly stitched plush-toy character in their early thirties, an average build with a balanced torso, a plush toy character with visible stitching, button eyes and soft fabric, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "plush_person",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "species/insect_person/beetle": {
+    "positive": "studio portrait photo, an adult-appearing friendly anthropomorphic insect character in their early thirties, an average build with a balanced torso, beetle features with a glossy shell-like collar, small antennae and round dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "insect_person",
+      "species": "beetle",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "species/insect_person/moth": {
+    "positive": "studio portrait photo, an adult-appearing friendly anthropomorphic insect character in their early thirties, an average build with a balanced torso, moth features with feathery antennae, soft fuzzy cheeks and large dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "insect_person",
+      "species": "moth",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "species/insect_person/dragonfly": {
+    "positive": "studio portrait photo, an adult-appearing friendly anthropomorphic insect character in their early thirties, an average build with a balanced torso, dragonfly features with large compound-style eyes, thin antennae and delicate translucent wings behind the shoulders, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "insect_person",
+      "species": "dragonfly",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "species/bird_person/owl": {
+    "positive": "studio portrait photo, an adult-appearing friendly anthropomorphic bird character in their early thirties, an average build with a balanced torso, owl features with a round feathered face, big round amber eyes and a small beak, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "bird_person",
+      "species": "owl",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "species/bird_person/parrot": {
+    "positive": "studio portrait photo, an adult-appearing friendly anthropomorphic bird character in their early thirties, an average build with a balanced torso, parrot features with bright red and blue feathers, a curved beak and a feathered crest, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "bird_person",
+      "species": "parrot",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "species/bird_person/toucan": {
+    "positive": "studio portrait photo, an adult-appearing friendly anthropomorphic bird character in their early thirties, an average build with a balanced torso, toucan features with black feathers, a large colourful beak and a white chest, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "bird_person",
+      "species": "toucan",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/sir_pompadour": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a towering exaggerated pompadour in dark brown, holding a pair of comically oversized sunglasses, wearing well-fitted, modest everyday clothing, fully covered: a smart blazer over a shirt with trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/captain_frog": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic frog character in their early thirties, an average build with a balanced torso, a frog character with smooth green skin, wide-set round eyes and a wide friendly mouth, short cropped hair, with a small pet frog on one shoulder, wearing well-fitted, modest everyday clothing, fully covered: a long pirate captain coat with a tricorn hat, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "frog_person",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/disco_moth": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic insect character in their early thirties, an average build with a balanced torso, moth features with feathery antennae, soft fuzzy cheeks and large dark eyes, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a sparkly glitter tracksuit, a soft smile, soft daylight, a disco room with a mirror ball. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "insect_person",
+      "species": "moth",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/mushroom_hermit": {
+    "positive": "handmade claymation style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a big round mushroom-cap haircut in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a forest of giant colourful mushrooms. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/cloud_chef": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a huge fluffy cloud of hair like cotton candy in dark brown, holding a giant donut, wearing well-fitted, modest everyday clothing, fully covered: a chef uniform with an enormous tall chef hat and apron, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/space_parrot": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic bird character in their early thirties, an average build with a balanced torso, parrot features with bright red and blue feathers, a curved beak and a feathered crest, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a chunky retro space suit with a round helmet under the arm, a soft smile, soft daylight, a soft cloud kingdom in the sky. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "bird_person",
+      "species": "parrot",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/hamster_wizard": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic rodent character in their early thirties, an average build with a balanced torso, a mouse-like character with round ears, small whiskers, a tiny pink nose and soft fur, short cropped hair, holding a large teapot, wearing well-fitted, modest everyday clothing, fully covered: a long star-covered wizard robe and pointed hat, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "rodent_person",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/dino_dave": {
+    "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a full-body inflatable green dinosaur costume, a big friendly grin, soft daylight, a bright retro arcade. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/stair_step_steve": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, a cartoon giant head on a small body, an oval face, almond-shaped eyes, brown eyes, hair cut in dramatic stair-step layers in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a denim jacket over a t-shirt with trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/bubble_afro": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a huge round bubble-shaped afro in dark brown, surrounded by floating soap bubbles, wearing well-fitted, modest everyday clothing, fully covered: a sparkly glitter tracksuit, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/owl_professor": {
+    "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult-appearing friendly anthropomorphic bird character in their early thirties, an average build with a balanced torso, owl features with a round feathered face, big round amber eyes and a small beak, short cropped hair, round glasses, carrying a tall stack of books, wearing well-fitted, modest everyday clothing, fully covered: a chunky knit sweater and trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "bird_person",
+      "species": "owl",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/banana_detective": {
+    "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, sunglasses, wearing well-fitted, modest everyday clothing, fully covered: a full-body banana costume, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/robot_barista": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly retro humanoid robot character in their early thirties, an average build with a balanced torso, a retro robot character with a metal head, round lens eyes, antenna and a panelled body, short cropped hair, holding a large teapot, wearing well-fitted, modest everyday clothing, fully covered: a chef uniform with an enormous tall chef hat and apron, a soft smile, soft daylight, a cosy cafe. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "robot",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/mascot_marvin": {
+    "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a fluffy full-body sports mascot costume, laughing, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/unicorn_hair": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, hair twisted into a single tall unicorn-horn spike in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a bright superhero costume with a long flowing cape, fully covered, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/rainbow_mohawk": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a bright rainbow-coloured mohawk in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a jacket completely covered in colourful flowers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/cat_cafe": {
+    "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult-appearing friendly anthropomorphic cat character in their early thirties, an average build with a balanced torso, a cat character with pointed furry ears, whiskers, a small nose and soft fur, short cropped hair, holding a large teapot, wearing well-fitted, modest everyday clothing, fully covered: a chunky knit sweater and trousers, a soft smile, soft daylight, a cosy cafe. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "cat_person",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/knight_duck": {
+    "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult-appearing friendly anthropomorphic bird character in their early thirties, an average build with a balanced torso, toucan features with black feathers, a large colourful beak and a white chest, short cropped hair, wearing a cardboard crown, wearing well-fitted, modest everyday clothing, fully covered: a shiny full suit of costume knight armour, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "bird_person",
+      "species": "toucan",
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/paper_baker": {
+    "positive": "bold colourful cartoon style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a chef uniform with an enormous tall chef hat and apron, a soft smile, soft daylight, a handmade paper-craft set. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/plush_pal": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly stitched plush-toy character in their early thirties, an average build with a balanced torso, a plush toy character with visible stitching, button eyes and soft fabric, short cropped hair, wearing well-fitted, modest everyday clothing, fully covered: a loose hoodie and joggers, a big friendly grin, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "plush_person",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/fox_trumpeter": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic fox character in their early thirties, an average build with a balanced torso, a fox character with pointed ears, a narrow snout, a bushy tail and russet fur, short cropped hair, holding a shiny trumpet, wearing well-fitted, modest everyday clothing, fully covered: a smart blazer over a shirt with trousers, a soft smile, soft daylight, a disco room with a mirror ball. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "fox_person",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/duck_rain": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, holding a tiny umbrella, wearing well-fitted, modest everyday clothing, fully covered: a yellow raincoat with a duck-shaped hood and rubber boots, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "non_binary",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/balloon_wizard": {
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, one extremely long braid reaching the floor in dark brown, holding a big bunch of colourful balloons, wearing well-fitted, modest everyday clothing, fully covered: a long star-covered wizard robe and pointed hat, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "male",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  },
+  "preset/space_buns": {
+    "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, two big space buns in dark brown, holding a skateboard under one arm, wearing well-fitted, modest everyday clothing, fully covered: a long-sleeved sports top and full-length sports trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "resolved": {
+      "type": "female",
+      "species": null,
+      "bodySize": "medium",
+      "age": 30
+    }
+  }
+}
