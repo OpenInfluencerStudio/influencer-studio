@@ -81,8 +81,12 @@ fs.writeFileSync(path.join(stage, 'BUILD-INFO.json'), JSON.stringify({ app: 'inf
 // 5. archive + checksum
 const archive = path.join(outDir, name + (platform === 'win' ? '.zip' : '.tar.gz')); fs.rmSync(archive, { force: true });
 if (platform === 'win') {
-  const z = spawnSync('zip', ['-qr', archive, name], { cwd: outDir });
-  if (z.status !== 0) { const t = spawnSync('tar', ['-a', '-cf', archive, name], { cwd: outDir }); if (t.status !== 0) sh('python3', ['-c', 'import shutil,sys;shutil.make_archive(sys.argv[1],"zip",sys.argv[2],sys.argv[3])', archive.replace(/\.zip$/, ''), outDir, name]); }
+  // Try, in order: zip, Python's zipfile, bsdtar (Windows and macOS tar). GNU tar cannot write zip files, so it is never used here.
+  const bsd = (spawnSync('tar', ['--version'], { encoding: 'utf8' }).stdout ?? '').includes('bsdtar');
+  const tries = [['zip', ['-qr', archive, name]], ['python3', ['-c', 'import shutil,sys;shutil.make_archive(sys.argv[1],"zip",sys.argv[2],sys.argv[3])', archive.replace(/\.zip$/, ''), outDir, name]], ['python', ['-c', 'import shutil,sys;shutil.make_archive(sys.argv[1],"zip",sys.argv[2],sys.argv[3])', archive.replace(/\.zip$/, ''), outDir, name]], ...(bsd ? [['tar', ['-a', '-cf', archive, name]]] : [])];
+  let made = false; for (const [c, a] of tries) { const r = spawnSync(c, a, { cwd: outDir }); if (r.status === 0 && fs.existsSync(archive)) { made = true; break; } }
+  if (!made) throw new Error('Could not create the zip (install zip or Python)');
+  const head = fs.readFileSync(archive).subarray(0, 2).toString('latin1'); if (head !== 'PK') throw new Error('The archive is not a valid zip');
 } else sh('tar', ['-czf', archive, '-C', outDir, name]);
 fs.writeFileSync(archive + '.sha256', `${sha256(archive)}  ${path.basename(archive)}\n`);
 console.log('> done', archive, (fs.statSync(archive).size / 1e6).toFixed(1) + ' MB');
