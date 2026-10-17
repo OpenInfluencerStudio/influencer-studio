@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "note": "Estimates from file sizes and model cards. Only T4 is measured by the project; other rows are labelled estimated. Soft limits are enforced and can be released by the Advanced unlock setting.",
+  "tiers": [
+    { "id": "T0", "minVramGb": 0,  "label": "No usable GPU", "maxImagePx": 0,    "maxVideoPx": 0,   "maxVideoFrames": 0,   "maxRefs": 0, "estimated": true },
+    { "id": "T1", "minVramGb": 1,  "label": "Under 8 GB",    "maxImagePx": 768,  "maxVideoPx": 480, "maxVideoFrames": 33,  "maxRefs": 1, "estimated": true },
+    { "id": "T2", "minVramGb": 8,  "label": "8 GB",          "maxImagePx": 1024, "maxVideoPx": 640, "maxVideoFrames": 49,  "maxRefs": 2, "estimated": true },
+    { "id": "T3", "minVramGb": 12, "label": "12 GB",         "maxImagePx": 1280, "maxVideoPx": 720, "maxVideoFrames": 81,  "maxRefs": 3, "estimated": true },
+    { "id": "T4", "minVramGb": 16, "label": "16 GB",         "maxImagePx": 1536, "maxVideoPx": 832, "maxVideoFrames": 97,  "maxRefs": 3, "estimated": false },
+    { "id": "T5", "minVramGb": 24, "label": "24 GB",         "maxImagePx": 2048, "maxVideoPx": 1024,"maxVideoFrames": 121, "maxRefs": 4, "estimated": true },
+    { "id": "T6", "minVramGb": 32, "label": "32 GB",         "maxImagePx": 2560, "maxVideoPx": 1280,"maxVideoFrames": 161, "maxRefs": 4, "estimated": true },
+    { "id": "T7", "minVramGb": 48, "label": "48 GB",         "maxImagePx": 3072, "maxVideoPx": 1280,"maxVideoFrames": 241, "maxRefs": 5, "estimated": true },
+    { "id": "T8", "minVramGb": 64, "label": "64 to 80 GB",   "maxImagePx": 3584, "maxVideoPx": 1536,"maxVideoFrames": 241, "maxRefs": 5, "estimated": true },
+    { "id": "T9", "minVramGb": 96, "label": "96 GB and above","maxImagePx": 4096, "maxVideoPx": 1920,"maxVideoFrames": 321, "maxRefs": 6, "estimated": true }
+  ],
+  "tolerance_gb": 0.5,
+  "minFreeDiskGbHard": 1,
+  "warnFreeDiskGb": 5,
+  "ramHeadroom": 0.92
+}
