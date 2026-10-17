@@ -18,17 +18,18 @@ import { RefStore } from './refs.js';
 import type { EditRequest } from './edit.js';
 import { writeJsonAtomic, readJsonSafe } from './store.js';
 import { dataDir as defaultDataDir } from './paths.js';
+import { DownloadManager, DlHooks } from './downloads.js';
 
 export interface Config {
   dataDir?: string; comfyUrl?: string; mock?: boolean; modelsDir?: string; allowRemoteComfy?: boolean;
-  exec?: Exec; hardwareOverride?: HardwareProfile; limitsFile?: string; registryFile?: string; workflowsDir?: string;
+  exec?: Exec; downloadHooks?: DlHooks; hardwareOverride?: HardwareProfile; limitsFile?: string; registryFile?: string; workflowsDir?: string;
 }
 
 export class Services {
   limits: Limits; registry: Registry; templates: Map<string, Template>;
   dataDir: string; comfy: ComfyClient; mock: boolean; modelsDir?: string;
   settings: Settings = { unlock_unsupported: false };
-  queue: JobQueue; refs: RefStore;
+  queue: JobQueue; refs: RefStore; downloads: DownloadManager; modelsDirSource: 'config' | 'env' | 'setting' | 'none' = 'none';
   private profile?: { p: HardwareProfile; at: number };
   private comfyOnline = false; private comfyAt = 0;
   private settingsFile: string; private libraryFile: string;
@@ -39,12 +40,15 @@ export class Services {
     this.limits = loadLimits(cfg.limitsFile); this.registry = loadRegistry(cfg.registryFile); this.templates = loadTemplates(cfg.workflowsDir);
     this.comfy = new ComfyClient({ baseUrl: cfg.comfyUrl ?? process.env.COMFYUI_URL ?? 'http://127.0.0.1:8288', allowRemote: cfg.allowRemoteComfy });
     this.mock = cfg.mock ?? process.env.INFLUENCER_STUDIO_MOCK === '1';
-    this.modelsDir = cfg.modelsDir ?? process.env.INFLUENCER_STUDIO_MODELS_DIR;
     this.settingsFile = path.join(this.dataDir, 'settings.json');
     this.libraryFile = path.join(this.dataDir, 'library.json');
     // Settings live in memory after load; a file edit while running only takes effect after restart (plan 21.6c).
-    const s = readJsonSafe<{ unlock_unsupported?: unknown }>(this.settingsFile, {});
+    const s = readJsonSafe<{ unlock_unsupported?: unknown; models_dir?: unknown }>(this.settingsFile, {});
     this.settings = { unlock_unsupported: s.unlock_unsupported === true };
+    const fromSetting = typeof s.models_dir === 'string' && path.isAbsolute(s.models_dir) ? s.models_dir : undefined;
+    this.modelsDir = cfg.modelsDir ?? process.env.INFLUENCER_STUDIO_MODELS_DIR ?? fromSetting;
+    this.modelsDirSource = cfg.modelsDir ? 'config' : process.env.INFLUENCER_STUDIO_MODELS_DIR ? 'env' : fromSetting ? 'setting' : 'none';
+    this.downloads = new DownloadManager(path.join(this.dataDir, 'downloads.json'), this.registry, () => this.modelsDir, cfg.downloadHooks);
     this.refs = new RefStore(path.join(this.dataDir, 'refs'));
     this.queue = new JobQueue(path.join(this.dataDir, 'jobs.json'), path.join(this.dataDir, 'outputs'), this.runner, j => this.recheck(j));
   }
@@ -74,7 +78,19 @@ export class Services {
   }
   saveSettings(next: Settings) {
     this.settings = { unlock_unsupported: next.unlock_unsupported === true };
-    writeJsonAtomic(this.settingsFile, { schemaVersion: 1, ...this.settings, unlock_changed_at: new Date().toISOString() });
+    this.persistSettings();
+  }
+  private persistSettings() {
+    const prev = readJsonSafe<{ unlock_changed_at?: string }>(this.settingsFile, {});
+    writeJsonAtomic(this.settingsFile, { schemaVersion: 1, ...this.settings, ...(this.modelsDirSource === 'setting' && this.modelsDir ? { models_dir: this.modelsDir } : {}), unlock_changed_at: prev.unlock_changed_at ?? new Date().toISOString() });
+  }
+  /** Choose where models are installed (only when not fixed by the environment). */
+  setModelsDir(dir: string) {
+    if (this.modelsDirSource === 'env' || this.modelsDirSource === 'config') throw Object.assign(new Error('The models folder is fixed by the launcher (INFLUENCER_STUDIO_MODELS_DIR).'), { status: 409, code: 'models_dir_fixed' });
+    const d = path.resolve(dir);
+    if (!path.isAbsolute(dir) || dir.includes('\0') || d === path.parse(d).root) throw Object.assign(new Error('Enter a full folder path, not a drive root.'), { status: 400, code: 'bad_models_dir' });
+    fs.mkdirSync(d, { recursive: true });
+    this.modelsDir = d; this.modelsDirSource = 'setting'; this.persistSettings();
   }
   checkCtx(profile: HardwareProfile, comfyOnline: boolean): CheckCtx {
     return { profile, limits: this.limits, registry: this.registry, settings: this.settings, installed: this.installed, templates: new Map([...this.templates].map(([k, v]) => [k, v.manifest])), comfyOnline, comfyUrl: this.comfy.baseUrl, mockGenerator: this.mock };

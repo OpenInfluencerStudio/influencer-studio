@@ -10,6 +10,7 @@ import { repoRoot } from './paths.js';
 import { MAX_REF_BYTES } from './refs.js';
 import { compileEdit, templateForEdit, POSES, AZIMUTHS, ELEVATIONS, DISTANCES } from './edit.js';
 import { R } from './reasons.js';
+import { DlError } from './downloads.js';
 import { compileVideo, framesFor, videoDims, MOTIONS, CAMERAS, DURATIONS, VIDEO_SIZES } from './video.js';
 import type { Job } from './queue.js';
 
@@ -60,6 +61,8 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
 
   const allowedHosts = () => new Set([`127.0.0.1:${port}`, `localhost:${port}`]);
 
+  const dl = <T>(f: () => T): T => { try { return f(); } catch (e) { if (e instanceof DlError) throw new HttpError(e.status, e.code, e.message); throw e; } };
+
   async function handleApi(req: http.IncomingMessage, res: http.ServerResponse, url: URL) {
     const m = req.method ?? 'GET';
     const auth = req.headers.authorization ?? '';
@@ -75,8 +78,20 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
     if (m === 'GET' && p === '/api/options') return send(res, 200, await optionsPayload(services, url.searchParams.get('pretend')));
     if (m === 'GET' && p === '/api/settings') return send(res, 200, services.settings);
     if (m === 'POST' && p === '/api/settings') {
-      const b = z.object({ unlock_unsupported: z.boolean() }).strict().parse(await readJson(req));
-      services.saveSettings(b); return send(res, 200, services.settings);
+      const b = z.object({ unlock_unsupported: z.boolean().optional(), models_dir: z.string().min(3).max(260).optional() }).strict().parse(await readJson(req));
+      if (b.models_dir !== undefined) { try { services.setModelsDir(b.models_dir); } catch (e) { const x = e as { status?: number; code?: string; message: string }; throw new HttpError(x.status ?? 400, x.code ?? 'bad_models_dir', x.message); } }
+      if (b.unlock_unsupported !== undefined) services.saveSettings({ unlock_unsupported: b.unlock_unsupported });
+      return send(res, 200, services.settings);
+    }
+    if (m === 'GET' && p === '/api/downloads') return send(res, 200, { modelsDir: services.modelsDir ?? null, modelsDirSource: services.modelsDirSource, items: services.downloads.list() });
+    if (m === 'POST' && p === '/api/downloads') {
+      const b = z.object({ variantId: z.string().regex(/^[a-z0-9._-]{1,60}$/), acceptedLicense: z.string().max(40) }).strict().parse(await readJson(req));
+      return dl(() => send(res, 202, services.downloads.start(b.variantId, b.acceptedLicense)));
+    }
+    let dm: RegExpMatchArray | null;
+    if (m === 'POST' && (dm = p.match(/^\/api\/downloads\/([a-z0-9._-]{1,60})\/(pause|resume|cancel)$/))) {
+      const [, id, act] = dm;
+      return dl(() => { if (act === 'resume') return send(res, 202, services.downloads.resume(id)); const r = act === 'pause' ? services.downloads.pause(id) : services.downloads.cancel(id) && true; if (!r) throw new HttpError(404, 'not_found', 'No such download'); return send(res, 200, { ok: true }); });
     }
     if (m === 'GET' && p === '/api/schema') return send(res, 200, schemaPayload(services));
     if (m === 'POST' && p === '/api/compile') {
@@ -254,7 +269,7 @@ async function optionsPayload(s: Services, pretend: string | null) {
     return { ...m, bestVariantId: fit.variantId, variants: s.registry.variants.filter(v => v.modelId === m.id).map(v => {
       const st = fit.states.find(x => x.variantId === v.id)!;
       return { id: v.id, label: v.label, format: v.format, sizeGb: v.sizeGb, license: v.license, minVramGb: v.minVramGb, recommendedVramGb: v.recommendedVramGb, minRamGb: v.minRamGb, est: v.est, template: v.template,
-        state: st.state, reasons: st.reasons, installed: st.installed, sources: [...new Set(v.files.map(f => f.source))],
+        state: st.state, reasons: st.reasons, installed: st.installed, sources: [...new Set(v.files.map(f => f.source))], licenseInfo: s.registry.licenses[v.license] ?? null, files: v.files.map(f => ({ name: f.name, folder: f.folder, sizeBytes: f.sizeBytes })),
         downloadable: v.files.every(f => f.sha256 !== null) };
     }) };
   });
