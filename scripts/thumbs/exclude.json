@@ -1,5 +1,22 @@
 {
   "note": "Photo thumbnails that did not visibly show their option (checked on contact sheets, 17 Oct). They are generated but NOT shipped; the app falls back to the drawn icon, which is clearer for these. Whole controls: the model barely changes head shape, eye shape, neck, height or proportions from a text edit.",
-  "controls": ["headShape", "eyeShape", "neck", "height", "proportions"],
-  "options": ["features/dimples", "features/round_ears", "features/high_cheekbones", "features/rosy_cheeks", "features/laugh_lines", "distinctive/different_coloured_eyes"]
+  "controls": [
+    "headShape",
+    "eyeShape",
+    "neck",
+    "height",
+    "proportions"
+  ],
+  "options": [
+    "features/dimples",
+    "features/round_ears",
+    "features/high_cheekbones",
+    "features/rosy_cheeks",
+    "features/laugh_lines",
+    "distinctive/different_coloured_eyes"
+  ],
+  "keys": [
+    "hairStyle/bald/woman",
+    "hairStyle/bald/nonbinary"
+  ]
 }

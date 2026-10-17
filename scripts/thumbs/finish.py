@@ -10,7 +10,7 @@ items, made, skipped = [], [], []
 for it in plan:
     src = os.path.join(work, it['file'].replace('.webp', '.png'))
     if not os.path.exists(src): continue
-    if it['control'] in excl['controls'] or f"{it['control']}/{it['option']}" in excl['options']:
+    if it['control'] in excl['controls'] or f"{it['control']}/{it['option']}" in excl['options'] or it['key'] in excl.get('keys', []):
         skipped.append(it['key']); continue
     im = Image.open(src).convert('RGB').resize(tuple(it['out']), Image.LANCZOS)
     q = 78
