@@ -262,7 +262,7 @@ async function optionsPayload(s: Services, pretend: string | null) {
     const locked = !s.mock && (profile.tier === 'T0' || px > t.maxImagePx);
     return { px, width: Math.round((px * 0.75) / 16) * 16, height: px, state: locked ? 'locked_soft' : 'runs', reason: locked ? (profile.tier === 'T0' ? R.noGpu().text : R.res(px, t.maxImagePx, t.id).text) : null };
   });
-  return { profile, pretend: pretend ?? null, realTier: real.tier, tier: { id: t.id, label: t.label, maxImagePx: t.maxImagePx, estimated: t.estimated }, models, resolutions, settings: s.settings, comfyOnline: await s.comfyHealth(), mock: s.mock,
+  return { profile, pretend: pretend ?? null, realTier: real.tier, tier: { id: t.id, label: t.label, maxImagePx: t.maxImagePx, maxVideoPx: t.maxVideoPx, maxVideoFrames: t.maxVideoFrames, estimated: t.estimated }, models, resolutions, settings: s.settings, comfyOnline: await s.comfyHealth(), mock: s.mock,
     summary: profile.tier === 'T0' ? 'This computer cannot run local generation models. Generation is locked; you can still explore the character builder.' : `Your PC: ${profile.gpus.find(g => g.index === profile.selectedGpu)?.name ?? 'GPU'}, ${profile.vramGb} GB VRAM, ${profile.ramGb} GB RAM. We enabled what runs well and locked the rest.` };
 }
 function schemaPayload(s: Services) {

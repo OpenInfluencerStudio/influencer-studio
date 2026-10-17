@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'preact/hooks';
 import { api, ApiError, initToken, subscribe, fetchBlobUrl, uploadRef, loadPreviews, pickPreview, type PreviewItem } from './api';
 import { SameCharacter, SaveAsCharacter, RefThumb } from './SameCharacter';
+import { VideoCard } from './VideoCard';
 import { Portrait, FullBody, Lazy, Avatar, SKIN, HAIRC, EYEC } from './Art';
 
 type Screen = 'scan' | 'home' | 'builder' | 'generate' | 'models';
@@ -8,13 +9,13 @@ const NAV: [Screen, string][] = [['scan', 'Hardware'], ['home', 'Home'], ['build
 
 type Opt = { id: string; label: string };
 type Ctl = { id: string; title: string; ui: string; multi: boolean; maxSelected: number; applies: 'all' | 'human'; default: string | string[]; options: Opt[] };
-type Schema = { types: (Opt & { human: boolean })[]; species: Record<string, Opt[]>; sizes: Opt[]; ageBands: (Opt & { age: number })[]; controls: Ctl[]; presets: Opt[]; edit: { poses: Opt[]; azimuths: Opt[]; elevations: Opt[]; distances: Opt[] } };
+type Schema = { video: { motions: Opt[]; cameras: Opt[]; seconds: number[]; sizes: number[] }; types: (Opt & { human: boolean })[]; species: Record<string, Opt[]>; sizes: Opt[]; ageBands: (Opt & { age: number })[]; controls: Ctl[]; presets: Opt[]; edit: { poses: Opt[]; azimuths: Opt[]; elevations: Opt[]; distances: Opt[] } };
 type Reason = { code: string; hard: boolean; text: string };
 type Variant = { id: string; label: string; format: string; sizeGb: number; license: string; minVramGb: number; state: string; reasons: Reason[]; installed: boolean | null; sources: string[]; downloadable: boolean; est: boolean };
 type ModelOpt = { id: string; name: string; kind: string; bestVariantId: string | null; variants: Variant[] };
 type Res = { px: number; width: number; height: number; state: string; reason: string | null };
 type Opts = { profile: any; pretend: string | null; realTier: string; tier: { id: string; label: string; estimated: boolean }; models: ModelOpt[]; resolutions: Res[]; settings: { unlock_unsupported: boolean }; comfyOnline: boolean; mock: boolean; summary: string };
-export type Job = { id: string; status: string; progress: number; message?: string; error?: string; label: string; prompt: string; seed: number; width: number; height: number; mock: boolean; unsupported: boolean; outputs: { index: number; mime: string }[]; createdAt: string };
+export type Job = { id: string; status: string; progress: number; message?: string; error?: string; label: string; prompt: string; seed: number; width: number; height: number; mock: boolean; unsupported: boolean; outputs: { index: number; mime: string }[]; createdAt: string; character?: any; edit?: any; video?: any };
 type Ch = Record<string, any>;
 
 const humanType = (t: string) => t !== 'alien' && t !== 'monster';
@@ -318,7 +319,9 @@ function Library({ setCh }: { setCh: (c: Ch) => void }) {
 
 function Img({ job, idx }: { job: Job; idx: number }) {
   const [url, setUrl] = useState('');
+  const isVideo = job.outputs[idx]?.mime?.startsWith('video/');
   useEffect(() => { let u = ''; let dead = false; fetchBlobUrl(`/api/outputs/${job.id}/${idx}`).then(x => { u = x; if (!dead) setUrl(x); else URL.revokeObjectURL(x); }).catch(() => {}); return () => { dead = true; if (u) URL.revokeObjectURL(u); }; }, [job.id, idx]);
+  if (url && isVideo) return <div class="vidwrap"><video src={url} controls loop muted playsInline preload="metadata" aria-label={`Generated video: ${job.label}`} /><a class="ghost tiny dl" href={url} download={`influencer-studio-${job.id.slice(0, 8)}.mp4`}>Save video</a></div>;
   return url ? <img src={url} alt={`Generated image ${idx + 1}: ${job.label}`} decoding="async" loading="lazy" /> : <div class="imgph" aria-hidden="true" />;
 }
 
@@ -343,12 +346,13 @@ function Generate(p: Ctx) {
         <p class="muted small">Camera and look presets arrive in a later milestone.</p>
       </div>
       <SameCharacter schema={p.schema} setNotice={p.setNotice} />
+      <VideoCard schema={p.schema} opts={opts} jobs={jobs} unlocked={p.unlocked} adv={p.adv} setNotice={p.setNotice} go={p.go} />
       <div class="card stage2">
         <div class="preview glow">
           {p.notice && <div class="alert" role="alert"><b>{p.notice.text}</b>{p.notice.reasons?.map((r: Reason) => <div key={r.code + r.text}>{r.hard ? '⛔' : '🔒'} {r.text}</div>)}{p.notice.reasons?.some((r: Reason) => !r.hard) && <button class="ghost" onClick={() => p.go('scan')}>Open Hardware</button>}</div>}
           {latest ? <>
             {latest.status === 'done' ? <div class="outs">{latest.outputs.map(o => <Img key={o.index} job={latest} idx={o.index} />)}</div> : latest.status === 'failed' || latest.status === 'interrupted' || latest.status === 'cancelled' ? <div class="alert"><b>{latest.status === 'failed' ? 'Generation failed' : latest.status}</b><div>{latest.error ?? latest.message}</div></div> : <div class="spin" role="status" aria-label="Generating" />}
-            {latest.status === 'done' && !latest.mock && latest.outputs[0]?.mime === 'image/png' && <SaveAsCharacter key={latest.id} jobId={latest.id} character={(latest as any).character ?? p.ch} seed={latest.seed} />}
+            {latest.status === 'done' && !latest.mock && !latest.video && latest.outputs[0]?.mime === 'image/png' && <SaveAsCharacter key={latest.id} jobId={latest.id} character={(latest as any).character ?? p.ch} seed={latest.seed} />}
             <div class="prog" aria-hidden="true"><i style={{ width: latest.progress + '%' }} /></div>
             <small class="muted">{latest.status}{latest.message ? ' · ' + latest.message : ''} · {latest.label}{latest.mock ? ' · MOCK (placeholder image, not AI)' : ''}{latest.unsupported ? ' · unsupported settings' : ''}</small>
           </> : <p class="muted">Pick a character, then press Generate.</p>}
