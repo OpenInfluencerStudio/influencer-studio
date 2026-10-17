@@ -249,7 +249,8 @@ function publicJob(j: Job) {
   return { ...rest, softReasons, outputs: outputs.map((o, i) => ({ index: i, mime: o.mime })) };
 }
 
-const MIME: Record<string, string> = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.json': 'application/json', '.ico': 'image/x-icon' };
+const MIME: Record<string, string> = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.json': 'application/json', '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json' };
+const ICON_FILE = /^\/(favicon\.ico|icon(-\d+(-maskable)?)?\.(png|svg)|mark-maskable\.svg|apple-touch-icon\.png|site\.webmanifest)$/;
 function serveStatic(res: http.ServerResponse, root: string, pathname: string, cache?: string) {
   let rel: string;
   try { rel = decodeURIComponent(pathname); } catch { return send(res, 400, { error: 'bad_path' }); }
@@ -262,7 +263,7 @@ function serveStatic(res: http.ServerResponse, root: string, pathname: string, c
   }
   const real = fs.realpathSync(full);
   if (!real.startsWith(fs.realpathSync(root) + path.sep)) return send(res, 403, { error: 'forbidden' });
-  res.writeHead(200, { 'content-type': MIME[path.extname(full)] ?? 'application/octet-stream', 'cache-control': cache && !rel.endsWith('.json') ? cache : rel.startsWith('/assets/') ? 'public, max-age=31536000, immutable' : 'no-cache' });
+  res.writeHead(200, { 'content-type': MIME[path.extname(full)] ?? 'application/octet-stream', 'cache-control': ICON_FILE.test(rel) ? 'public, max-age=86400' : cache && !rel.endsWith('.json') ? cache : rel.startsWith('/assets/') ? 'public, max-age=31536000, immutable' : 'no-cache' });
   fs.createReadStream(full).pipe(res);
 }
 

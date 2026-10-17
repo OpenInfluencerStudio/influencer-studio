@@ -89,7 +89,7 @@ export function App() {
   return (
     <div class={'shell' + (adv ? ' adv' : '')}>
       <header class="top">
-        <div class="logo"><span class="dot" />Influencer Studio{opts.mock && <small class="mockb" title="No AI model is running; images are placeholders">MOCK GENERATOR</small>}</div>
+        <div class="logo"><img class="mark" src="./icon.svg" width="28" height="28" alt="" />Influencer Studio{opts.mock && <small class="mockb" title="No AI model is running; images are placeholders">MOCK GENERATOR</small>}</div>
         <ModeSwitch mode={mode} set={setMode} />
         <nav aria-label="Main">
           {NAV.map(([k, l]) => <button key={k} class={screen === k ? 'on' : ''} aria-current={screen === k ? 'page' : undefined} onClick={() => setScreen(k)}>{l}</button>)}

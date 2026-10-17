@@ -1,3 +1,5 @@
+<p align="center"><img src="ui/public/icon.svg" width="96" alt="Influencer Studio logo"></p>
+
 # Influencer Studio
 
 A simple, local, open-weights influencer content studio for ComfyUI. Build a character with a deep visual builder (Type, Body size, hair, outfit, face and more), and generate images on your own computer. Everything is SFW, adults only and fully clothed. Nothing leaves your machine.

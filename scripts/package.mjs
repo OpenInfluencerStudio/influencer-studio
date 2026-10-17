@@ -72,6 +72,8 @@ const env = (win) => win
   : ['export INFLUENCER_STUDIO_OPEN=1', 'export INFLUENCER_STUDIO_DATA="${INFLUENCER_STUDIO_DATA:-$HOME/.influencer-studio}"', 'export COMFYUI_URL="${COMFYUI_URL:-http://127.0.0.1:8188}"'];
 if (platform === 'win') {
   fs.writeFileSync(path.join(stage, 'start.bat'), ['@echo off', 'setlocal', 'cd /d "%~dp0"', 'title Influencer Studio', ...env(true), 'echo Starting Influencer Studio. Your browser opens by itself. Close this window to stop.', '"%~dp0node\\node.exe" "%~dp0app\\server.mjs"', 'if errorlevel 1 (echo. & echo The app stopped with an error. See above. & pause)', ''].join('\r\n'));
+  fs.copyFileSync(path.join(root, 'ui/public/favicon.ico'), path.join(stage, 'icon.ico'));
+  fs.writeFileSync(path.join(stage, 'Create desktop shortcut.bat'), ['@echo off', 'cd /d "%~dp0"', 'powershell -NoProfile -Command "$s=(New-Object -ComObject WScript.Shell).CreateShortcut([Environment]::GetFolderPath(\'Desktop\')+\'\\Influencer Studio.lnk\'); $s.TargetPath=\'%~dp0start.bat\'; $s.WorkingDirectory=\'%~dp0\'; $s.IconLocation=\'%~dp0icon.ico\'; $s.Save()"', 'echo A shortcut called Influencer Studio is now on your desktop.', 'pause', ''].join('\r\n'));
 } else {
   const body = ['#!/bin/sh', 'cd "$(dirname "$0")"', ...env(false), 'echo "Starting Influencer Studio. Your browser opens by itself. Press Ctrl+C to stop."', 'exec ./node/node ./app/server.mjs', ''].join('\n');
   const f = platform === 'mac' ? 'start.command' : 'start.sh'; fs.writeFileSync(path.join(stage, f), body, { mode: 0o755 }); fs.chmodSync(path.join(stage, f), 0o755);
