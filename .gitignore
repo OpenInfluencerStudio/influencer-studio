@@ -1,0 +1,16 @@
+models/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.gguf
+*.bin
+node_modules/
+.env
+.env.*
+*.log
+.venv/
+venv/
+__pycache__/
+.DS_Store
+output/
