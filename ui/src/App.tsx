@@ -3,6 +3,7 @@ import { api, ApiError, initToken, subscribe, fetchBlobUrl, uploadRef, loadPrevi
 import { SameCharacter, SaveAsCharacter, RefThumb } from './SameCharacter';
 import { VideoCard } from './VideoCard';
 import { Models } from './Models';
+import { type Mode, type VideoInput, MODE_KEY, INPUT_KEY, parseMode, parseInput, load, save, navIndex, videoInputs } from './modes';
 import { Portrait, FullBody, Lazy, Avatar, SKIN, HAIRC, EYEC } from './Art';
 
 type Screen = 'scan' | 'home' | 'builder' | 'generate' | 'models';
@@ -26,6 +27,10 @@ export function App() {
   const [token] = useState(initToken);
   const [screen, setScreen] = useState<Screen>('scan');
   const [adv, setAdv] = useState(false);
+  const [mode, setModeS] = useState<Mode>(() => load(MODE_KEY, parseMode));
+  const [vin, setVinS] = useState<VideoInput>(() => load(INPUT_KEY, parseInput));
+  const setMode = (m: Mode) => { setModeS(m); save(MODE_KEY, m); if (m === 'video') setScreen(s => (s === 'home' || s === 'builder' ? 'generate' : s)); };
+  const setVin = (v: VideoInput) => { setVinS(v); save(INPUT_KEY, v); };
   const [schema, setSchema] = useState<Schema | null>(null);
   const [opts, setOpts] = useState<Opts | null>(null);
   const [pretend, setPretend] = useState<string | null>(null);
@@ -71,12 +76,13 @@ export function App() {
       setScreen('generate');
     }
   };
-  const ctx = { setNotice, styleRef, setStyleRef, schema, opts, adv, unlocked, setUnlock, pretend, setPretend, ch, setCh, seed, setSeed, px, setPx, batch, setBatch, jobs, generate, notice, go: setScreen, loadOpts };
+  const ctx = { mode, setMode, vin, setVin, setNotice, styleRef, setStyleRef, schema, opts, adv, unlocked, setUnlock, pretend, setPretend, ch, setCh, seed, setSeed, px, setPx, batch, setBatch, jobs, generate, notice, go: setScreen, loadOpts };
 
   return (
     <div class={'shell' + (adv ? ' adv' : '')}>
       <header class="top">
         <div class="logo"><span class="dot" />Influencer Studio{opts.mock && <small class="mockb" title="No AI model is running; images are placeholders">MOCK GENERATOR</small>}</div>
+        <ModeSwitch mode={mode} set={setMode} />
         <nav aria-label="Main">
           {NAV.map(([k, l]) => <button key={k} class={screen === k ? 'on' : ''} aria-current={screen === k ? 'page' : undefined} onClick={() => setScreen(k)}>{l}</button>)}
         </nav>
@@ -98,6 +104,24 @@ export function App() {
   );
 }
 type Ctx = ReturnType<typeof Object> & any;
+
+function ModeSwitch({ mode, set, big }: { mode: Mode; set: (m: Mode) => void; big?: boolean }) {
+  const items: [Mode, string][] = [['image', '🖼 Image'], ['video', '🎬 Video']];
+  const refs = useRef<(HTMLButtonElement | null)[]>([]);
+  const key = (e: KeyboardEvent, i: number) => { const n = navIndex(e.key, i, 2); if (n === null) return; e.preventDefault(); set(items[n]![0]); refs.current[n]?.focus(); };
+  return <div class={'modesw' + (big ? ' big' : '')} role="radiogroup" aria-label="Mode: Image or Video">
+    {items.map(([k, l], i) => <button key={k} ref={el => { refs.current[i] = el; }} role="radio" aria-checked={mode === k} tabIndex={mode === k ? 0 : -1} class={mode === k ? 'on' : ''} onKeyDown={e => key(e, i)} onClick={() => set(k)}>{l}</button>)}
+  </div>;
+}
+
+function InputTabs({ vin, set, models }: { vin: VideoInput; set: (v: VideoInput) => void; models: ModelOpt[] }) {
+  const ins = videoInputs(models as any);
+  const refs = useRef<(HTMLButtonElement | null)[]>([]);
+  const key = (e: KeyboardEvent, i: number) => { const n = navIndex(e.key, i, ins.length); if (n === null) return; e.preventDefault(); set(ins[n]!.id); refs.current[n]?.focus(); };
+  return <div class="card vinputs"><div class="inputtabs" role="tablist" aria-label="Video input mode">
+    {ins.map((x, i) => <button key={x.id} ref={el => { refs.current[i] = el; }} role="tab" id={'vin-' + x.id} aria-selected={vin === x.id} aria-controls="vin-panel" tabIndex={vin === x.id ? 0 : -1} class={(vin === x.id ? 'on' : '') + (x.locked ? ' locked' : '')} onKeyDown={e => key(e, i)} onClick={() => set(x.id)}>{x.locked ? '🔒 ' : ''}{x.label}{x.reason === 'Coming soon' ? <small> · soon</small> : null}</button>)}
+  </div></div>;
+}
 
 function Toggle({ label, on, set }: { label: string; on: boolean; set: (b: boolean) => void }) {
   return <button role="switch" aria-checked={on} class={'tog' + (on ? ' on' : '')} onClick={() => set(!on)}><span class="knob" />{label}</button>;
@@ -150,7 +174,7 @@ function Scan(p: Ctx) {
           </li>); })}</ul>
         <h3>Resolution levels</h3>
         <div class="chips">{opts.resolutions.map((r: Res) => <span key={r.px} class={'chip static' + (r.state === 'locked_soft' ? ' locked' : '')} title={r.reason ?? ''}>{r.state === 'locked_soft' ? '🔒 ' : ''}{r.px} px</span>)}</div>
-        <button class="primary" onClick={() => p.go('builder')}>Continue to the builder</button>
+        <div class="scan-cta"><button class="primary" onClick={() => p.go('builder')}>Continue to the builder</button></div>
       </div>
     </section>
   );
@@ -160,15 +184,11 @@ function Home(p: Ctx) {
   return (
     <section class="home">
       <h1 class="hero">Create your <span class="grad">character</span></h1>
-      <div class="seg big" role="group" aria-label="Mode">
-        <button class="on">🖼 Image</button>
-        <button disabled title="Video arrives in a later milestone">🎬 Video · Soon</button>
-        <button disabled title="Coming soon">🎵 Audio · Coming soon</button>
-      </div>
+      <ModeSwitch mode={p.mode} set={p.setMode} big />
       <div class="prompt card glow">
         <label class="lbl" for="notes">Extra detail (optional, up to 200 characters)</label>
         <textarea id="notes" maxLength={200} placeholder="e.g. holding a coffee cup" value={p.ch.notes ?? ''} onInput={e => p.setCh({ ...p.ch, notes: (e.target as HTMLTextAreaElement).value || undefined })} />
-        <div class="row"><button class="ghost" onClick={() => p.go('builder')}>Choose character</button><button class="primary" onClick={p.generate}>Generate image</button></div>
+        <div class="row"><button class="ghost" onClick={() => p.go('builder')}>Choose character</button><button class="primary" onClick={p.mode === 'video' ? () => p.go('generate') : p.generate}>{p.mode === 'video' ? 'Open video tools' : 'Generate image'}</button></div>
       </div>
       <p class="muted">{p.adv ? 'Advanced mode: all controls visible.' : 'Simple mode: the essentials only. Switch on Advanced (top right) for every control.'} Adults only, SFW, fully clothed.</p>
     </section>
@@ -332,9 +352,12 @@ function Generate(p: Ctx) {
   const [prompt, setPrompt] = useState('');
   useEffect(() => { if (p.adv) api('POST', '/api/compile', { character: p.ch, seed: p.seed }).then(r => setPrompt(r.positive)).catch(() => setPrompt('')); }, [p.adv, p.ch, p.seed]);
   const busy = latest && (latest.status === 'queued' || latest.status === 'running');
+  const video = p.mode === 'video';
+  const ins = videoInputs(opts.models as any); const curIn = ins.find(x => x.id === p.vin) ?? ins[0]!;
   return (
-    <section class="gen">
-      <div class="card">
+    <section class={'gen' + (video ? ' genv' : '')} data-mode={p.mode}>
+      {video && <div class="wide3"><InputTabs vin={p.vin} set={p.setVin} models={opts.models} /></div>}
+      {!video && <div class="card">
         <h2>Output</h2>
         <h3>Resolution (long side)</h3>
         <div class="chips">{opts.resolutions.map((r: Res) => { const lk = r.state === 'locked_soft'; const dis = lk && !p.unlocked; return <button key={r.px} class={'chip' + (p.px === r.px ? ' on' : '') + (lk ? ' locked' : '')} disabled={dis} aria-disabled={dis} title={r.reason ?? ''} onClick={() => p.setPx(r.px)}>{lk ? (p.unlocked ? '⚠ ' : '🔒 ') : ''}{r.px}</button>; })}</div>
@@ -345,9 +368,10 @@ function Generate(p: Ctx) {
         {p.adv && <><h3>Seed</h3><div class="row"><input class="num" type="number" min={0} max={4294967295} value={p.seed} onInput={e => p.setSeed(Math.max(0, Math.min(4294967295, Math.floor(Number((e.target as HTMLInputElement).value) || 0))))} /><button class="ghost" onClick={() => p.setSeed(Math.floor(Math.random() * 1e9))}>🎲</button></div>
           <h3>Compiled prompt</h3><pre class="prompt-pre" tabIndex={0}>{prompt}</pre></>}
         <p class="muted small">Camera and look presets arrive in a later milestone.</p>
-      </div>
-      <SameCharacter schema={p.schema} setNotice={p.setNotice} />
-      <VideoCard schema={p.schema} opts={opts} jobs={jobs} unlocked={p.unlocked} adv={p.adv} setNotice={p.setNotice} go={p.go} />
+      </div>}
+      {!video && <SameCharacter schema={p.schema} setNotice={p.setNotice} />}
+      {video && (curIn.id === 'i2v' && curIn.available ? <VideoCard schema={p.schema} opts={opts} jobs={jobs} unlocked={p.unlocked} adv={p.adv} setNotice={p.setNotice} go={p.go} />
+        : <div class="card" id="vin-panel" role="tabpanel" aria-labelledby={'vin-' + curIn.id}><h2>🔒 {curIn.label}</h2><p class="muted">{curIn.reason === 'Coming soon' ? 'Coming soon. It will appear here once a compatible open model is installed on a PC that can run it.' : curIn.reason}</p>{curIn.reason !== 'Coming soon' && <button class="ghost" onClick={() => p.go('models')}>Open Models</button>}</div>)}
       <div class="card stage2">
         <div class="preview glow">
           {p.notice && <div class="alert" role="alert"><b>{p.notice.text}</b>{p.notice.reasons?.map((r: Reason) => <div key={r.code + r.text}>{r.hard ? '⛔' : '🔒'} {r.text}</div>)}{p.notice.reasons?.some((r: Reason) => !r.hard) && <button class="ghost" onClick={() => p.go('scan')}>Open Hardware</button>}</div>}
@@ -358,13 +382,8 @@ function Generate(p: Ctx) {
             <small class="muted">{latest.status}{latest.message ? ' · ' + latest.message : ''} · {latest.label}{latest.mock ? ' · MOCK (placeholder image, not AI)' : ''}{latest.unsupported ? ' · unsupported settings' : ''}</small>
           </> : <p class="muted">Pick a character, then press Generate.</p>}
         </div>
-        <div class="row"><button class="primary wide" disabled={!!busy} onClick={p.generate}>{busy ? `Generating… ${latest.progress}%` : 'Generate image'}</button>
+        <div class="row">{!video && <button class="primary wide" disabled={!!busy} onClick={p.generate}>{busy ? `Generating… ${latest.progress}%` : 'Generate image'}</button>}
           {busy && <button class="ghost" onClick={() => api('POST', `/api/jobs/${latest.id}/cancel`, {})}>Cancel</button>}</div>
-      </div>
-      <div class="card">
-        <h2>Inputs</h2>
-        {['Motion transfer', 'Lip-sync'].map(n => <div class="slot card locked" key={n}><b>🔒 {n}</b><small>Arrives in a later milestone</small></div>)}
-        <div class="slot card locked"><b>🎵 Audio</b><small>Coming soon</small></div>
       </div>
       <div class="card wide3"><h2>Results {jobs.length ? `· ${jobs.length}` : ''}</h2>
         {jobs.length === 0 ? <p class="muted">No results yet.</p> : <div class="gal">{jobs.slice(0, 24).map(j => <div class="gi" key={j.id}>
