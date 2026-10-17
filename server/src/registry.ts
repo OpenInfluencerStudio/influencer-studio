@@ -5,7 +5,7 @@ import { repoRoot } from './paths.js';
 
 const FileSchema = z.object({
   name: z.string().regex(/^[A-Za-z0-9._-]+$/), folder: z.string().regex(/^[a-z_]+$/), sizeBytes: z.number().positive(),
-  sha256: z.string().regex(/^[0-9a-f]{64}$/).nullable(), source: z.string().url().startsWith('https://huggingface.co/'),
+  sha256: z.string().regex(/^[0-9a-f]{64}$/).nullable(), source: z.string().url().startsWith('https://huggingface.co/'), url: z.string().url().startsWith('https://huggingface.co/').regex(/\/resolve\/[A-Za-z0-9._-]+\/[A-Za-z0-9._\/-]+$/).optional(),
 }).strict();
 const VariantSchema = z.object({
   id: z.string(), modelId: z.string(), label: z.string(), format: z.string(), sizeGb: z.number().positive(), license: z.string(),
@@ -17,7 +17,7 @@ const ModelSchema = z.object({
 }).strict();
 export const RegistrySchema = z.object({
   schemaVersion: z.literal(2), note: z.string(), licenseAllowList: z.array(z.string()),
-  models: z.array(ModelSchema), variants: z.array(VariantSchema), loras: z.array(z.unknown()),
+  licenses: z.record(z.object({ name: z.string(), url: z.string().url(), summary: z.string() })), models: z.array(ModelSchema), variants: z.array(VariantSchema), loras: z.array(z.unknown()),
 }).strict();
 export type Registry = z.infer<typeof RegistrySchema>;
 export type Variant = z.infer<typeof VariantSchema>;
@@ -28,6 +28,7 @@ export function validateRegistry(r: Registry): string[] {
   const errs: string[] = [];
   const ids = new Set(r.models.map(m => m.id));
   for (const m of r.models) if (!r.licenseAllowList.includes(m.license)) errs.push(`model ${m.id}: licence ${m.license} not allowed`);
+  for (const m of r.models) if (r.licenseAllowList.includes(m.license) && !r.licenses[m.license]) errs.push(`model ${m.id}: no licence text for ${m.license}`);
   for (const v of r.variants) {
     if (!ids.has(v.modelId)) errs.push(`variant ${v.id}: unknown model ${v.modelId}`);
     if (!r.licenseAllowList.includes(v.license)) errs.push(`variant ${v.id}: licence ${v.license} not allowed`);

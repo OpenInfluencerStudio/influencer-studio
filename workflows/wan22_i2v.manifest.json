@@ -1,0 +1,88 @@
+{
+  "id": "wan22_i2v",
+  "label": "Wan 2.2 TI2V-5B image to video (animate a picture)",
+  "mode": "image-to-video",
+  "kind": "video",
+  "variantIds": [
+    "wan22-ti2v-5b-fp16"
+  ],
+  "allowedClassTypes": [
+    "CLIPLoader",
+    "CLIPTextEncode",
+    "CreateVideo",
+    "KSampler",
+    "LoadImage",
+    "ModelSamplingSD3",
+    "SaveVideo",
+    "UNETLoader",
+    "VAEDecode",
+    "VAELoader",
+    "Wan22ImageToVideoLatent"
+  ],
+  "params": {
+    "prompt": {
+      "node": "6",
+      "input": "text",
+      "type": "string",
+      "maxLength": 1200
+    },
+    "negative": {
+      "node": "7",
+      "input": "text",
+      "type": "string",
+      "maxLength": 600
+    },
+    "image": {
+      "node": "5",
+      "input": "image",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]{1,80}\\.(png|jpg|webp)$"
+    },
+    "width": {
+      "node": "8",
+      "input": "width",
+      "type": "int",
+      "min": 256,
+      "max": 1280,
+      "multipleOf": 32
+    },
+    "height": {
+      "node": "8",
+      "input": "height",
+      "type": "int",
+      "min": 256,
+      "max": 1280,
+      "multipleOf": 32
+    },
+    "length": {
+      "node": "8",
+      "input": "length",
+      "type": "int",
+      "min": 9,
+      "max": 121,
+      "default": 49
+    },
+    "seed": {
+      "node": "9",
+      "input": "seed",
+      "type": "int",
+      "min": 0,
+      "max": 4294967295
+    },
+    "steps": {
+      "node": "9",
+      "input": "steps",
+      "type": "int",
+      "min": 8,
+      "max": 30,
+      "default": 20
+    },
+    "prefix": {
+      "node": "12",
+      "input": "filename_prefix",
+      "type": "string",
+      "pattern": "^video/[A-Za-z0-9_-]{1,40}$",
+      "default": "video/influencer_studio_wan"
+    }
+  }
+}

@@ -10,10 +10,11 @@ import { repoRoot } from './paths.js';
 import { MAX_REF_BYTES } from './refs.js';
 import { compileEdit, templateForEdit, POSES, AZIMUTHS, ELEVATIONS, DISTANCES } from './edit.js';
 import { R } from './reasons.js';
+import { compileVideo, framesFor, videoDims, MOTIONS, CAMERAS, DURATIONS, VIDEO_SIZES } from './video.js';
 import type { Job } from './queue.js';
 
 const MAX_BODY = 256 * 1024;
-const CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'";
+const CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'";
 // style-src 'unsafe-inline' is required today for the style attributes the Preact UI sets (colour swatches, widths); scripts stay strict.
 
 export interface AppOpts extends Config { token?: string; port?: number; uiDir?: string; previewsDir?: string }
@@ -99,7 +100,7 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
       const j = services.queue.get(mm[1]); if (!j) throw new HttpError(404, 'not_found', 'No such job');
       if (!['failed', 'interrupted', 'cancelled'].includes(j.status)) throw new HttpError(409, 'not_retryable', 'Job is not finished');
       // A retry goes through the full check again (new job).
-      return createJob({ character: j.character, seed: j.seed, variantId: j.variantId, template: j.template, ...(j.styleRef ? { styleRef: j.styleRef } : {}), ...(j.edit ? { edit: j.edit } : {}), width: j.width, height: j.height, batch: j.batch, ...(j.steps ? { steps: j.steps } : {}) }, res);
+      return createJob({ character: j.character, seed: j.seed, variantId: j.variantId, ...(j.styleRef || j.edit || j.video ? {} : { template: j.template }), ...(j.styleRef ? { styleRef: j.styleRef } : {}), ...(j.edit ? { edit: j.edit } : {}), ...(j.video ? { video: j.video } : {}), width: j.width, height: j.height, batch: j.batch, ...(j.steps ? { steps: j.steps } : {}) }, res);
     }
     if (m === 'GET' && (mm = p.match(/^\/api\/outputs\/([0-9a-f-]{36})\/([0-3])$/))) {
       const o = services.queue.outputPath(mm[1], Number(mm[2])); if (!o) throw new HttpError(404, 'not_found', 'No such output');
@@ -157,27 +158,32 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
     const compiled = compileCharacter(character, seed);
     const profile = await services.hardware();
     if (b.styleRef && !services.refs.get(b.styleRef)) throw new HttpError(400, 'bad_ref', 'The style reference image was not found. Add it again.');
+    if (b.video && (b.edit || b.styleRef || b.template)) throw new HttpError(400, 'bad_params', 'A video job cannot be combined with an edit, a style reference or a template');
+    const vref = b.video ? services.refs.get(b.video.refId) : null;
+    if (b.video && !vref) throw new HttpError(400, 'bad_ref', 'The picture to animate was not found. Save the character from a picture first.');
     if (b.edit && (b.styleRef || b.template)) throw new HttpError(400, 'bad_params', 'An edit job cannot be combined with a style reference or a template');
     if (b.edit && !services.refs.get(b.edit.refId)) throw new HttpError(400, 'bad_ref', 'The saved character image was not found. Save the character from a picture first.');
-    const template = b.edit ? templateForEdit(b.edit) : b.styleRef ? 'klein_edit' : (b.template ?? 'klein_t2i');
+    const template = b.video ? 'wan22_i2v' : b.edit ? templateForEdit(b.edit) : b.styleRef ? 'klein_edit' : (b.template ?? 'klein_t2i');
     if (b.styleRef && b.template && b.template !== 'klein_edit') throw new HttpError(400, 'bad_params', 'A style reference needs the image edit template');
-    let editPrompt: string | undefined;
+    let editPrompt: string | undefined; let frames: number | undefined;
     if (b.edit) { try { editPrompt = compileEdit(b.edit); } catch (e) { if (e instanceof SafetyError) throw e; throw new HttpError(400, 'bad_params', (e as Error).message); } }
     const tpl = services.templates.get(template);
     const variantId = b.variantId ?? (tpl ? tpl.manifest.variantIds[0] : '');
-    const width = b.width ?? 768, height = b.height ?? 1024; // the edit template takes its size from the reference (about 1 megapixel)
+    let width = b.width ?? 768, height = b.height ?? 1024;
+    if (b.video && vref) { ({ width, height } = videoDims(vref.info.width, vref.info.height, b.video.size)); frames = framesFor(b.video.seconds); try { editPrompt = compileVideo(b.video); } catch (e) { if (e instanceof SafetyError) throw e; throw new HttpError(400, 'bad_params', (e as Error).message); } }
+     // the edit template takes its size from the reference (about 1 megapixel)
     void profile;
-    const verdict = await services.check({ template, variantId, width, height, refs: b.styleRef || b.edit ? 1 : 0 }); // reference count is derived on the server, never taken from the request
+    const verdict = await services.check({ template, variantId, width, height, frames, refs: b.styleRef || b.edit || b.video ? 1 : 0 }); // reference count is derived on the server, never taken from the request
     if (!verdict.ok) {
       throw new HttpError(verdict.httpStatus, verdict.code, verdict.code === 'locked_by_hardware' ? 'Locked on this PC. Turn on Advanced > Unlock unsupported options to try anyway.' : 'This job cannot run on this PC.', { reasons: [...verdict.hard, ...verdict.soft] });
     }
     // Dry-run the template fill so bad parameters fail now, not mid-queue.
-    if (tpl) { try { const { fillTemplate } = await import('./workflows.js'); fillTemplate(tpl, { prompt: editPrompt ?? compiled.positive, seed, ...('width' in tpl.manifest.params ? { width, height, batch: b.batch ?? 1 } : {}), ...(b.steps ? { steps: b.steps } : {}) }); } catch (e) { throw new HttpError(400, 'bad_params', (e as Error).message); } }
+    if (tpl) { try { const { fillTemplate } = await import('./workflows.js'); fillTemplate(tpl, { prompt: editPrompt ?? compiled.positive, seed, ...('width' in tpl.manifest.params ? { width, height, ...('batch' in tpl.manifest.params ? { batch: b.batch ?? 1 } : {}) } : {}), ...(frames && 'length' in tpl.manifest.params ? { length: frames } : {}), ...(b.steps ? { steps: b.steps } : {}) }); } catch (e) { throw new HttpError(400, 'bad_params', (e as Error).message); } }
     submitTimes.push(now);
     const job = services.queue.enqueue({
       template, variantId, prompt: editPrompt ?? compiled.positive, negative: compiled.negative, seed, width, height, batch: b.batch ?? 1, steps: b.steps,
       character: character as Record<string, unknown>, label: `${compiled.resolved.type}${compiled.resolved.species ? ' / ' + compiled.resolved.species : ''} / ${compiled.resolved.bodySize}`,
-      styleRef: b.styleRef, edit: b.edit as Record<string, unknown> | undefined, mock: services.mock, unsupported: verdict.soft.length > 0, softReasons: verdict.soft,
+      styleRef: b.styleRef, edit: b.edit as Record<string, unknown> | undefined, video: b.video as Record<string, unknown> | undefined, frames, mock: services.mock, unsupported: verdict.soft.length > 0, softReasons: verdict.soft,
     });
     send(res, 202, publicJob(job));
   }
@@ -268,6 +274,7 @@ function schemaPayload(s: Services) {
     controls: CONTROLS.map(c => ({ id: c.id, title: c.title, ui: c.ui, multi: !!c.multi, maxSelected: c.maxSelected ?? 1, applies: c.applies, default: c.default, options: c.options.map(o => ({ id: o.id, label: o.label })) })),
     presets: PRESETS.map(p => ({ id: p.id, label: p.label })),
     edit: { poses: POSES.map(({ id, label }) => ({ id, label })), azimuths: AZIMUTHS.map(({ id, label }) => ({ id, label })), elevations: ELEVATIONS.map(({ id, label }) => ({ id, label })), distances: DISTANCES.map(({ id, label }) => ({ id, label })) },
+    video: { motions: MOTIONS.map(({ id, label }) => ({ id, label })), cameras: CAMERAS.map(({ id, label }) => ({ id, label })), seconds: DURATIONS, sizes: VIDEO_SIZES },
     templates: [...s.templates.values()].map(t => ({ id: t.manifest.id, label: t.manifest.label, mode: t.manifest.mode, kind: t.manifest.kind })),
   };
 }

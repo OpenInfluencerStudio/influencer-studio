@@ -149,7 +149,7 @@ describe('server-side enforcement over HTTP (no GPU needed; fake ComfyUI)', () =
     expect((await t.call('POST', '/api/jobs', { ...job, width: 16384, height: 16384 })).status).toBe(400);
     // (e) swapped template / variant
     expect((await t.call('POST', '/api/jobs', { ...job, template: '../../etc/passwd' })).status).toBe(400);
-    expect((await t.call('POST', '/api/jobs', { ...job, template: 'wan22_i2v' })).status).toBe(422);
+    expect((await t.call('POST', '/api/jobs', { ...job, template: 'wan22_i2v', variantId: 'flux2-klein-4b-bf16' })).status).toBe(422);
     expect((await t.call('GET', '/api/jobs')).status).toBe(200);
     expect((await (await t.call('GET', '/api/jobs')).json()).length).toBe(0); // nothing queued by any bypass attempt
     // unlock through the real settings route

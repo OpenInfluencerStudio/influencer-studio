@@ -13,6 +13,7 @@ import { ComfyProgress, ProgressTracker } from './comfy-ws.js';
 import { JobQueue, Job, Runner } from './queue.js';
 import { mockImageSvg } from './mock.js';
 import { EditSchema } from './edit.js';
+import { VideoSchema, VIDEO_NEGATIVE } from './video.js';
 import { RefStore } from './refs.js';
 import type { EditRequest } from './edit.js';
 import { writeJsonAtomic, readJsonSafe } from './store.js';
@@ -82,7 +83,7 @@ export class Services {
   /** Sync re-check at job start using cached hardware. */
   private recheck(j: Job) {
     if (!this.profile) return null;
-    const r = checkJob({ template: j.template, variantId: j.variantId, width: j.width, height: j.height, refs: j.styleRef || j.edit ? 1 : 0 }, this.checkCtx(this.profile.p, this.comfyOnline || this.mock));
+    const r = checkJob({ template: j.template, variantId: j.variantId, width: j.width, height: j.height, frames: j.frames, refs: j.styleRef || j.edit || j.video ? 1 : 0 }, this.checkCtx(this.profile.p, this.comfyOnline || this.mock));
     return r.ok ? null : (r.httpStatus === 403 ? r.soft : r.hard.length && !r.hard.every(x => x.code === 'COMFY_OFFLINE') ? r.hard : null);
   }
 
@@ -103,16 +104,18 @@ export class Services {
       for (let b = 0; b < job.batch; b++) outs.push(ctx.saveOutput(`mock_${b}.svg`, mockImageSvg({ width: job.width, height: job.height, seed: job.seed + b, label: job.label, prompt: job.prompt }), 'image/svg+xml'));
       return outs;
     }
-    const values: Record<string, string | number> = { seed: job.seed, prefix: 'influencer_studio' };
+    const values: Record<string, string | number> = { seed: job.seed, prefix: tpl.manifest.kind === 'video' ? 'video/influencer_studio' : 'influencer_studio' };
     const has = (k: string) => k in tpl.manifest.params;
     if (has('width')) { values.width = job.width; values.height = job.height; }
     if (has('batch')) values.batch = job.batch;
+    if (has('length') && job.frames) values.length = job.frames;
+    if (has('negative')) values.negative = VIDEO_NEGATIVE;
     if (job.steps) values.steps = job.steps;
     values.prompt = job.prompt;
-    const refId = job.styleRef ?? (job.edit as EditRequest | undefined)?.refId;
+    const refId = job.styleRef ?? (job.edit as EditRequest | undefined)?.refId ?? (job.video as { refId?: string } | undefined)?.refId;
     if (refId) {
       const ref = this.refs.get(refId);
-      if (!ref) throw new Error(job.edit ? 'The saved character image is no longer available. Save the character again from a new picture.' : 'The style reference image is no longer available. Remove it and add it again.');
+      if (!ref) throw new Error(job.edit || job.video ? 'The saved picture is no longer available. Save the character again from a new picture.' : 'The style reference image is no longer available. Remove it and add it again.');
       if (!has('image')) throw new Error('This template does not take a reference image');
       ctx.update(3, 'Sending your reference image');
       values.image = await this.comfy.uploadImage(`is_ref_${refId.replace(/-/g, '').slice(0, 24)}.${ref.info.ext}`, fs.readFileSync(ref.file), ref.info.mime);
@@ -123,7 +126,7 @@ export class Services {
     const clientId = crypto.randomUUID();
     const prog = new ComfyProgress(this.comfy.baseUrl, clientId, this.cfg.allowRemoteComfy);
     const wsOk = await prog.connect();
-    const tracker = new ProgressTracker(wf); tracker.stepsHint = job.steps ?? 4;
+    const tracker = new ProgressTracker(wf); tracker.stepsHint = job.steps ?? tpl.manifest.params.steps?.default as number ?? 4;
     let id: string | undefined; let wsError: string | undefined; let sawWs = false;
     const unwatch = wsOk ? prog.watch(() => id, m => {
       sawWs = true;
@@ -141,8 +144,8 @@ export class Services {
         if (s.state === 'done') {
           const outs = [];
           let n = 0;
-          for (const img of s.images) { const buf = await this.comfy.fetchImage(img); outs.push(ctx.saveOutput(`img_${n++}.png`, buf, 'image/png')); }
-          if (!outs.length) throw new Error('ComfyUI finished but returned no images');
+          for (const img of s.images) { const buf = await this.comfy.fetchImage(img); const vid = /\.mp4$/i.test(img.filename); outs.push(vid ? ctx.saveOutput(`vid_${n++}.mp4`, buf, 'video/mp4') : ctx.saveOutput(`img_${n++}.png`, buf, 'image/png')); }
+          if (!outs.length) throw new Error('ComfyUI finished but returned no images or video');
           return outs;
         }
         // Without live messages (socket failed or no events yet) fall back to a coarse time-based estimate.
@@ -167,4 +170,5 @@ export const JobRequestSchema = z.object({
   refs: z.number().int().min(0).max(8).optional(),
   styleRef: z.string().regex(/^[0-9a-f-]{36}$/).optional(),
   edit: EditSchema.optional(),
+  video: VideoSchema.optional(),
 }).strict();
