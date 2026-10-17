@@ -9,3 +9,10 @@ Model weights are not distributed in this repository. Users download them from t
 | Wan 2.2 TI2V-5B | Apache-2.0 (TODO verify) | TODO |
 | ComfyUI | GPL-3.0 | TODO |
 | Comfy SDK / comfy-api-proxy | TODO | TODO |
+
+
+## Bundled in release packages
+
+- Node.js runtime (MIT; official build, checksum verified at build time), licence file in `node/LICENSE-node.txt`.
+- zod (MIT) and ws (MIT), bundled into `app/server.mjs`.
+- Preact (MIT), bundled into the UI.

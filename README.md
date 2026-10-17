@@ -6,6 +6,10 @@ Status: **early milestone (0.1)**. See "What works today" below.
 
 Follow along on X: [@OpenInflStudio](https://x.com/OpenInflStudio)
 
+## Install (no coding)
+
+Download the package for your system from the Releases page and follow [docs/INSTALL.md](docs/INSTALL.md): unzip, start ComfyUI, double-click `start.bat` (Windows) or `start.command` / `start.sh`. Builds are unsigned for now.
+
 ## Quick start
 
 Requires Node.js 20 or newer and a running ComfyUI with the FLUX.2 klein 4B files installed (see `models.json`).
@@ -43,11 +47,14 @@ Try it with no GPU: `INFLUENCER_STUDIO_MOCK=1 npm start`.
 - "Add style reference": drop a PNG, JPEG or WebP (up to 8 MB, checked by content, stored under a random name) and new images follow that person and look through the FLUX.2 klein edit template. Use images you have the right to use; adults only.
 - Preview thumbnails: generated with FLUX.2 klein 4B on one synthetic adult per look (Man, Woman, Non-binary, Alien, Monster), webp, lazy-loaded, with drawn SVG art as the fallback for anything not generated yet. The manifest (`server/src/thumbs.ts`) lists every thumbnail with its prompt, framing and seed; `scripts/thumbs/` generates and packs them.
 - Same character, new scene or angle: save a result as a library character (the picture is stored with it), then in Generate > "Same character" pick a new outfit, place, pose or light, or a new camera angle (8 directions x 3 heights x 3 distances). Runs Qwen-Image-Edit-2511 (Q4_K_M GGUF + Lightning 4-step LoRA, plus the Multiple-Angles LoRA for angles) through two bundled templates (`qwen_edit`, `qwen_angles`). Needs about 24 GB of model files and a 16 GB GPU. Measured on the reference PC (RTX 5060 Ti 16 GB, models on a slow HDD): first run about 5 minutes, repeat runs 2.5 to 3 minutes each, most of it re-reading the text encoder from the disk; put the models on an SSD to be much faster. Honest limits: face, hair, glasses, freckles and outfit colours carried over in all 7 test pictures, but camera angles are approximate (side and front-quarter views work, low angles are weak, and back views come out as a side profile).
-- Local security: loopback only, per-session token, Origin and Host checks, strict CSP, input validation, no outgoing network calls except to your ComfyUI.
+- Video: Generate > "Make a video" animates a saved character picture or a recent result with Wan 2.2 TI2V-5B (no audio): 8 motions, 4 camera moves, 1 to 4 seconds, sizes capped by your hardware tier (locked with the real numbers, releasable with the Advanced unlock). Measured on the reference PC (RTX 5060 Ti 16 GB): 2 s at 480x640 takes about 56 s once the models are loaded and about 6 minutes the first time (models read from a hard disk); 4 s about 3 minutes; 2 s at 640x832 about 105 s. Face, hair and outfit stay stable; motion is deliberately gentle ("turns head" is subtle).
+- In-app model downloads: Models screen > Download shows the licence first and needs you to accept it, checks free disk space, shows progress, speed and time left, can pause and resume (HTTP Range, also after restarting the app), verifies every file against its stored SHA-256 before installing it, and only talks to Hugging Face over HTTPS. Only licence-allow-listed models with a verified checksum can be downloaded.
+- Packaging: `node scripts/package.mjs --platform win|mac|linux --arch x64|arm64` builds a folder with its own Node.js runtime, one bundled server file, the UI, workflows and thumbnails, plus a launcher that opens your browser at the private link. A GitHub Actions workflow (`.github/workflows/release.yml`) builds all platforms and runs a smoke test on each.
+- Local security: loopback only, per-session token, Origin and Host checks, strict CSP, input validation. The only outgoing network calls are to your ComfyUI and, when you press Download, to Hugging Face.
 
 ## Not built yet
 
-Video, motion transfer, lip-sync, audio, camera and look presets, in-app model downloads, the complete thumbnail library (a first set exists; the rest falls back to drawn previews), an automatic image safety check on style references and outputs, packaging for Windows, macOS and Linux.
+Motion transfer, lip-sync, audio, camera and look presets, an automatic image safety check on style references and outputs, code-signed installers, Apple GPU detection.
 
 Honest limit: body size. With text prompts alone the model clearly separates Larger / Medium / Slim, but "Very slim" and "Extra slim" look nearly alike. Each size tile therefore shows a small silhouette badge next to the generated preview.
 
