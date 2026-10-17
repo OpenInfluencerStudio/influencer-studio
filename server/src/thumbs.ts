@@ -19,13 +19,15 @@ export const FRAMINGS: Record<Framing, { gen: [number, number]; out: [number, nu
 const LOOK_SUBJECT: Record<Look, string> = {
   man: 'an adult man in his late twenties, short dark brown hair, brown eyes, light-medium skin',
   woman: 'an adult woman in her late twenties, shoulder-length straight brown hair, brown eyes, light-medium skin',
-  nonbinary: 'an adult non-binary person in their late twenties with an androgynous look, short tousled dark hair, brown eyes, light-medium skin',
+  nonbinary: 'an adult non-binary person in their mid-thirties with a calm, androgynous look, balanced soft-angular features, faint smile lines, chin-length wavy auburn hair with a side part, hazel eyes, light-medium skin',
   alien: 'an adult-appearing friendly humanoid alien, Starborn species with pale luminous skin, faint constellation freckles and large dark eyes, short silver hair',
   monster: 'an adult-appearing friendly humanoid fantasy creature, Hollowhorn species with small curved horns, fur-trimmed ears and warm eyes, short brown hair',
 };
-const REF_OUTFIT = 'a plain white crew-neck t-shirt';
+const REF_OUTFIT = 'a plain bright pure-white cotton crew-neck t-shirt';
+/** Thumbnail-only wording where the app fragment is too weak to show the option (the app prompt itself is unchanged). */
+const THUMB_FRAG: Record<string, string> = { 'hairStyle/bald': 'a completely shaved, smooth bald head with no hair at all on the head, ears fully visible' };
 export const REF_TAIL = 'plain mid-grey studio background, soft even light, sharp focus, natural look. Adult, fully clothed, modest everyday clothing.';
-export const EDIT_SCAFFOLD = 'Edit the reference photo: keep the same person, same face, same pose, same framing, same grey background and same lighting. Change only this: {fragment}. Everything else must stay exactly the same. Adult, fully clothed, modest everyday clothing.';
+export const EDIT_SCAFFOLD = 'Edit the reference photo: keep the same person, same face, same pose, same framing, same grey background and same lighting. Change only this: {fragment}. Everything else must stay exactly the same, including the bright white t-shirt, which stays pure white unless the change is about clothing. Adult, fully clothed, modest everyday clothing.';
 
 /** Frozen reference prompt per look and framing (text-to-image, fixed seed). */
 export function referencePrompt(look: Look, framing: Framing): string {
@@ -94,7 +96,7 @@ export function buildThumbManifest(): ThumbItem[] {
       for (const o of c.options) {
         if (isBase(c, o)) continue;
         const multi = looks.length > 1;
-        add({ control: c.id, option: o.id, look, shared: !multi, framing: rule.framing, mode: 'edit', fragment: o.frag, prompt: EDIT_SCAFFOLD.replace('{fragment}', o.frag),
+        add({ control: c.id, option: o.id, look, shared: !multi, framing: rule.framing, mode: 'edit', fragment: o.frag, prompt: EDIT_SCAFFOLD.replace('{fragment}', THUMB_FRAG[`${c.id}/${o.id}`] ?? o.frag),
           seed: seedFor(look, rule.framing), file: `${c.id}/${o.id}${multi ? '__' + look : ''}.webp`, loose: rule.loose, group: c.id });
       }
     }
@@ -107,9 +109,10 @@ export function buildThumbManifest(): ThumbItem[] {
   }
   // 3) Species tiles (text-to-image, head and shoulders)
   for (const [kind, list] of [['alien', ALIEN_SPECIES], ['monster', MONSTER_SPECIES]] as const) for (const sp of list) {
-    add({ control: 'species', option: `${kind}_${sp.id}`, look: kind, shared: true, framing: 'face', mode: 't2i', fragment: sp.frag,
-      prompt: `${FRAMINGS.face.text} of an adult-appearing friendly humanoid ${kind === 'alien' ? 'alien' : 'fantasy creature'}, ${sp.frag}, neutral relaxed expression, ${REF_OUTFIT}, ${REF_TAIL}`,
-      seed: seedFor(kind, 'face') + 7 * (list.indexOf(sp) + 1), file: `species/${kind}_${sp.id}.webp`, group: 'species' });
+    const fr: Framing = sp.id === 'gloomwing' ? 'upper' : 'face';
+    add({ control: 'species', option: `${kind}_${sp.id}`, look: kind, shared: true, framing: fr, mode: 't2i', fragment: sp.frag,
+      prompt: `${FRAMINGS[fr].text} of an adult-appearing friendly humanoid ${kind === 'alien' ? 'alien' : 'fantasy creature'}, ${sp.frag}, neutral relaxed expression, ${REF_OUTFIT}, ${REF_TAIL}`,
+      seed: seedFor(kind, fr) + 7 * (list.indexOf(sp) + 1), file: `species/${kind}_${sp.id}.webp`, group: 'species' });
   }
   // 4) Body-size tiles: 6 sizes x 5 looks (Trans woman/man reuse the Woman/Man images: same compiled descriptor)
   for (const look of LOOKS) for (const s of SIZE_OPTS) {

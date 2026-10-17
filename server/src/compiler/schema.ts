@@ -43,8 +43,8 @@ export const MONSTER_SPECIES: Opt[] = [
   { id: 'hollowhorn', label: 'Hollowhorn', frag: 'Hollowhorn species with small curved horns, fur-trimmed ears and warm eyes' },
   { id: 'wolfkin', label: 'Wolfkin', frag: 'Wolfkin species with wolf-like ears, a softened muzzle and fur on the face and hands' },
   { id: 'drakekin', label: 'Drakekin', frag: 'Drakekin species with fine scales, small horns and friendly gold eyes' },
-  { id: 'gloomwing', label: 'Gloomwing', frag: 'Gloomwing species with soft moth-like wings or antennae and a dusty wing pattern, clothing fitted around the wings' },
-  { id: 'boarkin', label: 'Boarkin', frag: 'Boarkin species with small tusks, tufted ears and sturdy friendly features' },
+  { id: 'gloomwing', label: 'Gloomwing', frag: 'Gloomwing species with soft pale-grey skin, large dark eyes, feathery moth antennae and large dusty-grey moth wings spread behind the shoulders, clothing fitted around the wings' },
+  { id: 'boarkin', label: 'Boarkin', frag: 'Boarkin species with a broad flat boar-style nose, two short ivory tusks curving up from the lower jaw, large floppy tufted ears, coarse dark bristly hair and sturdy friendly features' },
 ];
 export const SPECIES_BY_TYPE: Record<string, Opt[]> = { alien: ALIEN_SPECIES, monster: MONSTER_SPECIES };
 

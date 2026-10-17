@@ -5,10 +5,13 @@ import sys, json, hashlib, os, io
 from PIL import Image, ImageDraw
 plan = json.load(open(sys.argv[1])); work, out = sys.argv[2], sys.argv[3]
 sheets = sys.argv[4] if len(sys.argv) > 4 else None
-items, made = [], []
+excl = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'exclude.json')))
+items, made, skipped = [], [], []
 for it in plan:
     src = os.path.join(work, it['file'].replace('.webp', '.png'))
     if not os.path.exists(src): continue
+    if it['control'] in excl['controls'] or f"{it['control']}/{it['option']}" in excl['options']:
+        skipped.append(it['key']); continue
     im = Image.open(src).convert('RGB').resize(tuple(it['out']), Image.LANCZOS)
     q = 78
     while True:
@@ -20,6 +23,7 @@ for it in plan:
     made.append((it, im))
 man = {'manifest_version': 1, 'generator': {'model': 'FLUX.2 klein 4B (Apache-2.0)', 'note': 'synthetic adults, fully clothed; AI-generated; no real person'}, 'items': items}
 json.dump(man, open(os.path.join(out, 'manifest.json'), 'w'), indent=1)
+print(len(skipped), 'generated but not shipped (weak, see exclude.json)')
 print(len(items), 'thumbnails,', sum(i['bytes'] for i in items) // 1024, 'KB total, max', max([i['bytes'] for i in items] or [0]), 'bytes')
 if sheets:
     os.makedirs(sheets, exist_ok=True)

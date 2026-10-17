@@ -10,7 +10,7 @@ const FileSchema = z.object({
 const VariantSchema = z.object({
   id: z.string(), modelId: z.string(), label: z.string(), format: z.string(), sizeGb: z.number().positive(), license: z.string(),
   qualityRank: z.number(), minVramGb: z.number(), recommendedVramGb: z.number(), minRamGb: z.number(), recommendedRamGb: z.number(),
-  minDiskGb: z.number(), template: z.string(), est: z.boolean(), files: z.array(FileSchema).min(1), requiresNodes: z.array(z.string()).optional(),
+  minDiskGb: z.number(), template: z.string(), templates: z.array(z.string()).optional(), measured: z.record(z.unknown()).optional(), est: z.boolean(), files: z.array(FileSchema).min(1), requiresNodes: z.array(z.string()).optional(),
 }).strict();
 const ModelSchema = z.object({
   id: z.string(), name: z.string(), kind: z.enum(['image', 'image-edit', 'video', 'audio']), modes: z.array(z.string()), license: z.string(), sfw: z.literal(true),

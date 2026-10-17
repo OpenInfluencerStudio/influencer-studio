@@ -14,7 +14,7 @@ export type ProgressMsg =
 
 const LABELS: Record<string, string> = {
   UNETLoader: 'Loading the model', UnetLoaderGGUF: 'Loading the model', CheckpointLoaderSimple: 'Loading the model', CLIPLoader: 'Loading the text encoder',
-  VAELoader: 'Loading the decoder', CLIPTextEncode: 'Reading your prompt', KSampler: 'Drawing', SamplerCustomAdvanced: 'Drawing', LoadImage: 'Reading your reference image', VAEEncode: 'Reading your reference image', ReferenceLatent: 'Preparing', VAEDecode: 'Decoding the image', SaveImage: 'Saving',
+  VAELoader: 'Loading the decoder', CLIPTextEncode: 'Reading your prompt', TextEncodeQwenImageEditPlus: 'Reading your prompt and picture', LoraLoaderModelOnly: 'Loading the style add-on', ModelSamplingAuraFlow: 'Preparing', CFGNorm: 'Preparing', KSampler: 'Drawing', SamplerCustomAdvanced: 'Drawing', LoadImage: 'Reading your reference image', VAEEncode: 'Reading your reference image', ReferenceLatent: 'Preparing', VAEDecode: 'Decoding the image', SaveImage: 'Saving',
   EmptyFlux2LatentImage: 'Preparing', ConditioningZeroOut: 'Preparing',
 };
 

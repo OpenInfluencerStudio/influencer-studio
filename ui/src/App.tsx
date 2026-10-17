@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'preact/hooks';
 import { api, ApiError, initToken, subscribe, fetchBlobUrl, uploadRef, loadPreviews, pickPreview, type PreviewItem } from './api';
+import { SameCharacter, SaveAsCharacter, RefThumb } from './SameCharacter';
 import { Portrait, FullBody, Lazy, Avatar, SKIN, HAIRC, EYEC } from './Art';
 
 type Screen = 'scan' | 'home' | 'builder' | 'generate' | 'models';
@@ -7,7 +8,7 @@ const NAV: [Screen, string][] = [['scan', 'Hardware'], ['home', 'Home'], ['build
 
 type Opt = { id: string; label: string };
 type Ctl = { id: string; title: string; ui: string; multi: boolean; maxSelected: number; applies: 'all' | 'human'; default: string | string[]; options: Opt[] };
-type Schema = { types: (Opt & { human: boolean })[]; species: Record<string, Opt[]>; sizes: Opt[]; ageBands: (Opt & { age: number })[]; controls: Ctl[]; presets: Opt[] };
+type Schema = { types: (Opt & { human: boolean })[]; species: Record<string, Opt[]>; sizes: Opt[]; ageBands: (Opt & { age: number })[]; controls: Ctl[]; presets: Opt[]; edit: { poses: Opt[]; azimuths: Opt[]; elevations: Opt[]; distances: Opt[] } };
 type Reason = { code: string; hard: boolean; text: string };
 type Variant = { id: string; label: string; format: string; sizeGb: number; license: string; minVramGb: number; state: string; reasons: Reason[]; installed: boolean | null; sources: string[]; downloadable: boolean; est: boolean };
 type ModelOpt = { id: string; name: string; kind: string; bestVariantId: string | null; variants: Variant[] };
@@ -68,7 +69,7 @@ export function App() {
       setScreen('generate');
     }
   };
-  const ctx = { styleRef, setStyleRef, schema, opts, adv, unlocked, setUnlock, pretend, setPretend, ch, setCh, seed, setSeed, px, setPx, batch, setBatch, jobs, generate, notice, go: setScreen, loadOpts };
+  const ctx = { setNotice, styleRef, setStyleRef, schema, opts, adv, unlocked, setUnlock, pretend, setPretend, ch, setCh, seed, setSeed, px, setPx, batch, setBatch, jobs, generate, notice, go: setScreen, loadOpts };
 
   return (
     <div class={'shell' + (adv ? ' adv' : '')}>
@@ -312,7 +313,7 @@ function Library({ setCh }: { setCh: (c: Ch) => void }) {
   const [items, setItems] = useState<any[]>([]);
   const load = () => api('GET', '/api/characters').then(setItems).catch(() => {});
   useEffect(() => { load(); window.addEventListener('lib', load); return () => window.removeEventListener('lib', load); }, []);
-  return <div class="card"><h2>Saved library</h2>{items.length === 0 ? <p class="muted">Nothing saved yet.</p> : <div class="lib">{items.map(c => <div key={c.id} class="libi"><button class="libb" onClick={() => setCh(c.character)}><Avatar type={c.character.type === 'alien' ? 'Alien' : c.character.type === 'monster' ? 'Monster' : 'Human'} size={Math.max(0, ['ultra_fat', 'fat', 'medium', 'thin', 'skinny', 'stick_thin'].indexOf(c.character.bodySize))} seed={c.name.length} /><span>{c.name}</span></button><button class="ghost tiny" aria-label={'Delete ' + c.name} onClick={async () => { await api('DELETE', '/api/characters/' + c.id); load(); }}>✕</button></div>)}</div>}</div>;
+  return <div class="card"><h2>Saved library</h2>{items.length === 0 ? <p class="muted">Nothing saved yet.</p> : <div class="lib">{items.map(c => <div key={c.id} class="libi"><button class="libb" onClick={() => setCh(c.character)}>{c.refImage ? <RefThumb id={c.refImage} alt={c.name} /> : <Avatar type={c.character.type === 'alien' ? 'Alien' : c.character.type === 'monster' ? 'Monster' : 'Human'} size={Math.max(0, ['ultra_fat', 'fat', 'medium', 'thin', 'skinny', 'stick_thin'].indexOf(c.character.bodySize))} seed={c.name.length} />}<span>{c.name}</span></button><button class="ghost tiny" aria-label={'Delete ' + c.name} onClick={async () => { await api('DELETE', '/api/characters/' + c.id); load(); }}>✕</button></div>)}</div>}</div>;
 }
 
 function Img({ job, idx }: { job: Job; idx: number }) {
@@ -341,11 +342,13 @@ function Generate(p: Ctx) {
           <h3>Compiled prompt</h3><pre class="prompt-pre" tabIndex={0}>{prompt}</pre></>}
         <p class="muted small">Camera and look presets arrive in a later milestone.</p>
       </div>
+      <SameCharacter schema={p.schema} setNotice={p.setNotice} />
       <div class="card stage2">
         <div class="preview glow">
           {p.notice && <div class="alert" role="alert"><b>{p.notice.text}</b>{p.notice.reasons?.map((r: Reason) => <div key={r.code + r.text}>{r.hard ? '⛔' : '🔒'} {r.text}</div>)}{p.notice.reasons?.some((r: Reason) => !r.hard) && <button class="ghost" onClick={() => p.go('scan')}>Open Hardware</button>}</div>}
           {latest ? <>
             {latest.status === 'done' ? <div class="outs">{latest.outputs.map(o => <Img key={o.index} job={latest} idx={o.index} />)}</div> : latest.status === 'failed' || latest.status === 'interrupted' || latest.status === 'cancelled' ? <div class="alert"><b>{latest.status === 'failed' ? 'Generation failed' : latest.status}</b><div>{latest.error ?? latest.message}</div></div> : <div class="spin" role="status" aria-label="Generating" />}
+            {latest.status === 'done' && !latest.mock && latest.outputs[0]?.mime === 'image/png' && <SaveAsCharacter key={latest.id} jobId={latest.id} character={(latest as any).character ?? p.ch} seed={latest.seed} />}
             <div class="prog" aria-hidden="true"><i style={{ width: latest.progress + '%' }} /></div>
             <small class="muted">{latest.status}{latest.message ? ' · ' + latest.message : ''} · {latest.label}{latest.mock ? ' · MOCK (placeholder image, not AI)' : ''}{latest.unsupported ? ' · unsupported settings' : ''}</small>
           </> : <p class="muted">Pick a character, then press Generate.</p>}

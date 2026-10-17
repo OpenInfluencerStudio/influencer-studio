@@ -51,5 +51,7 @@ export class RefStore {
     const file = path.join(this.dir, f); const buf = fs.readFileSync(file); const info = sniffImage(buf);
     return info ? { file, info } : null;
   }
+  /** Copy an existing job output (PNG) into the store as a saved reference. */
+  saveFromFile(file: string): { id: string; info: RefInfo } { return this.save(fs.readFileSync(file)); }
   remove(id: string): boolean { const r = this.get(id); if (!r) return false; fs.unlinkSync(r.file); return true; }
 }

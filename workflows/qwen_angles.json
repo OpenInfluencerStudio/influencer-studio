@@ -1,0 +1,172 @@
+{
+ "1": {
+  "inputs": {
+   "unet_name": "qwen-image-edit-2511-Q4_K_M.gguf"
+  },
+  "class_type": "UnetLoaderGGUF"
+ },
+ "2": {
+  "inputs": {
+   "device": "default",
+   "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+   "type": "qwen_image"
+  },
+  "class_type": "CLIPLoader"
+ },
+ "3": {
+  "inputs": {
+   "vae_name": "qwen_image_vae.safetensors"
+  },
+  "class_type": "VAELoader"
+ },
+ "4": {
+  "inputs": {
+   "strength_model": 1,
+   "model": [
+    "1",
+    0
+   ],
+   "lora_name": "Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors"
+  },
+  "class_type": "LoraLoaderModelOnly"
+ },
+ "5": {
+  "inputs": {
+   "image": "placeholder.png"
+  },
+  "class_type": "LoadImage"
+ },
+ "6": {
+  "inputs": {
+   "upscale_method": "lanczos",
+   "resolution_steps": 16,
+   "megapixels": 0.6,
+   "image": [
+    "5",
+    0
+   ]
+  },
+  "class_type": "ImageScaleToTotalPixels"
+ },
+ "7": {
+  "inputs": {
+   "strength_model": 1,
+   "model": [
+    "4",
+    0
+   ],
+   "lora_name": "qwen-image-edit-2511-multiple-angles-lora.safetensors"
+  },
+  "class_type": "LoraLoaderModelOnly"
+ },
+ "8": {
+  "inputs": {
+   "model": [
+    "7",
+    0
+   ],
+   "shift": 3
+  },
+  "class_type": "ModelSamplingAuraFlow"
+ },
+ "9": {
+  "inputs": {
+   "strength": 1,
+   "model": [
+    "8",
+    0
+   ]
+  },
+  "class_type": "CFGNorm"
+ },
+ "10": {
+  "inputs": {
+   "clip": [
+    "2",
+    0
+   ],
+   "image1": [
+    "6",
+    0
+   ],
+   "prompt": "",
+   "vae": [
+    "3",
+    0
+   ]
+  },
+  "class_type": "TextEncodeQwenImageEditPlus"
+ },
+ "11": {
+  "inputs": {
+   "conditioning": [
+    "10",
+    0
+   ]
+  },
+  "class_type": "ConditioningZeroOut"
+ },
+ "12": {
+  "inputs": {
+   "vae": [
+    "3",
+    0
+   ],
+   "pixels": [
+    "6",
+    0
+   ]
+  },
+  "class_type": "VAEEncode"
+ },
+ "13": {
+  "inputs": {
+   "denoise": 1,
+   "seed": 0,
+   "negative": [
+    "11",
+    0
+   ],
+   "cfg": 1,
+   "sampler_name": "euler",
+   "latent_image": [
+    "12",
+    0
+   ],
+   "scheduler": "simple",
+   "model": [
+    "9",
+    0
+   ],
+   "steps": 4,
+   "positive": [
+    "10",
+    0
+   ]
+  },
+  "class_type": "KSampler"
+ },
+ "14": {
+  "inputs": {
+   "samples": [
+    "13",
+    0
+   ],
+   "vae": [
+    "3",
+    0
+   ]
+  },
+  "class_type": "VAEDecode"
+ },
+ "15": {
+  "inputs": {
+   "images": [
+    "14",
+    0
+   ],
+   "filename_prefix": "influencer_studio_qwen"
+  },
+  "class_type": "SaveImage"
+ }
+}

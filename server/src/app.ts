@@ -8,6 +8,7 @@ import { CharacterSchema, compileCharacter, randomise, applyPreset, SafetyError 
 import { CONTROLS, TYPE_OPTS, SPECIES_BY_TYPE, SIZE_OPTS, AGE_BANDS, PRESETS } from './compiler/schema.js';
 import { repoRoot } from './paths.js';
 import { MAX_REF_BYTES } from './refs.js';
+import { compileEdit, templateForEdit, POSES, AZIMUTHS, ELEVATIONS, DISTANCES } from './edit.js';
 import { R } from './reasons.js';
 import type { Job } from './queue.js';
 
@@ -98,7 +99,7 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
       const j = services.queue.get(mm[1]); if (!j) throw new HttpError(404, 'not_found', 'No such job');
       if (!['failed', 'interrupted', 'cancelled'].includes(j.status)) throw new HttpError(409, 'not_retryable', 'Job is not finished');
       // A retry goes through the full check again (new job).
-      return createJob({ character: j.character, seed: j.seed, variantId: j.variantId, template: j.template, ...(j.styleRef ? { styleRef: j.styleRef } : {}), width: j.width, height: j.height, batch: j.batch, ...(j.steps ? { steps: j.steps } : {}) }, res);
+      return createJob({ character: j.character, seed: j.seed, variantId: j.variantId, template: j.template, ...(j.styleRef ? { styleRef: j.styleRef } : {}), ...(j.edit ? { edit: j.edit } : {}), width: j.width, height: j.height, batch: j.batch, ...(j.steps ? { steps: j.steps } : {}) }, res);
     }
     if (m === 'GET' && (mm = p.match(/^\/api\/outputs\/([0-9a-f-]{36})\/([0-3])$/))) {
       const o = services.queue.outputPath(mm[1], Number(mm[2])); if (!o) throw new HttpError(404, 'not_found', 'No such output');
@@ -124,13 +125,25 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
     if (m === 'DELETE' && (mm = p.match(/^\/api\/refs\/([0-9a-f-]{36})$/))) return send(res, 200, { ok: services.refs.remove(mm[1]) });
     if (m === 'GET' && p === '/api/characters') return send(res, 200, services.library());
     if (m === 'POST' && p === '/api/characters') {
-      const b = z.object({ name: z.string().max(60), character: z.record(z.unknown()), seed: z.number().int().min(0).max(4294967295).default(0) }).strict().parse(await readJson(req));
-      compileCharacter({ ...b.character, name: b.name }, b.seed); // full validation + safety check before saving
+      const b = z.object({ name: z.string().max(60), character: z.record(z.unknown()), seed: z.number().int().min(0).max(4294967295).default(0), refImage: z.string().regex(/^[0-9a-f-]{36}$/).optional() }).strict().parse(await readJson(req));
+      compileCharacter({ ...b.character, name: b.name }, b.seed);
+      if (b.refImage && !services.refs.get(b.refImage)) throw new HttpError(400, 'bad_ref', 'The reference image was not found'); // full validation + safety check before saving
       const items = services.library(); if (items.length >= 500) throw new HttpError(429, 'library_full', 'Library is full');
-      const item = { id: crypto.randomUUID(), name: b.name.trim(), character: CharacterSchema.parse(b.character), seed: b.seed, savedAt: new Date().toISOString() };
+      const item = { id: crypto.randomUUID(), name: b.name.trim(), character: CharacterSchema.parse(b.character), seed: b.seed, savedAt: new Date().toISOString(), ...(b.refImage ? { refImage: b.refImage } : {}) };
       services.saveLibrary([item, ...items]); return send(res, 201, item);
     }
-    if (m === 'DELETE' && (mm = p.match(/^\/api\/characters\/([0-9a-f-]{36})$/))) { services.saveLibrary(services.library().filter(x => x.id !== mm![1])); return send(res, 200, { ok: true }); }
+    if (m === 'DELETE' && (mm = p.match(/^\/api\/characters\/([0-9a-f-]{36})$/))) {
+      const all = services.library(); const gone = all.find(x => x.id === mm![1]); const rest = all.filter(x => x.id !== mm![1]);
+      services.saveLibrary(rest);
+      if (gone?.refImage && !rest.some(x => x.refImage === gone.refImage)) services.refs.remove(gone.refImage); // the picture goes with the character unless another one shares it
+      return send(res, 200, { ok: true });
+    }
+    if (m === 'POST' && p === '/api/refs/from-job') {
+      const b = z.object({ jobId: z.string().regex(/^[0-9a-f-]{36}$/), index: z.number().int().min(0).max(3) }).strict().parse(await readJson(req));
+      const o = services.queue.outputPath(b.jobId, b.index); if (!o || o.mime !== 'image/png') throw new HttpError(404, 'not_found', 'No such image result');
+      try { const { id, info } = services.refs.saveFromFile(o.file); return send(res, 201, { id, width: info.width, height: info.height, mime: info.mime }); }
+      catch (e) { const x = e as { code?: string; status?: number; message: string }; if (x.status) throw new HttpError(x.status, x.code ?? 'bad_ref', x.message); throw e; }
+    }
     throw new HttpError(404, 'not_found', 'Unknown route');
   }
 
@@ -144,23 +157,27 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
     const compiled = compileCharacter(character, seed);
     const profile = await services.hardware();
     if (b.styleRef && !services.refs.get(b.styleRef)) throw new HttpError(400, 'bad_ref', 'The style reference image was not found. Add it again.');
-    const template = b.styleRef ? 'klein_edit' : (b.template ?? 'klein_t2i');
+    if (b.edit && (b.styleRef || b.template)) throw new HttpError(400, 'bad_params', 'An edit job cannot be combined with a style reference or a template');
+    if (b.edit && !services.refs.get(b.edit.refId)) throw new HttpError(400, 'bad_ref', 'The saved character image was not found. Save the character from a picture first.');
+    const template = b.edit ? templateForEdit(b.edit) : b.styleRef ? 'klein_edit' : (b.template ?? 'klein_t2i');
     if (b.styleRef && b.template && b.template !== 'klein_edit') throw new HttpError(400, 'bad_params', 'A style reference needs the image edit template');
+    let editPrompt: string | undefined;
+    if (b.edit) { try { editPrompt = compileEdit(b.edit); } catch (e) { if (e instanceof SafetyError) throw e; throw new HttpError(400, 'bad_params', (e as Error).message); } }
     const tpl = services.templates.get(template);
     const variantId = b.variantId ?? (tpl ? tpl.manifest.variantIds[0] : '');
     const width = b.width ?? 768, height = b.height ?? 1024; // the edit template takes its size from the reference (about 1 megapixel)
     void profile;
-    const verdict = await services.check({ template, variantId, width, height, refs: b.styleRef ? 1 : 0 }); // reference count is derived on the server, never taken from the request
+    const verdict = await services.check({ template, variantId, width, height, refs: b.styleRef || b.edit ? 1 : 0 }); // reference count is derived on the server, never taken from the request
     if (!verdict.ok) {
       throw new HttpError(verdict.httpStatus, verdict.code, verdict.code === 'locked_by_hardware' ? 'Locked on this PC. Turn on Advanced > Unlock unsupported options to try anyway.' : 'This job cannot run on this PC.', { reasons: [...verdict.hard, ...verdict.soft] });
     }
     // Dry-run the template fill so bad parameters fail now, not mid-queue.
-    if (tpl) { try { const { fillTemplate } = await import('./workflows.js'); fillTemplate(tpl, { prompt: compiled.positive, seed, ...('width' in tpl.manifest.params ? { width, height, batch: b.batch ?? 1 } : {}), ...(b.steps ? { steps: b.steps } : {}) }); } catch (e) { throw new HttpError(400, 'bad_params', (e as Error).message); } }
+    if (tpl) { try { const { fillTemplate } = await import('./workflows.js'); fillTemplate(tpl, { prompt: editPrompt ?? compiled.positive, seed, ...('width' in tpl.manifest.params ? { width, height, batch: b.batch ?? 1 } : {}), ...(b.steps ? { steps: b.steps } : {}) }); } catch (e) { throw new HttpError(400, 'bad_params', (e as Error).message); } }
     submitTimes.push(now);
     const job = services.queue.enqueue({
-      template, variantId, prompt: compiled.positive, negative: compiled.negative, seed, width, height, batch: b.batch ?? 1, steps: b.steps,
+      template, variantId, prompt: editPrompt ?? compiled.positive, negative: compiled.negative, seed, width, height, batch: b.batch ?? 1, steps: b.steps,
       character: character as Record<string, unknown>, label: `${compiled.resolved.type}${compiled.resolved.species ? ' / ' + compiled.resolved.species : ''} / ${compiled.resolved.bodySize}`,
-      styleRef: b.styleRef, mock: services.mock, unsupported: verdict.soft.length > 0, softReasons: verdict.soft,
+      styleRef: b.styleRef, edit: b.edit as Record<string, unknown> | undefined, mock: services.mock, unsupported: verdict.soft.length > 0, softReasons: verdict.soft,
     });
     send(res, 202, publicJob(job));
   }
@@ -250,6 +267,7 @@ function schemaPayload(s: Services) {
     ageBands: AGE_BANDS.map(a => ({ id: a.id, label: a.label, age: a.age })),
     controls: CONTROLS.map(c => ({ id: c.id, title: c.title, ui: c.ui, multi: !!c.multi, maxSelected: c.maxSelected ?? 1, applies: c.applies, default: c.default, options: c.options.map(o => ({ id: o.id, label: o.label })) })),
     presets: PRESETS.map(p => ({ id: p.id, label: p.label })),
+    edit: { poses: POSES.map(({ id, label }) => ({ id, label })), azimuths: AZIMUTHS.map(({ id, label }) => ({ id, label })), elevations: ELEVATIONS.map(({ id, label }) => ({ id, label })), distances: DISTANCES.map(({ id, label }) => ({ id, label })) },
     templates: [...s.templates.values()].map(t => ({ id: t.manifest.id, label: t.manifest.label, mode: t.manifest.mode, kind: t.manifest.kind })),
   };
 }

@@ -12,7 +12,9 @@ import { ComfyClient } from './comfy.js';
 import { ComfyProgress, ProgressTracker } from './comfy-ws.js';
 import { JobQueue, Job, Runner } from './queue.js';
 import { mockImageSvg } from './mock.js';
+import { EditSchema } from './edit.js';
 import { RefStore } from './refs.js';
+import type { EditRequest } from './edit.js';
 import { writeJsonAtomic, readJsonSafe } from './store.js';
 import { dataDir as defaultDataDir } from './paths.js';
 
@@ -80,14 +82,14 @@ export class Services {
   /** Sync re-check at job start using cached hardware. */
   private recheck(j: Job) {
     if (!this.profile) return null;
-    const r = checkJob({ template: j.template, variantId: j.variantId, width: j.width, height: j.height, refs: j.styleRef ? 1 : 0 }, this.checkCtx(this.profile.p, this.comfyOnline || this.mock));
+    const r = checkJob({ template: j.template, variantId: j.variantId, width: j.width, height: j.height, refs: j.styleRef || j.edit ? 1 : 0 }, this.checkCtx(this.profile.p, this.comfyOnline || this.mock));
     return r.ok ? null : (r.httpStatus === 403 ? r.soft : r.hard.length && !r.hard.every(x => x.code === 'COMFY_OFFLINE') ? r.hard : null);
   }
 
   bestVariant(modelId: string, profile: HardwareProfile) { return bestFit(modelId, this.registry, profile, this.limits, this.installed); }
 
   // ---- saved character library (plan 14: saved library) ----
-  library(): { id: string; name: string; character: Record<string, unknown>; seed: number; savedAt: string }[] {
+  library(): { id: string; name: string; character: Record<string, unknown>; seed: number; savedAt: string; refImage?: string }[] {
     return readJsonSafe<{ items: never[] }>(this.libraryFile, { items: [] }).items;
   }
   saveLibrary(items: unknown[]) { writeJsonAtomic(this.libraryFile, { schemaVersion: 1, items }); }
@@ -107,13 +109,14 @@ export class Services {
     if (has('batch')) values.batch = job.batch;
     if (job.steps) values.steps = job.steps;
     values.prompt = job.prompt;
-    if (job.styleRef) {
-      const ref = this.refs.get(job.styleRef);
-      if (!ref) throw new Error('The style reference image is no longer available. Remove it and add it again.');
+    const refId = job.styleRef ?? (job.edit as EditRequest | undefined)?.refId;
+    if (refId) {
+      const ref = this.refs.get(refId);
+      if (!ref) throw new Error(job.edit ? 'The saved character image is no longer available. Save the character again from a new picture.' : 'The style reference image is no longer available. Remove it and add it again.');
       if (!has('image')) throw new Error('This template does not take a reference image');
       ctx.update(3, 'Sending your reference image');
-      values.image = await this.comfy.uploadImage(`is_ref_${job.styleRef.replace(/-/g, '').slice(0, 24)}.${ref.info.ext}`, fs.readFileSync(ref.file), ref.info.mime);
-      values.prompt = STYLE_REF_PREFIX + job.prompt;
+      values.image = await this.comfy.uploadImage(`is_ref_${refId.replace(/-/g, '').slice(0, 24)}.${ref.info.ext}`, fs.readFileSync(ref.file), ref.info.mime);
+      if (job.styleRef) values.prompt = STYLE_REF_PREFIX + job.prompt;
     }
     const wf = fillTemplate(tpl, values);
     ctx.update(4, 'Sending to ComfyUI');
@@ -163,4 +166,5 @@ export const JobRequestSchema = z.object({
   steps: z.number().int().min(1).max(12).optional(),
   refs: z.number().int().min(0).max(8).optional(),
   styleRef: z.string().regex(/^[0-9a-f-]{36}$/).optional(),
+  edit: EditSchema.optional(),
 }).strict();
