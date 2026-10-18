@@ -51,7 +51,7 @@ describe('creature tiles and weak-option wording', () => {
   });
   it('the formerly weak options use strengthened wording', () => {
     const m = buildThumbManifest(); const by = (k: string) => m.find(i => i.key.startsWith(k))!.prompt;
-    expect(by('shoes/spring_shoes')).toMatch(/coil springs/); expect(by('shoes/curly_toe_shoes')).toMatch(/spiral curl/);
-    expect(by('hairStyle/flame_swirl')).toMatch(/flame/); expect(by('hairStyle/tornado_swirl')).toMatch(/corkscrew/); expect(by('hairStyle/wave_crest')).toMatch(/wave/);
+    expect(by('shoes/spring_shoes')).toMatch(/coil spring/); expect(by('shoes/curly_toe_shoes')).toMatch(/spiral curl/);
+    expect(by('hairStyle/flame_swirl')).toMatch(/flame/); expect(by('hairStyle/tornado_swirl')).toMatch(/spiral/); expect(by('hairStyle/wave_crest')).toMatch(/wave/);
   });
 });

@@ -69,10 +69,11 @@ export const TEXT_OPTIONS = new Set(['features/dimples', 'features/round_ears', 
 /** Stronger wording per option for the text-to-image thumbnails (thumbnail only; the app prompt is unchanged). */
 export const SPECIES_STRONG: Record<string, string> = { insect_person_moth: 'a human face with two large feathery moth antennae on the forehead, soft pale fuzzy skin, large dark eyes, small pale-grey moth wings visible behind the shoulders; still clearly a human adult, not an animal' };
 export const STRONG: Record<string, string> = {
-  'shoes/spring_shoes': 'big visible chrome metal coil springs, each spring about ten centimetres tall, mounted between the sole and the shoe so each shoe sits on a tall bouncy spring',
+  'shoes/spring_shoes': 'pogo shoes: a big shiny silver metal coil spring clearly visible under each shoe, the spring is as tall as the shoe, side view of both feet',
   'shoes/curly_toe_shoes': 'elf-style gold shoes whose very long pointed toes curl all the way up and back over themselves into a big spiral curl at each tip, like a ram horn',
   'hairStyle/flame_swirl': 'hair swept up and styled into a tall, bold flame shape with three pointed tongues of hair curling upward like a candle flame',
-  'hairStyle/tornado_swirl': 'hair twisted into a tall, narrow spiral swirl on top of the head, a clearly visible corkscrew tornado shape spiralling upward',
+  'hairStyle/tornado_swirl': 'the person\'s own natural-coloured hair (not white) twirled into a tall pointed spiral cone standing up on top of the head, strands of hair clearly visible winding upward like a tornado',
+  'outfit/superhero_cape': 'a big plain red cape worn over a plain white t-shirt and dark trousers, with no logo or emblem',
   'hairStyle/wave_crest': 'hair on top swept up into a huge curling ocean-wave crest that curls forward over the forehead like a breaking wave',
   'hairStyle/stair_step_cut': 'hair cut into very obvious, sharp, wide stair-step layers, like steps of a staircase down the side and top of the head',
   'outfit/inflatable_dino': 'a loose, baggy, oversized green inflatable dinosaur costume worn over a plain long-sleeved shirt and trousers, with a big hood, spikes down the back and a tail, fully covering the body',
