@@ -78,6 +78,7 @@ if (platform === 'win') {
   const body = ['#!/bin/sh', 'cd "$(dirname "$0")"', ...env(false), 'echo "Starting Influencer Studio. Your browser opens by itself. Press Ctrl+C to stop."', 'exec ./node/node ./app/server.mjs', ''].join('\n');
   const f = platform === 'mac' ? 'start.command' : 'start.sh'; fs.writeFileSync(path.join(stage, f), body, { mode: 0o755 }); fs.chmodSync(path.join(stage, f), 0o755);
 }
+if (fs.existsSync(path.join(root, 'docs/prelaunch-test-checklist.md'))) fs.copyFileSync(path.join(root, 'docs/prelaunch-test-checklist.md'), path.join(stage, 'TESTING.md'));
 fs.writeFileSync(path.join(stage, 'BUILD-INFO.json'), JSON.stringify({ app: 'influencer-studio', version, platform, arch, node: nodeVersion, nodeSha256: want, builtAt: new Date().toISOString().slice(0, 10) }, null, 2));
 
 // 5. archive + checksum
