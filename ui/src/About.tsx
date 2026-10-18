@@ -53,7 +53,7 @@ export function About(p: any) {
           <ul class="dmodels">{d.models.flatMap(m => m.variants.map(v => <li key={m.id + v.label}>{m.label} · {v.label}: <b>{v.installed ? 'installed' : 'not installed'}</b> <span class="muted">({v.state})</span></li>))}</ul>
           <h3>Report to copy</h3>
           <textarea ref={ta} id="diag-report" readOnly rows={10} value={d.report} aria-label="Diagnostics report" />
-          <p><button class="primary" id="copy-report" onClick={copy}>{copied ? 'Copied ✓' : 'Copy report'}</button> <button class="chip" onClick={load}>Refresh</button></p>
+          <p><button class="primary" id="copy-report" onClick={copy}>{copied ? 'Copied ✓' : 'Copy report'}</button> <button class="ghost" onClick={load}>Refresh</button></p>
           <p class="muted">The report has no file paths, user names, prompts or images.</p>
         </>}
       </section>
@@ -88,9 +88,9 @@ export function Walkthrough({ go, close }: { go: (s: any) => void; close: (done:
         <h2 id="walk-h">{st.title}</h2><p>{st.body}</p>
         <div class="walk-dots" aria-hidden="true">{STEPS.map((_, k) => <i key={k} class={k === i ? 'on' : ''} />)}</div>
         <div class="walk-btns">
-          <button class="chip" id="walk-skip" onClick={() => close(true)}>Skip tour</button>
+          <button class="ghost" id="walk-skip" onClick={() => close(true)}>Skip tour</button>
           <span style="flex:1" />
-          {i > 0 && <button class="chip" onClick={() => to(i - 1)}>Back</button>}
+          {i > 0 && <button class="ghost" onClick={() => to(i - 1)}>Back</button>}
           {last ? <button class="primary" id="walk-done" onClick={() => close(true)}>Done</button> : <button class="primary" id="walk-next" onClick={() => to(i + 1)}>Next</button>}
         </div>
       </div>

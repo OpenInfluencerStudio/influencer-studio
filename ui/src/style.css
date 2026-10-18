@@ -132,3 +132,37 @@ nav{display:flex;gap:4px;flex:1}nav button{background:none;border:0;padding:8px 
 #diag-report{width:100%;box-sizing:border-box;background:#0b0b0c;color:var(--tx,#eee);border:1px solid var(--line);border-radius:10px;padding:10px;font:12px/1.4 ui-monospace,Consolas,monospace;resize:vertical}
 .kv td{padding:3px 10px 3px 0;vertical-align:top}.kv td:first-child{color:#9a9aa0}.dmodels{padding-left:18px}
 a.chip,a.chip:visited{color:inherit}a.primary.linkbtn,a.primary.linkbtn:visited{color:#0a0a0a}
+
+/* ---- alignment layer: one control scale for every screen ---- */
+:root{--ctl-h:40px;--ctl-h-sm:32px;--ctl-r:10px;--ctl-px:16px;--gap:10px;--gap-lg:20px}
+:where(.primary,.ghost,.linkbtn,.row input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=file]),.row select,.savebar input,.num){box-sizing:border-box;height:var(--ctl-h);min-height:var(--ctl-h);padding-block:0;padding-inline:var(--ctl-px);border-radius:var(--ctl-r);display:inline-flex;align-items:center;justify-content:center;line-height:1.1;text-align:center}
+.savebar input,.row input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=file]),.num{text-align:left;justify-content:flex-start}
+.chip,.pill,.tog,.fbk,.verb{box-sizing:border-box;height:var(--ctl-h-sm);min-height:var(--ctl-h-sm);display:inline-flex;align-items:center;line-height:1}
+.chip{padding-block:0;justify-content:center}
+.tog{padding:0 4px}
+.right{gap:var(--gap);flex-wrap:wrap;justify-content:flex-end}
+.right>*{flex:none}
+.top{column-gap:var(--gap-lg);row-gap:var(--gap)}
+.top nav{flex:1 1 auto}
+@media(max-width:1500px){.top .right{flex:1 0 100%}}
+.seg button,.modesw button,nav button,.inputtabs button{box-sizing:border-box;height:var(--ctl-h-sm);min-height:var(--ctl-h-sm);padding-block:0;display:inline-flex;align-items:center;justify-content:center}
+.seg>button,.inputtabs>button{flex:1 1 auto}
+.inputtabs button{height:var(--ctl-h);min-height:var(--ctl-h)}
+.shead{gap:var(--gap)}
+.shead>button{box-sizing:border-box;height:var(--ctl-h);min-height:var(--ctl-h);padding-block:0}
+.shead>button:not(.stog){min-width:var(--ctl-h);display:inline-flex;align-items:center;justify-content:center;background:none;border:0}
+.chips:not(:has(> :nth-child(13))) > .chip{flex:1 1 auto}
+.walk-btns{gap:var(--gap)}.walk-btns>*{min-width:96px}
+.row{gap:var(--gap)}
+.dli .act{flex-wrap:wrap}
+:where(button,input,select,a.chip):focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+@media(max-width:700px){
+  .top nav{flex:1 0 100%;overflow-x:auto;gap:2px;scrollbar-width:none}.top nav button{flex:none}
+  .dli{grid-template-columns:1fr}.dli .act{justify-content:flex-start}
+  .modesw{flex:1 0 100%}.modesw button{flex:1}
+}
+.chips.res{display:grid;grid-template-columns:repeat(4,1fr)}.chips.res>.chip{flex:none}
+.walk-btns .ghost{height:var(--ctl-h)}
+@media(max-width:700px){.right>*{flex:1 1 auto;justify-content:center}.row>.ghost,.row>.primary{flex:1 1 auto}.dialog,.card{min-width:0}}
+.cgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.cf input,.cf select{width:100%;min-width:0;box-sizing:border-box}
+@media(max-width:700px){.cgrid{grid-template-columns:minmax(0,1fr)}}

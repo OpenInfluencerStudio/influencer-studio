@@ -205,7 +205,7 @@ function Scan(p: Ctx) {
         {ask && <Confirm onNo={() => setAsk(false)} onYes={() => { setAsk(false); p.setUnlock(true); }} />}
         <ModelList {...p} />
         <h3>Resolution levels</h3>
-        <div class="chips">{opts.resolutions.map((r: Res) => <span key={r.px} class={'chip static' + (r.state === 'locked_soft' ? ' locked' : '')} title={r.reason ?? ''}>{r.state === 'locked_soft' ? '🔒 ' : ''}{r.px} px</span>)}</div>
+        <div class="chips res">{opts.resolutions.map((r: Res) => <span key={r.px} class={'chip static' + (r.state === 'locked_soft' ? ' locked' : '')} title={r.reason ?? ''}>{r.state === 'locked_soft' ? '🔒 ' : ''}{r.px} px</span>)}</div>
         <div class="scan-cta"><button class="primary" onClick={() => p.go('builder')}>Continue to the builder</button></div>
       </div>
     </section>
@@ -445,7 +445,7 @@ function Generate(p: Ctx) {
       {!video && <div class="card">
         <h2>Output</h2>
         <h3>Resolution (long side)</h3>
-        <div class="chips">{opts.resolutions.map((r: Res) => { const lk = r.state === 'locked_soft'; const dis = lk && !p.unlocked; return <button key={r.px} class={'chip' + (p.px === r.px ? ' on' : '') + (lk ? ' locked' : '')} disabled={dis} aria-disabled={dis} title={r.reason ?? ''} onClick={() => p.setPx(r.px)}>{lk ? (p.unlocked ? '⚠ ' : '🔒 ') : ''}{r.px}</button>; })}</div>
+        <div class="chips res">{opts.resolutions.map((r: Res) => { const lk = r.state === 'locked_soft'; const dis = lk && !p.unlocked; return <button key={r.px} class={'chip' + (p.px === r.px ? ' on' : '') + (lk ? ' locked' : '')} disabled={dis} aria-disabled={dis} title={r.reason ?? ''} onClick={() => p.setPx(r.px)}>{lk ? (p.unlocked ? '⚠ ' : '🔒 ') : ''}{r.px}</button>; })}</div>
         {opts.resolutions.some((r: Res) => r.state === 'locked_soft') && <p class="muted small">Locked sizes need a stronger GPU. {p.adv ? 'You can unlock them on the Hardware screen.' : 'Advanced mode shows the unlock setting.'}</p>}
         {p.styleRef && <p class="muted small">Style reference is on: the image size follows your reference (about 1 megapixel) and one image is made per run.</p>}
         <h3>Images per run</h3>
