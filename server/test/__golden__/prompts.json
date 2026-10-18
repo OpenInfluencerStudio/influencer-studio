@@ -1,7 +1,7 @@
 {
   "male/ultra_fat": {
     "positive": "studio portrait photo, an adult man in their early thirties, a very large, very round and full figure with a very broad torso, very wide waist and hips, a rounded face and full arms, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -11,7 +11,7 @@
   },
   "male/fat": {
     "positive": "studio portrait photo, an adult man in their early thirties, a large, full and rounded figure with a broad torso, wide waist and a fuller face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -21,7 +21,7 @@
   },
   "male/medium": {
     "positive": "studio portrait photo, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -31,7 +31,7 @@
   },
   "male/thin": {
     "positive": "studio portrait photo, an adult man in their early thirties, a slim figure with a narrow torso, narrow waist and slim arms, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -41,7 +41,7 @@
   },
   "male/skinny": {
     "positive": "studio portrait photo, an adult man in their early thirties, a very slim, slight figure with narrow shoulders, a very narrow torso, thin arms and a slender face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -51,7 +51,7 @@
   },
   "male/stick_thin": {
     "positive": "studio portrait photo, an adult man in their early thirties, an extra slim, very slender figure with very narrow shoulders, a very narrow torso, very thin arms and legs and a slender face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -61,7 +61,7 @@
   },
   "female/ultra_fat": {
     "positive": "studio portrait photo, an adult woman in their early thirties, a very large, very round and full figure with a very broad torso, very wide waist and hips, a rounded face and full arms, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -71,7 +71,7 @@
   },
   "female/fat": {
     "positive": "studio portrait photo, an adult woman in their early thirties, a large, full and rounded figure with a broad torso, wide waist and a fuller face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -81,7 +81,7 @@
   },
   "female/medium": {
     "positive": "studio portrait photo, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -91,7 +91,7 @@
   },
   "female/thin": {
     "positive": "studio portrait photo, an adult woman in their early thirties, a slim figure with a narrow torso, narrow waist and slim arms, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -101,7 +101,7 @@
   },
   "female/skinny": {
     "positive": "studio portrait photo, an adult woman in their early thirties, a very slim, slight figure with narrow shoulders, a very narrow torso, thin arms and a slender face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -111,7 +111,7 @@
   },
   "female/stick_thin": {
     "positive": "studio portrait photo, an adult woman in their early thirties, an extra slim, very slender figure with very narrow shoulders, a very narrow torso, very thin arms and legs and a slender face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -121,7 +121,7 @@
   },
   "non_binary/ultra_fat": {
     "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a very large, very round and full figure with a very broad torso, very wide waist and hips, a rounded face and full arms, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -131,7 +131,7 @@
   },
   "non_binary/fat": {
     "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a large, full and rounded figure with a broad torso, wide waist and a fuller face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -141,7 +141,7 @@
   },
   "non_binary/medium": {
     "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -151,7 +151,7 @@
   },
   "non_binary/thin": {
     "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a slim figure with a narrow torso, narrow waist and slim arms, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -161,7 +161,7 @@
   },
   "non_binary/skinny": {
     "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a very slim, slight figure with narrow shoulders, a very narrow torso, thin arms and a slender face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -171,7 +171,7 @@
   },
   "non_binary/stick_thin": {
     "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, an extra slim, very slender figure with very narrow shoulders, a very narrow torso, very thin arms and legs and a slender face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -181,7 +181,7 @@
   },
   "trans_woman/ultra_fat": {
     "positive": "studio portrait photo, an adult woman in their early thirties, a very large, very round and full figure with a very broad torso, very wide waist and hips, a rounded face and full arms, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "trans_woman",
       "species": null,
@@ -191,7 +191,7 @@
   },
   "trans_woman/fat": {
     "positive": "studio portrait photo, an adult woman in their early thirties, a large, full and rounded figure with a broad torso, wide waist and a fuller face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "trans_woman",
       "species": null,
@@ -201,7 +201,7 @@
   },
   "trans_woman/medium": {
     "positive": "studio portrait photo, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "trans_woman",
       "species": null,
@@ -211,7 +211,7 @@
   },
   "trans_woman/thin": {
     "positive": "studio portrait photo, an adult woman in their early thirties, a slim figure with a narrow torso, narrow waist and slim arms, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "trans_woman",
       "species": null,
@@ -221,7 +221,7 @@
   },
   "trans_woman/skinny": {
     "positive": "studio portrait photo, an adult woman in their early thirties, a very slim, slight figure with narrow shoulders, a very narrow torso, thin arms and a slender face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "trans_woman",
       "species": null,
@@ -231,7 +231,7 @@
   },
   "trans_woman/stick_thin": {
     "positive": "studio portrait photo, an adult woman in their early thirties, an extra slim, very slender figure with very narrow shoulders, a very narrow torso, very thin arms and legs and a slender face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "trans_woman",
       "species": null,
@@ -241,7 +241,7 @@
   },
   "trans_man/ultra_fat": {
     "positive": "studio portrait photo, an adult man in their early thirties, a very large, very round and full figure with a very broad torso, very wide waist and hips, a rounded face and full arms, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "trans_man",
       "species": null,
@@ -251,7 +251,7 @@
   },
   "trans_man/fat": {
     "positive": "studio portrait photo, an adult man in their early thirties, a large, full and rounded figure with a broad torso, wide waist and a fuller face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "trans_man",
       "species": null,
@@ -261,7 +261,7 @@
   },
   "trans_man/medium": {
     "positive": "studio portrait photo, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "trans_man",
       "species": null,
@@ -271,7 +271,7 @@
   },
   "trans_man/thin": {
     "positive": "studio portrait photo, an adult man in their early thirties, a slim figure with a narrow torso, narrow waist and slim arms, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "trans_man",
       "species": null,
@@ -281,7 +281,7 @@
   },
   "trans_man/skinny": {
     "positive": "studio portrait photo, an adult man in their early thirties, a very slim, slight figure with narrow shoulders, a very narrow torso, thin arms and a slender face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "trans_man",
       "species": null,
@@ -291,7 +291,7 @@
   },
   "trans_man/stick_thin": {
     "positive": "studio portrait photo, an adult man in their early thirties, an extra slim, very slender figure with very narrow shoulders, a very narrow torso, very thin arms and legs and a slender face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "trans_man",
       "species": null,
@@ -301,7 +301,7 @@
   },
   "surprise/ultra_fat@seed12345": {
     "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a very large, very round and full figure with a very broad torso, very wide waist and hips, a rounded face and full arms, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -311,7 +311,7 @@
   },
   "surprise/fat@seed12345": {
     "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a large, full and rounded figure with a broad torso, wide waist and a fuller face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -321,7 +321,7 @@
   },
   "surprise/medium@seed12345": {
     "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -331,7 +331,7 @@
   },
   "surprise/thin@seed12345": {
     "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a slim figure with a narrow torso, narrow waist and slim arms, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -341,7 +341,7 @@
   },
   "surprise/skinny@seed12345": {
     "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, a very slim, slight figure with narrow shoulders, a very narrow torso, thin arms and a slender face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -351,7 +351,7 @@
   },
   "surprise/stick_thin@seed12345": {
     "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, an extra slim, very slender figure with very narrow shoulders, a very narrow torso, very thin arms and legs and a slender face, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,

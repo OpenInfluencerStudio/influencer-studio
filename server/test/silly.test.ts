@@ -79,7 +79,7 @@ describe('silly and extreme options (plan 28)', () => {
   });
   it('thumbnail manifest includes the new options (not generated)', () => {
     const items = buildThumbManifest();
-    for (const [ctl, id] of [['hairStyle', 'stair_step_cut'], ['outfit', 'inflatable_dino'], ['proportions', 'giant_head'], ['prop', 'giant_lollipop'], ['background', 'candy_land'], ['renderStyle', 'claymation'], ['shoes', 'clown_length_shoes'], ['outfit', 'athletic_leggings'], ['hairStyle', 'tornado_swirl']]) expect(items.some(i => i.control === ctl && i.option === id), `${ctl}/${id}`).toBe(true);
+    for (const [ctl, id] of [['hairStyle', 'stair_step_cut'], ['outfit', 'giant_chef_hat'], ['proportions', 'giant_head'], ['prop', 'giant_lollipop'], ['background', 'candy_land'], ['renderStyle', 'claymation'], ['shoes', 'clown_length_shoes'], ['outfit', 'athletic_leggings'], ['hairStyle', 'tornado_swirl']]) expect(items.some(i => i.control === ctl && i.option === id), `${ctl}/${id}`).toBe(true);
     expect(SIZE_ORDER.length).toBe(6);
   });
 });

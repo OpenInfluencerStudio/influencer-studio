@@ -104,7 +104,7 @@ export function compileCharacter(input: CharacterInput, seed = 0): Compiled {
   if (notes) positive += `. Extra detail: ${notes}`;
   // Constraints are re-asserted last so appended text cannot negate them (plan 14.7 rule 7).
   positive += `. ${CONSTRAINT_TAIL}`;
-  return { positive, negative: NEGATIVE_PROMPT, resolved: { type, species: speciesId, bodySize: c.bodySize, age: c.age } };
+  return { positive, negative: isHuman ? NEGATIVE_PROMPT + ', frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils' : NEGATIVE_PROMPT, resolved: { type, species: speciesId, bodySize: c.bodySize, age: c.age } };
 }
 
 /** Randomise with locks; draws only from allowed sets (plan 14.7 rule 8). */

@@ -134,7 +134,7 @@ export const CONTROLS: Control[] = [
     ['White tee & jeans', 'a plain white t-shirt and blue jeans'], ['Hoodie & joggers', 'a loose hoodie and joggers'], ['Smart blazer', 'a smart blazer over a shirt with trousers'],
     ['Summer dress', 'a knee-length summer dress'], ['Sport set', 'a long-sleeved sports top and full-length sports trousers'],
     ['Denim jacket', 'a denim jacket over a t-shirt with trousers'], ['Knit & trousers', 'a chunky knit sweater and trousers'], ['Techwear', 'a techwear jacket and cargo trousers'],
-    ['Inflatable dino', 'a full-body inflatable green dinosaur costume'], ['Giant chef hat', 'a chef uniform with an enormous tall chef hat and apron'], ['Clown-style suit', 'a baggy polka-dot suit with an oversized bow tie'],
+    ['Giant chef hat', 'a chef uniform with an enormous tall chef hat and apron'], ['Clown-style suit', 'a baggy polka-dot suit with an oversized bow tie'],
     ['Superhero cape', 'a bright superhero costume with a long flowing cape, fully covered'], ['Wizard robe', 'a long star-covered wizard robe and pointed hat'], ['Pirate coat', 'a long pirate captain coat with a tricorn hat'],
     ['Mascot suit', 'a fluffy full-body sports mascot costume'], ['Glitter tracksuit', 'a sparkly glitter tracksuit'], ['Flower jacket', 'a jacket completely covered in colourful flowers'],
     ['Giant bow-tie suit', 'a tailored suit with a giant bow tie'], ['Knight armour', 'a shiny full suit of costume knight armour'], ['Space suit', 'a chunky retro space suit with a round helmet under the arm'],
@@ -185,7 +185,7 @@ export const CONTROLS: Control[] = [
   { id: 'prop', title: 'Props', ui: 'acc', applies: 'all', default: 'none', options: mk([
     ['None', ''], ['Oversized sunglasses', 'holding a pair of comically oversized sunglasses'], ['Giant lollipop', 'holding a giant swirly lollipop'], ['Rubber chicken', 'holding a rubber chicken'],
     ['Tiny umbrella', 'holding a tiny umbrella'], ['Balloon bunch', 'holding a big bunch of colourful balloons'], ['Trumpet', 'holding a shiny trumpet'], ['Skateboard', 'holding a skateboard under one arm'],
-    ['Teapot', 'holding a large teapot'], ['Cardboard crown', 'wearing a cardboard crown'], ['Bubbles', 'surrounded by floating soap bubbles'], ['Pet frog', 'with a small pet frog on one shoulder'],
+    ['Teapot', 'holding a large teapot'], ['Cardboard crown', 'wearing a cardboard crown'], ['Bubbles', 'surrounded by floating soap bubbles'],
     ['Stack of books', 'carrying a tall stack of books'], ['Giant donut', 'holding a giant donut'], ['Megaphone', 'holding a toy megaphone']]) },
   { id: 'shoes', title: 'Shoes', ui: 'acc', applies: 'all', default: 'none', options: mk([
     ['None', ''], ['Clown-length shoes', 'extremely long exaggerated clown-length shoes, twice the length of the feet'], ['Curly-toe shoes', 'pointed shoes with long upward-curling toes'], ['Platform boots', 'very tall chunky platform boots'],
@@ -193,7 +193,7 @@ export const CONTROLS: Control[] = [
     ['Spring shoes', 'shoes with big coiled springs under the soles']]) },
 ];
 /** Options added by plan 28: only drawn when the slider is above Realistic. */
-const SILLY_FROM: Record<string, string> = { hairStyle: 'stair_step_cut', outfit: 'inflatable_dino', proportions: 'giant_head', background: 'candy_land', renderStyle: 'cartoon', prop: 'oversized_sunglasses', shoes: 'clown_length_shoes' };
+const SILLY_FROM: Record<string, string> = { hairStyle: 'stair_step_cut', outfit: 'giant_chef_hat', proportions: 'giant_head', background: 'candy_land', renderStyle: 'cartoon', prop: 'oversized_sunglasses', shoes: 'clown_length_shoes' };
 for (const c of CONTROLS) { const from = SILLY_FROM[c.id]; if (!from) continue; const i = c.options.findIndex(o => o.id === from); for (const o of c.options.slice(i)) o.silly = true; }
 export const CONTROL_BY_ID = new Map(CONTROLS.map(c => [c.id, c]));
 
@@ -210,13 +210,12 @@ export const PRESETS: { id: string; label: string; patch: Record<string, string 
   { id: 'night', label: 'Night owl', patch: { outfit: 'techwear', lighting: 'neon_night', background: 'city_street' } },
   // Silly preset pack (plan 28.3): one click fills the builder; everything stays editable. Fictional characters only.
   { id: 'sir_pompadour', label: 'Sir Pompadour', silly: true, patch: { type: 'male', hairStyle: 'giant_pompadour', outfit: 'smart_blazer', prop: 'oversized_sunglasses', silliness: 3 } },
-  { id: 'captain_frog', label: 'Captain Frog', silly: true, patch: { type: 'frog_person', outfit: 'pirate_coat', prop: 'pet_frog', silliness: 3 } },
+  { id: 'captain_frog', label: 'Captain Frog', silly: true, patch: { type: 'frog_person', outfit: 'pirate_coat', prop: 'teapot', silliness: 3 } },
   { id: 'disco_moth', label: 'Disco Moth', silly: true, patch: { type: 'insect_person', species: 'moth', outfit: 'glitter_tracksuit', background: 'disco_room', silliness: 3 } },
   { id: 'mushroom_hermit', label: 'Mushroom Hat Hermit', silly: true, patch: { type: 'female', hairStyle: 'mushroom_cap', background: 'mushroom_forest', renderStyle: 'claymation', silliness: 3 } },
   { id: 'cloud_chef', label: 'Cloud Hair Chef', silly: true, patch: { type: 'female', hairStyle: 'cotton_candy_cloud', outfit: 'giant_chef_hat', prop: 'giant_donut', silliness: 3 } },
   { id: 'space_parrot', label: 'Space Parrot', silly: true, patch: { type: 'bird_person', species: 'parrot', outfit: 'space_suit', background: 'cloud_kingdom', silliness: 3 } },
   { id: 'hamster_wizard', label: 'Hamster Wizard', silly: true, patch: { type: 'rodent_person', outfit: 'wizard_robe', prop: 'teapot', silliness: 3 } },
-  { id: 'dino_dave', label: 'Inflatable Dino Dave', silly: true, patch: { type: 'male', outfit: 'inflatable_dino', expression: 'big_grin', background: 'retro_arcade', silliness: 4 } },
   { id: 'stair_step_steve', label: 'Stair-Step Steve', silly: true, patch: { type: 'male', hairStyle: 'stair_step_cut', outfit: 'denim_jacket', proportions: 'giant_head', silliness: 3 } },
   { id: 'bubble_afro', label: 'Bubble Afro Star', silly: true, patch: { type: 'female', hairStyle: 'bubble_afro', outfit: 'glitter_tracksuit', prop: 'bubbles', silliness: 3 } },
   { id: 'owl_professor', label: 'Owl Professor', silly: true, patch: { type: 'bird_person', species: 'owl', outfit: 'knit_trousers', accessory: 'round_glasses', prop: 'stack_of_books', silliness: 2 } },

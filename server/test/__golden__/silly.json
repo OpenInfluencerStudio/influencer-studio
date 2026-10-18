@@ -1,7 +1,7 @@
 {
   "level0/male": {
     "positive": "studio portrait photo, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -11,7 +11,7 @@
   },
   "level0/female": {
     "positive": "studio portrait photo, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -21,7 +21,7 @@
   },
   "level0/non_binary": {
     "positive": "studio portrait photo, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -51,7 +51,7 @@
   },
   "level1/male": {
     "positive": "studio portrait photo, slightly stylised, with gently exaggerated features, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -61,7 +61,7 @@
   },
   "level1/female": {
     "positive": "studio portrait photo, slightly stylised, with gently exaggerated features, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -71,7 +71,7 @@
   },
   "level1/non_binary": {
     "positive": "studio portrait photo, slightly stylised, with gently exaggerated features, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -101,7 +101,7 @@
   },
   "level2/male": {
     "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -111,7 +111,7 @@
   },
   "level2/female": {
     "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -121,7 +121,7 @@
   },
   "level2/non_binary": {
     "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -151,7 +151,7 @@
   },
   "level3/male": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -161,7 +161,7 @@
   },
   "level3/female": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -171,7 +171,7 @@
   },
   "level3/non_binary": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -201,7 +201,7 @@
   },
   "level4/male": {
     "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -211,7 +211,7 @@
   },
   "level4/female": {
     "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -221,7 +221,7 @@
   },
   "level4/non_binary": {
     "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -411,7 +411,7 @@
   },
   "preset/sir_pompadour": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a towering exaggerated pompadour in dark brown, holding a pair of comically oversized sunglasses, wearing well-fitted, modest everyday clothing, fully covered: a smart blazer over a shirt with trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -420,7 +420,7 @@
     }
   },
   "preset/captain_frog": {
-    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic frog character in their early thirties, an average build with a balanced torso, a frog character with smooth green skin, wide-set round eyes and a wide friendly mouth, short cropped hair, with a small pet frog on one shoulder, wearing well-fitted, modest everyday clothing, fully covered: a long pirate captain coat with a tricorn hat, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
+    "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult-appearing friendly anthropomorphic frog character in their early thirties, an average build with a balanced torso, a frog character with smooth green skin, wide-set round eyes and a wide friendly mouth, short cropped hair, holding a large teapot, wearing well-fitted, modest everyday clothing, fully covered: a long pirate captain coat with a tricorn hat, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
     "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
     "resolved": {
       "type": "frog_person",
@@ -441,7 +441,7 @@
   },
   "preset/mushroom_hermit": {
     "positive": "handmade claymation style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a big round mushroom-cap haircut in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a plain white t-shirt and blue jeans, a soft smile, soft daylight, a forest of giant colourful mushrooms. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -451,7 +451,7 @@
   },
   "preset/cloud_chef": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a huge fluffy cloud of hair like cotton candy in dark brown, holding a giant donut, wearing well-fitted, modest everyday clothing, fully covered: a chef uniform with an enormous tall chef hat and apron, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -479,19 +479,9 @@
       "age": 30
     }
   },
-  "preset/dino_dave": {
-    "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a full-body inflatable green dinosaur costume, a big friendly grin, soft daylight, a bright retro arcade. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
-    "resolved": {
-      "type": "male",
-      "species": null,
-      "bodySize": "medium",
-      "age": 30
-    }
-  },
   "preset/stair_step_steve": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, a cartoon giant head on a small body, an oval face, almond-shaped eyes, brown eyes, hair cut in dramatic stair-step layers in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a denim jacket over a t-shirt with trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -501,7 +491,7 @@
   },
   "preset/bubble_afro": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a huge round bubble-shaped afro in dark brown, surrounded by floating soap bubbles, wearing well-fitted, modest everyday clothing, fully covered: a sparkly glitter tracksuit, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -521,7 +511,7 @@
   },
   "preset/banana_detective": {
     "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, sunglasses, wearing well-fitted, modest everyday clothing, fully covered: a full-body banana costume, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -541,7 +531,7 @@
   },
   "preset/mascot_marvin": {
     "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a fluffy full-body sports mascot costume, laughing, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -551,7 +541,7 @@
   },
   "preset/unicorn_hair": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, hair twisted into a single tall unicorn-horn spike in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a bright superhero costume with a long flowing cape, fully covered, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -561,7 +551,7 @@
   },
   "preset/rainbow_mohawk": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a bright rainbow-coloured mohawk in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a jacket completely covered in colourful flowers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -591,7 +581,7 @@
   },
   "preset/paper_baker": {
     "positive": "bold colourful cartoon style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a chef uniform with an enormous tall chef hat and apron, a soft smile, soft daylight, a handmade paper-craft set. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -621,7 +611,7 @@
   },
   "preset/duck_rain": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, short cropped hair in dark brown, holding a tiny umbrella, wearing well-fitted, modest everyday clothing, fully covered: a yellow raincoat with a duck-shaped hood and rubber boots, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -631,7 +621,7 @@
   },
   "preset/balloon_wizard": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, one extremely long braid reaching the floor in dark brown, holding a big bunch of colourful balloons, wearing well-fitted, modest everyday clothing, fully covered: a long star-covered wizard robe and pointed hat, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -641,7 +631,7 @@
   },
   "preset/long_shoe_larry": {
     "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a bright rainbow-coloured mohawk in dark brown, extremely long exaggerated clown-length shoes, twice the length of the feet, wearing well-fitted, modest everyday clothing, fully covered: a baggy polka-dot suit with an oversized bow tie, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -651,7 +641,7 @@
   },
   "preset/curly_toe_queen": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a huge braided crown of hair rising above the head in dark brown, pointed shoes with long upward-curling toes, wearing well-fitted, modest everyday clothing, fully covered: a long dress with many layers of colourful ruffles, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -661,7 +651,7 @@
   },
   "preset/platform_pete": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, hair spun up into a tall tornado-shaped swirl in dark brown, very tall chunky platform boots, wearing well-fitted, modest everyday clothing, fully covered: a bright neon windbreaker over a plain long-sleeved top with trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -671,7 +661,7 @@
   },
   "preset/cycling_clara": {
     "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a high ponytail fountaining up and falling around the head in dark brown, comically oversized bright sneakers, wearing well-fitted, modest everyday clothing, fully covered: knee-length stretchy athletic cycling shorts with a loose long-sleeved cycling jersey that covers the waist, a soft smile, soft daylight, a sunny park. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -681,7 +671,7 @@
   },
   "preset/legging_lou": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, two parallel tall mohawk ridges in dark brown, tall boots with bold rainbow stripes, wearing well-fitted, modest everyday clothing, fully covered: full-length opaque stretchy athletic leggings with a long loose sports top that covers the hips, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -691,7 +681,7 @@
   },
   "preset/ruffle_rosa": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, long hair in huge spring-like corkscrew curls in dark brown, wearing well-fitted, modest everyday clothing, fully covered: an oversized ruffled blouse with big layered ruffles and plain trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -701,7 +691,7 @@
   },
   "preset/puffy_percy": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, a tall stack of three round buns on top of the head in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a top with enormous puffy balloon sleeves and plain trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -711,7 +701,7 @@
   },
   "preset/mismatch_max": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult man in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, hair split in two very different styles, long and wavy on one side and short and spiky on the other in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a novelty top with two completely different mismatched sleeves and plain trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "male",
       "species": null,
@@ -721,7 +711,7 @@
   },
   "preset/collar_connie": {
     "positive": "glossy 3D vinyl toy style, comic and silly, with exaggerated cartoon proportions and bold colours, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, hair swept up into a giant ocean-wave crest in dark brown, wearing well-fitted, modest everyday clothing, fully covered: a shirt with a gigantic oversized pointed collar and plain trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,
@@ -731,7 +721,7 @@
   },
   "preset/spring_steps": {
     "positive": "glossy 3D vinyl toy style, completely over-the-top, absurd and comical, with wildly exaggerated cartoon proportions and very bold colours, an adult non-binary person with an androgynous look in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, hair in a ring of tall pointy spikes like a crown in dark brown, shoes with big coiled springs under the soles, wearing well-fitted, modest everyday clothing, fully covered: an enormous oversized puffer jacket in a bright colour with trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "non_binary",
       "species": null,
@@ -741,7 +731,7 @@
   },
   "preset/space_buns": {
     "positive": "studio portrait photo, playful and quirky, with clearly exaggerated styling, an adult woman in their early thirties, an average build with a balanced torso, light olive skin tone, an oval face, almond-shaped eyes, brown eyes, two big space buns in dark brown, holding a skateboard under one arm, wearing well-fitted, modest everyday clothing, fully covered: a long-sleeved sports top and full-length sports trousers, a soft smile, soft daylight, a clean studio backdrop. Adult, fully clothed in well-fitted modest everyday clothing, friendly and tasteful.",
-    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo",
+    "negative": "nudity, revealing clothing, tight clothing, child, minor, young child, deformed, extra fingers, watermark, text, logo, frog, lizard, reptile, amphibian, scales, green skin, bulging eyes, slit pupils",
     "resolved": {
       "type": "female",
       "species": null,

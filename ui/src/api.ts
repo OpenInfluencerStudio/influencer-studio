@@ -64,13 +64,16 @@ export function loadPreviews(): Promise<Map<string, PreviewItem[]>> {
 export const LOOK_FOR_TYPE: Record<string, string> = { male: 'man', trans_man: 'man', female: 'woman', trans_woman: 'woman', non_binary: 'nonbinary', alien: 'alien', monster: 'monster', cat_person: 'creature_cat_person', dog_person: 'creature_dog_person', fox_person: 'creature_fox_person', frog_person: 'creature_frog_person', insect_person: 'creature_insect_person', bird_person: 'creature_bird_person', rodent_person: 'creature_rodent_person', reptile_person: 'creature_reptile_person', robot: 'creature_robot', plush_person: 'creature_plush_person' };
 /** Pick the thumbnail for a control option and the current character type. Returns null when none exists (caller draws the SVG fallback). */
 export function pickPreview(map: Map<string, PreviewItem[]>, control: string, option: string, type: string, index: number): PreviewItem | null {
-  const items = map.get(control + '/' + option); if (!items?.length) return null;
+  const all = map.get(control + '/' + option); if (!all?.length) return null;
   const want = LOOK_FOR_TYPE[type];
+  const isHumanSide = control !== 'type' && control !== 'species' && (!want || ['man', 'woman', 'nonbinary'].includes(want));
+  // Human types and "Surprise me" never see creature, alien or monster tiles (no frog/lizard on the human side).
+  const items = isHumanSide ? all.filter(i => ['man', 'woman', 'nonbinary'].includes(i.look)) : all;
+  if (!items.length) return null;
   const exact = want ? items.find(i => i.look === want) : undefined; if (exact) return exact;
   const shared = items.find(i => i.shared); if (shared) return shared;
   if (items.length === 1) return items[0];
   if (want && !want.startsWith('creature')) return null;
   // "Surprise me": vary the person across the grid instead of always showing one look.
-  const humans = items.filter(i => ['man', 'woman', 'nonbinary'].includes(i.look)); const pool = humans.length ? humans : items;
-  return pool[index % pool.length];
+  return items[index % items.length];
 }
