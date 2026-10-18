@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'preact/hooks';
+import { About, Walkthrough, FeedbackLink, WALK_KEY } from './About';
 import { api, ApiError, initToken, subscribe, fetchBlobUrl, uploadRef, loadPreviews, pickPreview, type PreviewItem } from './api';
 import { SameCharacter, SaveAsCharacter, RefThumb } from './SameCharacter';
 import { VideoCard } from './VideoCard';
@@ -9,8 +10,8 @@ import { CustomPanel } from './CustomPanel';
 import { hue } from './Art';
 import { Portrait, FullBody, Lazy, Avatar, SKIN, HAIRC, EYEC } from './Art';
 
-type Screen = 'scan' | 'home' | 'builder' | 'generate' | 'models';
-const NAV: [Screen, string][] = [['scan', 'Hardware'], ['home', 'Home'], ['builder', 'Character'], ['generate', 'Generate'], ['models', 'Models']];
+type Screen = 'scan' | 'home' | 'builder' | 'generate' | 'models' | 'about';
+const NAV: [Screen, string][] = [['scan', 'Hardware'], ['home', 'Home'], ['builder', 'Character'], ['generate', 'Generate'], ['models', 'Models'], ['about', 'About']];
 
 type Opt = { id: string; label: string; silly?: boolean };
 type Ctl = { id: string; title: string; ui: string; multi: boolean; maxSelected: number; applies: 'all' | 'human'; default: string | string[]; options: Opt[] };
@@ -19,7 +20,7 @@ type Reason = { code: string; hard: boolean; text: string };
 type Variant = { id: string; label: string; format: string; sizeGb: number; license: string; minVramGb: number; state: string; reasons: Reason[]; installed: boolean | null; sources: string[]; downloadable: boolean; est: boolean };
 type ModelOpt = { id: string; name: string; kind: string; bestVariantId: string | null; variants: Variant[] };
 type Res = { px: number; width: number; height: number; state: string; reason: string | null };
-type Opts = { custom: any; customActive: boolean; profile: any; pretend: string | null; realTier: string; realTierName: string; tier: { id: string; name: string; label: string; estimated: boolean }; models: ModelOpt[]; resolutions: Res[]; settings: { unlock_unsupported: boolean }; comfyOnline: boolean; mock: boolean; summary: string };
+type Opts = { version: string; custom: any; customActive: boolean; profile: any; pretend: string | null; realTier: string; realTierName: string; tier: { id: string; name: string; label: string; estimated: boolean }; models: ModelOpt[]; resolutions: Res[]; settings: { unlock_unsupported: boolean }; comfyOnline: boolean; mock: boolean; summary: string };
 export type Job = { id: string; status: string; progress: number; message?: string; error?: string; label: string; prompt: string; seed: number; width: number; height: number; mock: boolean; unsupported: boolean; outputs: { index: number; mime: string }[]; createdAt: string; character?: any; edit?: any; video?: any };
 type Ch = Record<string, any>;
 
@@ -30,6 +31,8 @@ const STATE_TXT: Record<string, string> = { recommended: 'Recommended for your G
 export function App() {
   const [token] = useState(initToken);
   const [screen, setScreen] = useState<Screen>('scan');
+  const [walk, setWalk] = useState(() => { try { return localStorage.getItem(WALK_KEY) !== '1'; } catch { return false; } });
+  const closeWalk = (done: boolean) => { setWalk(false); if (done) { try { localStorage.setItem(WALK_KEY, '1'); } catch { /* storage blocked */ } } setScreen('scan'); };
   const [adv, setAdv] = useState(false);
   const [mode, setModeS] = useState<Mode>(() => load(MODE_KEY, parseMode));
   const [vin, setVinS] = useState<VideoInput>(() => load(INPUT_KEY, parseInput));
@@ -89,17 +92,19 @@ export function App() {
   return (
     <div class={'shell' + (adv ? ' adv' : '')}>
       <header class="top">
-        <div class="logo"><img class="mark" src="./icon.svg" width="28" height="28" alt="" />Influencer Studio{opts.mock && <small class="mockb" title="No AI model is running; images are placeholders">MOCK GENERATOR</small>}</div>
+        <div class="logo"><img class="mark" src="./icon.svg" width="28" height="28" alt="" />Influencer Studio<small class="verb" id="ver-badge" title="Pre-launch test build">v{opts.version}</small>{opts.mock && <small class="mockb" title="No AI model is running; images are placeholders">MOCK GENERATOR</small>}</div>
         <ModeSwitch mode={mode} set={setMode} />
         <nav aria-label="Main">
           {NAV.map(([k, l]) => <button key={k} class={screen === k ? 'on' : ''} aria-current={screen === k ? 'page' : undefined} onClick={() => setScreen(k)}>{l}</button>)}
         </nav>
         <div class="right">
+          <FeedbackLink version={opts.version} cls="chip fbk" short />
           {unlocked && <button class="chip warnchip" onClick={() => setUnlock(false)} title="Click to lock again">Unlocked: unsupported options on</button>}
           <Toggle label="Advanced" on={adv} set={setAdv} />
           <span class="pill" title="Detected hardware">{gpu ? `${gpu.name.replace('NVIDIA ', '').replace('GeForce ', '')} · ${gpu.vramGb} GB` : 'No GPU found'} · {opts.tier.name}</span>
         </div>
       </header>
+      {walk && <Walkthrough go={setScreen} close={closeWalk} />}
       {!opts.comfyOnline && !opts.mock && <div class="banner" role="status">ComfyUI is offline at its configured address. You can still build characters; generation resumes when ComfyUI is running.</div>}
       <main key={screen} class="fade">
         {screen === 'scan' && <Scan {...ctx} />}
@@ -107,6 +112,7 @@ export function App() {
         {screen === 'builder' && <Builder {...ctx} />}
         {screen === 'generate' && <Generate {...ctx} />}
         {screen === 'models' && <Models {...ctx} />}
+        {screen === 'about' && <About {...ctx} setWalk={setWalk} />}
       </main>
     </div>
   );
@@ -237,7 +243,7 @@ function Builder(p: Ctx) {
     ...(schema.species[type] ? [{ id: 'species', title: (schema.types.find(t => t.id === type)?.label ?? 'Character') + ' species', ui: 'species', options: schema.species[type] }] : []),
     { id: 'bodySize', title: 'Body size', ui: 'size', options: schema.sizes },
     { id: 'age', title: 'Age', ui: 'pill', options: schema.ageBands },
-    ...schema.controls.filter(c => human || c.applies === 'all').filter(c => p.adv || !['expression', 'lighting', 'background', 'renderStyle'].includes(c.id) || true).map(c => ({ id: c.id, title: c.title, ui: c.ui, options: c.options, multi: c.multi, max: c.maxSelected })),
+    ...schema.controls.filter(c => human || (c.applies === 'all' && c.id !== 'hairStyle')).filter(c => p.adv || !['expression', 'lighting', 'background', 'renderStyle'].includes(c.id) || true).map(c => ({ id: c.id, title: c.title, ui: c.ui, options: c.options, multi: c.multi, max: c.maxSelected })),
   ];
   const curOf = (s: Section): string | string[] => {
     if (s.id === 'age') return schema.ageBands.reduce((a, b) => (Math.abs(b.age - ch.age) < Math.abs(a.age - ch.age) ? b : a)).id;
@@ -248,7 +254,7 @@ function Builder(p: Ctx) {
   const labelOf = (id: string): string => { const s = secs.find(x => x.id === id); if (!s) return ''; const v = curOf(s) as string; return s.options.find(o => o.id === v)?.label ?? ''; };
   const choose = (s: Section, o: Opt) => {
     const n = { ...ch };
-    if (s.id === 'type') { n.type = o.id; delete n.species; if (!humanType(o.id)) { /* species default applied server side */ } }
+    if (s.id === 'type') { n.type = o.id; delete n.species; if (!humanType(o.id)) { delete n.hairStyle; /* hair style has no tiles for non-human types; species default applied server side */ } }
     else if (s.id === 'age') n.age = schema.ageBands.find(a => a.id === o.id)!.age;
     else if (s.multi) { const cur = (ch[s.id] as string[]) ?? []; n[s.id] = cur.includes(o.id) ? cur.filter(x => x !== o.id) : [...cur, o.id].slice(-(s.max ?? 3)); }
     else n[s.id] = o.id;

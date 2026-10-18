@@ -1,7 +1,7 @@
 // Real-click test of the builder: silly slider, silly preset pack, realistic preview panel (mock mode). Usage: node test-builder.mjs <url> <outdir>
 import { chromium } from 'playwright';
 const [url, out] = process.argv.slice(2); const fail = []; const ok = (c, m) => { if (!c) fail.push(m); console.log(c ? 'PASS' : 'FAIL', m); };
-const b = await chromium.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox'] }); const p = await b.newPage({ viewport: { width: 1280, height: 800 } });
+const b = await chromium.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox'] }); const p = await b.newPage({ viewport: { width: 1280, height: 800 } }); await p.addInitScript(() => { try { localStorage.setItem('is_walkthrough_done', '1'); } catch {} });
 const errs = []; p.on('pageerror', e => errs.push(e.message));
 await p.goto(url); await p.waitForTimeout(1500); await p.click('nav >> text=Character'); await p.waitForSelector('#live-preview'); await p.waitForTimeout(800);
 ok(await p.locator('.bigart svg').count() === 0 && await p.locator('#live-preview svg').count() === 0, 'schematic figure removed');

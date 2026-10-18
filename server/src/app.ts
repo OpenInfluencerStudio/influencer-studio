@@ -1,4 +1,5 @@
 import http from 'node:http';
+import { VERSION, CHANNEL, ISSUES_URL, makeReport, redact, type Diagnostics } from './diagnostics.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -75,7 +76,19 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
       if (sfs && sfs !== 'same-origin') throw new HttpError(403, 'bad_origin', 'Cross-site request refused');
     }
     const p = url.pathname;
-    if (m === 'GET' && p === '/api/health') return send(res, 200, { ok: true, version: '0.1.0', mock: services.mock, comfyUrl: services.comfy.baseUrl, comfyOnline: await services.comfyHealth() });
+    if (m === 'GET' && p === '/api/health') return send(res, 200, { ok: true, version: VERSION, mock: services.mock, comfyUrl: services.comfy.baseUrl, comfyOnline: await services.comfyHealth() });
+    if (m === 'GET' && p === '/api/diagnostics') {
+      const opt = await optionsPayload(services, null) as any; const h = await services.comfy.health(); const pr = opt.profile;
+      const loop = (() => { try { const u = new URL(services.comfy.baseUrl); return ['127.0.0.1', 'localhost', '[::1]', '::1'].includes(u.hostname); } catch { return false; } })();
+      const d: Diagnostics = { version: VERSION, channel: CHANNEL, issuesUrl: ISSUES_URL, generatedAt: new Date().toISOString(),
+        runtime: { node: process.version, platform: process.platform, arch: process.arch, mock: services.mock },
+        hardware: { os: `${pr.os.platform} ${pr.os.release} ${pr.os.arch}`, gpus: pr.gpus.map((x: any) => ({ name: x.name, vramGb: x.vramGb, driver: x.driver })), ramGb: pr.ramGb, freeDiskGb: pr.freeDiskGb, tier: opt.tier.name, tierLabel: opt.tier.label, realTier: opt.realTierName, customActive: !!opt.customActive, notes: pr.notes ?? [] },
+        comfy: { online: h.online, address: loop ? 'loopback' : 'non-loopback', device: h.device, vramTotalGb: h.vramTotalGb, vramFreeGb: h.vramFreeGb },
+        models: opt.models.map((mo: any) => ({ id: mo.id, label: mo.label ?? mo.id, variants: mo.variants.map((v: any) => ({ label: v.label, state: v.state, installed: !!v.installed, sizeGb: v.sizeGb, license: v.license })) })),
+        modelsFolder: services.modelsDir ? 'configured' : 'not set' };
+      d.report = makeReport(d, [{ value: services.modelsDir, label: '<models folder>' }, { value: services.dataDir, label: '<data folder>' }]);
+      return send(res, 200, d);
+    }
     if (m === 'GET' && p === '/api/hardware') return send(res, 200, await services.hardware(url.searchParams.get('refresh') === '1'));
     if (m === 'GET' && p === '/api/options') return send(res, 200, await optionsPayload(services, url.searchParams.get('pretend')));
     if (m === 'GET' && p === '/api/settings') return send(res, 200, services.settings);
@@ -288,7 +301,7 @@ async function optionsPayload(s: Services, pretend: string | null) {
     const locked = !s.mock && (profile.tier === 'T0' || px > t.maxImagePx);
     return { px, width: Math.round((px * 0.75) / 16) * 16, height: px, state: locked ? 'locked_soft' : 'runs', reason: locked ? (profile.tier === 'T0' ? R.noGpu().text : R.res(px, t.maxImagePx, t.name).text) : null };
   });
-  return { profile, pretend: pretend ?? null, custom: s.custom ?? null, customActive: useCustom, realTier: real.tier, realTierName: s.limits.tiers.find(x => x.id === real.tier)!.name, tier: { id: t.id, name: t.name, label: t.label, maxImagePx: t.maxImagePx, maxVideoPx: t.maxVideoPx, maxVideoFrames: t.maxVideoFrames, estimated: t.estimated }, models, resolutions, settings: s.settings, comfyOnline: await s.comfyHealth(), mock: s.mock,
+  return { version: VERSION, profile, pretend: pretend ?? null, custom: s.custom ?? null, customActive: useCustom, realTier: real.tier, realTierName: s.limits.tiers.find(x => x.id === real.tier)!.name, tier: { id: t.id, name: t.name, label: t.label, maxImagePx: t.maxImagePx, maxVideoPx: t.maxVideoPx, maxVideoFrames: t.maxVideoFrames, estimated: t.estimated }, models, resolutions, settings: s.settings, comfyOnline: await s.comfyHealth(), mock: s.mock,
     summary: profile.tier === 'T0' ? 'This computer cannot run local generation models. Generation is locked; you can still explore the character builder.' : `Your PC: ${profile.gpus.find(g => g.index === profile.selectedGpu)?.name ?? 'GPU'}, ${profile.vramGb} GB VRAM, ${profile.ramGb} GB RAM. We enabled what runs well and locked the rest.` };
 }
 function schemaPayload(s: Services) {

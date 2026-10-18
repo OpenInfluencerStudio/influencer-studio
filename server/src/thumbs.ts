@@ -69,18 +69,22 @@ export const TEXT_OPTIONS = new Set(['features/dimples', 'features/round_ears', 
 /** Stronger wording per option for the text-to-image thumbnails (thumbnail only; the app prompt is unchanged). */
 export const SPECIES_STRONG: Record<string, string> = { insect_person_moth: 'a human face with two large feathery moth antennae on the forehead, soft pale fuzzy skin, large dark eyes, small pale-grey moth wings visible behind the shoulders; still clearly a human adult, not an animal' };
 export const STRONG: Record<string, string> = {
+  'shoes/spring_shoes': 'big visible chrome metal coil springs, each spring about ten centimetres tall, mounted between the sole and the shoe so each shoe sits on a tall bouncy spring',
+  'shoes/curly_toe_shoes': 'elf-style gold shoes whose very long pointed toes curl all the way up and back over themselves into a big spiral curl at each tip, like a ram horn',
+  'hairStyle/flame_swirl': 'hair swept up and styled into a tall, bold flame shape with three pointed tongues of hair curling upward like a candle flame',
+  'hairStyle/tornado_swirl': 'hair twisted into a tall, narrow spiral swirl on top of the head, a clearly visible corkscrew tornado shape spiralling upward',
+  'hairStyle/wave_crest': 'hair on top swept up into a huge curling ocean-wave crest that curls forward over the forehead like a breaking wave',
+  'hairStyle/stair_step_cut': 'hair cut into very obvious, sharp, wide stair-step layers, like steps of a staircase down the side and top of the head',
   'outfit/inflatable_dino': 'a loose, baggy, oversized green inflatable dinosaur costume worn over a plain long-sleeved shirt and trousers, with a big hood, spikes down the back and a tail, fully covering the body',
   'outfit/cycling_shorts_kit': 'a long-sleeved navy cycling jersey and knee-length dark navy cycling shorts that reach to just above the knee, with plain ankle socks',
   'prop/skateboard': 'holding a full-size colourful skateboard upright in front of the body with both hands, the whole deck and wheels clearly visible',
   'prop/pet_frog': 'a clearly visible large green frog sitting on one shoulder right next to the face',
   'shoes/clown_length_shoes': 'enormous clown shoes about three times longer than normal feet, very long flat red shoes pointing forward',
-  'shoes/curly_toe_shoes': 'elf-style shoes with long toes that curl up and back in a spiral at the tips, bright gold',
   'shoes/platform_boots': 'extremely tall chunky platform boots with soles about fifteen centimetres thick',
   'shoes/giant_sneakers': 'comically oversized bright neon green and orange sneakers, each as big as a loaf of bread',
   'shoes/rocket_boots': 'chunky retro-futuristic silver boots with big red rocket fins on the sides and jets at the heels',
   'shoes/duck_foot_shoes': 'wide flat bright orange shoes shaped like duck feet with webbed toes',
   'shoes/striped_boots': 'tall boots covered in bold rainbow stripes',
-  'shoes/spring_shoes': 'shoes with big metal coil springs attached under the soles',
   'headShape/oval': 'a clearly oval face, about one and a half times as tall as it is wide, with a softly rounded chin', 'headShape/round': 'a clearly round, full face as wide as it is tall, with a soft round chin and full cheeks',
   'headShape/square': 'a clearly square face with a strong flat square jawline and a wide forehead', 'headShape/heart': 'a clearly heart-shaped face with a wide forehead, high cheekbones and a narrow pointed chin',
   'headShape/long': 'a clearly long, narrow face that is much taller than it is wide', 'headShape/diamond': 'a clearly diamond-shaped face with wide cheekbones and a narrow forehead and chin',
@@ -181,6 +185,19 @@ export function buildThumbManifest(): ThumbItem[] {
   for (const t of TYPE_OPTS.filter(x => CREATURE_TYPES.includes(x.id))) {
     const fr = CREATURE_FRAG[t.id] ?? '';
     add({ control: 'type', option: t.id, look: 'creature', shared: true, framing: 'upper', mode: 't2i', fragment: t.phrase, prompt: `${FRAMINGS.upper.text} of ${t.phrase}, ${fr}, calm friendly expression, ${CLOTHES[t.id] ?? 'a plain bright pure-white cotton crew-neck t-shirt'}, plain mid-grey studio background, soft even light, sharp focus. Adult, fully clothed, modest everyday clothing.`, seed: 7000 + CREATURE_TYPES.indexOf(t.id) * 13, file: `type/${t.id}.webp`, group: 'type' });
+  }
+  // 2c) Creature-look tiles for the tile controls that apply to creature types (outfit, accessory, prop): text-to-image, one friendly adult fox character
+  const CSUBJ = 'an adult-appearing friendly anthropomorphic fox character with orange fur, a white muzzle and kind eyes';
+  for (const cid of ['outfit', 'accessory', 'prop']) {
+    const c = CONTROLS.find(x => x.id === cid)!; let n = 0;
+    for (const o of c.options) {
+      if (isBase(c, o)) continue; n++;
+      const k = `${c.id}/${o.id}`; const strong = STRONG[k] ?? o.frag; const full = cid === 'outfit';
+      const prompt = full
+        ? `full-length photo from head to toe of ${CSUBJ}, standing straight, wearing ${strong}, plain black shoes, calm friendly expression, ${REF_TAIL}`
+        : `${FRAMINGS.upper.text} of ${CSUBJ}, ${strong}, calm friendly expression, ${REF_OUTFIT}, ${REF_TAIL}`;
+      add({ control: c.id, option: o.id, look: 'creature', shared: false, framing: full ? 'full' : 'upper', mode: 't2i', fragment: o.frag, prompt, seed: 8000 + n, file: `${c.id}/${o.id}__creature.webp`, group: `${c.id}_creature` });
+    }
   }
   for (const [tid, list] of [['insect_person', INSECT_SPECIES], ['bird_person', BIRD_SPECIES]] as const) for (const sp of list) {
     const t = TYPE_OPTS.find(x => x.id === tid)!;

@@ -1,7 +1,7 @@
 // Real-click test of the model list on the Hardware screen (mock mode). Usage: node test-modelsel.mjs <url-with-token> <outdir>
 import { chromium } from 'playwright';
 const [url, out] = process.argv.slice(2); const fail = []; const ok = (c, m) => { if (!c) fail.push(m); console.log(c ? 'PASS' : 'FAIL', m); };
-const b = await chromium.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox'] }); const p = await b.newPage({ viewport: { width: 1280, height: 800 } });
+const b = await chromium.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox'] }); const p = await b.newPage({ viewport: { width: 1280, height: 800 } }); await p.addInitScript(() => { try { localStorage.setItem('is_walkthrough_done', '1'); } catch {} });
 const errs = []; p.on('pageerror', e => errs.push(e.message));
 await p.goto(url); await p.waitForSelector('.mrow'); await p.waitForTimeout(2800);
 const row = id => p.locator(`.mrow[data-model="${id}"]`);

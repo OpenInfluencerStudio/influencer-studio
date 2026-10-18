@@ -33,12 +33,25 @@ describe('thumbnail manifest', () => {
     for (const i of items) { expect(i.gen).toEqual(FRAMINGS[i.framing].gen); expect(i.out).toEqual(FRAMINGS[i.framing].out); }
     for (const i of items) if (RULES[i.control]?.humanOnly) expect(['man', 'woman', 'nonbinary']).toContain(i.look);
     expect(new Set(items.filter(i => i.control === 'hairStyle').map(i => i.look)).size).toBe(3);
-    expect(new Set(items.filter(i => !i.shared && i.control === 'outfit').map(i => i.look)).size).toBe(5);
+    expect(new Set(items.filter(i => !i.shared && i.control === 'outfit').map(i => i.look)).size).toBe(6);
     // the library must not be all one look: every human look appears in the single-look controls too
     expect(new Set(items.filter(i => i.shared && i.mode === 'edit').map(i => i.look)).size).toBeGreaterThanOrEqual(3);
   });
   it('maps character types to looks and never defaults to a man or an alien silently', () => {
     expect(lookForType('male')).toBe('man'); expect(lookForType('trans_woman')).toBe('woman'); expect(lookForType('non_binary')).toBe('nonbinary'); expect(lookForType('monster')).toBe('monster');
     expect(referencePrompt('alien', 'face')).toContain('Starborn');
+  });
+});
+
+describe('creature tiles and weak-option wording', () => {
+  it('creature-look tiles exist for outfit, accessory and prop and nothing else non-type/species', () => {
+    const items = buildThumbManifest().filter(i => i.look === 'creature' && i.control !== 'type' && i.control !== 'species');
+    expect(new Set(items.map(i => i.control))).toEqual(new Set(['outfit', 'accessory', 'prop']));
+    expect(items.every(i => i.mode === 't2i' && i.file.endsWith('__creature.webp'))).toBe(true);
+  });
+  it('the formerly weak options use strengthened wording', () => {
+    const m = buildThumbManifest(); const by = (k: string) => m.find(i => i.key.startsWith(k))!.prompt;
+    expect(by('shoes/spring_shoes')).toMatch(/coil springs/); expect(by('shoes/curly_toe_shoes')).toMatch(/spiral curl/);
+    expect(by('hairStyle/flame_swirl')).toMatch(/flame/); expect(by('hairStyle/tornado_swirl')).toMatch(/corkscrew/); expect(by('hairStyle/wave_crest')).toMatch(/wave/);
   });
 });
