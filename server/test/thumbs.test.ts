@@ -33,7 +33,7 @@ describe('thumbnail manifest', () => {
     for (const i of items) { expect(i.gen).toEqual(FRAMINGS[i.framing].gen); expect(i.out).toEqual(FRAMINGS[i.framing].out); }
     for (const i of items) if (RULES[i.control]?.humanOnly) expect(['man', 'woman', 'nonbinary']).toContain(i.look);
     expect(new Set(items.filter(i => i.control === 'hairStyle').map(i => i.look)).size).toBe(3);
-    expect(new Set(items.filter(i => !i.shared && i.control === 'outfit').map(i => i.look)).size).toBe(6);
+    expect(new Set(items.filter(i => !i.shared && i.control === 'outfit').map(i => i.look)).size).toBe(15);
     // the library must not be all one look: every human look appears in the single-look controls too
     expect(new Set(items.filter(i => i.shared && i.mode === 'edit').map(i => i.look)).size).toBeGreaterThanOrEqual(3);
   });
@@ -45,9 +45,13 @@ describe('thumbnail manifest', () => {
 
 describe('creature tiles and weak-option wording', () => {
   it('creature-look tiles exist for outfit, accessory and prop and nothing else non-type/species', () => {
-    const items = buildThumbManifest().filter(i => i.look === 'creature' && i.control !== 'type' && i.control !== 'species');
+    const items = buildThumbManifest().filter(i => i.look.startsWith('creature_'));
     expect(new Set(items.map(i => i.control))).toEqual(new Set(['outfit', 'accessory', 'prop']));
-    expect(items.every(i => i.mode === 't2i' && i.file.endsWith('__creature.webp'))).toBe(true);
+    expect(new Set(items.map(i => i.look)).size).toBe(10); // every creature type has its own character
+    expect(items.every(i => i.mode === 't2i' && i.file.includes('__') && !i.file.endsWith('__creature.webp'))).toBe(true);
+    const cat = items.find(i => i.key === 'outfit/smart_blazer/creature_cat_person')!, frog = items.find(i => i.key === 'outfit/smart_blazer/creature_frog_person')!;
+    expect(cat.prompt).toMatch(/cat/); expect(frog.prompt).toMatch(/frog/); expect(cat.prompt).not.toMatch(/fox/);
+    const al = buildThumbManifest().filter(i => i.look === 'alien' && ['accessory', 'prop'].includes(i.control)); expect(al.length).toBeGreaterThan(15);
   });
   it('the formerly weak options use strengthened wording', () => {
     const m = buildThumbManifest(); const by = (k: string) => m.find(i => i.key.startsWith(k))!.prompt;

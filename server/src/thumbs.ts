@@ -8,17 +8,18 @@ import crypto from 'node:crypto';
 import { CONTROLS, TYPE_OPTS, SIZE_OPTS, ALIEN_SPECIES, MONSTER_SPECIES, INSECT_SPECIES, BIRD_SPECIES, CREATURE_TYPES, CREATURE_FRAG, CLOTHING_PHRASE, type Control } from './compiler/schema.js';
 import { assertSafeText } from './safety/index.js';
 
-export type Look = 'man' | 'woman' | 'nonbinary' | 'alien' | 'monster' | 'creature';
-export type RefLook = Exclude<Look, 'creature'>;
+export type RefLook = 'man' | 'woman' | 'nonbinary' | 'alien' | 'monster';
+/** 'creature' = the per-type portrait tiles; `creature_<type>` = option tiles drawn with that creature type's own character. */
+export type Look = RefLook | 'creature' | `creature_${string}`;
 export type Framing = 'face' | 'upper' | 'full' | 'eyes';
-export const LOOKS: Exclude<Look, 'creature'>[] = ['man', 'woman', 'nonbinary', 'alien', 'monster']; // the five reference looks (creature tiles are one-off text-to-image)
+export const LOOKS: RefLook[] = ['man', 'woman', 'nonbinary', 'alien', 'monster']; // the five reference looks (creature tiles are one-off text-to-image)
 export const FRAMINGS: Record<Framing, { gen: [number, number]; out: [number, number]; text: string }> = {
   face: { gen: [768, 768], out: [320, 320], text: 'close head-and-shoulders portrait photo' },
   upper: { gen: [768, 768], out: [320, 320], text: 'waist-up portrait photo' },
   full: { gen: [576, 768], out: [240, 320], text: 'three-quarter-length photo from the knees up, whole torso and both arms visible' },
   eyes: { gen: [768, 512], out: [320, 214], text: 'extreme close-up photo of the eyes and eyebrows' },
 };
-const LOOK_SUBJECT: Record<Exclude<Look, 'creature'>, string> = {
+const LOOK_SUBJECT: Record<RefLook, string> = {
   man: 'an adult man in his late twenties, short dark brown hair, brown eyes, light-medium skin',
   woman: 'an adult woman in her late twenties, shoulder-length straight brown hair, brown eyes, light-medium skin',
   nonbinary: 'an adult non-binary person in their mid-thirties with a calm, androgynous look, balanced soft-angular features, faint smile lines, chin-length wavy auburn hair with a side part, hazel eyes, light-medium skin',
@@ -32,13 +33,13 @@ export const REF_TAIL = 'plain mid-grey studio background, soft even light, shar
 export const EDIT_SCAFFOLD = 'Edit the reference photo: keep the same person, same face, same pose, same framing, same grey background and same lighting. Change only this: {fragment}. Everything else must stay exactly the same, including the bright white t-shirt, which stays pure white unless the change is about clothing. Adult, fully clothed, modest everyday clothing.';
 
 /** Frozen reference prompt per look and framing (text-to-image, fixed seed). */
-export function referencePrompt(look: Exclude<Look, 'creature'>, framing: Framing): string {
+export function referencePrompt(look: RefLook, framing: Framing): string {
   const legs = framing === 'full' ? ', plain dark blue trousers' : '';
   return `${FRAMINGS[framing].text} of ${LOOK_SUBJECT[look]}, neutral relaxed expression, ${REF_OUTFIT}${legs}, ${REF_TAIL}`;
 }
 
 /** Seeds: one per look and framing, recorded in the manifest. */
-export const seedFor = (look: Exclude<Look, 'creature'>, framing: Framing) => 1000 * (LOOKS.indexOf(look) + 1) + 100 * (['face', 'upper', 'full', 'eyes'].indexOf(framing) + 1) + 1;
+export const seedFor = (look: RefLook, framing: Framing) => 1000 * (LOOKS.indexOf(look) + 1) + 100 * (['face', 'upper', 'full', 'eyes'].indexOf(framing) + 1) + 1;
 
 interface CtlRule { framing: Framing; looks: RefLook[] | 'rotate'; mode?: 'edit' | 'text'; loose?: boolean; humanOnly?: boolean }
 /** Which controls get generated thumbnails. Swatch controls (skin, hair and eye colour) and ethnicity are never generated (plan 19.8, 19.3). */
@@ -109,13 +110,13 @@ const hash = (s: string) => crypto.createHash('sha256').update(s).digest('hex').
 /** Body-size prompt used for thumbnails and the re-test (stronger silhouette wording than the app fragment; see re-test result in build-log). */
 export const SIZE_THUMB_FRAG: Record<string, string> = Object.fromEntries(SIZE_OPTS.map(o => [o.id, o.frag])); // same wording as the app, so the thumbnail shows what the prompt asks for
 const SIZE_OUTFIT = 'a loose, plain light grey long-sleeved shirt, plain dark grey straight trousers and plain black shoes, well-fitted and fully covered';
-export function sizeThumbPrompt(look: Exclude<Look, 'creature'>, size: string, seed?: number): string {
+export function sizeThumbPrompt(look: RefLook, size: string, seed?: number): string {
   void seed;
   return `${FRAMINGS.full.text} of ${LOOK_SUBJECT[look]}, ${SIZE_THUMB_FRAG[size]}, neutral relaxed expression, standing straight, arms relaxed at sides, wearing ${SIZE_OUTFIT}, ${REF_TAIL}`;
 }
 
 /** Single-look controls rotate over the three human looks, so the grid mixes people but every control stays consistent. Alien/monster get their own tiles (type, species, body size, outfit). */
-function rotateLook(controlId: string): Exclude<Look, 'creature'> {
+function rotateLook(controlId: string): RefLook {
   return HUMAN_LOOKS[CONTROLS.findIndex(c => c.id === controlId) % 3];
 }
 
@@ -144,7 +145,7 @@ export function buildThumbManifest(): ThumbItem[] {
     }
   }
   // 1b) Text-to-image tiles: stronger prompts and tighter crops for what an edit cannot show (head shape, eyes, neck, height, proportions, a few features, bald on Woman/Non-binary, cartoon proportions)
-  const textAdd = (c: Control, o: { id: string; frag: string; silly?: boolean }, look: Exclude<Look, 'creature'>, framing: Framing, tail: string, seedOff: number, multi = false, suffix = '') => {
+  const textAdd = (c: Control, o: { id: string; frag: string; silly?: boolean }, look: RefLook, framing: Framing, tail: string, seedOff: number, multi = false, suffix = '') => {
     add({ control: c.id, option: o.id, look, shared: !multi, framing, mode: 't2i', fragment: o.frag, prompt: tail, seed: seedFor(look, framing) + seedOff, file: `${c.id}/${o.id}${multi ? '__' + look : ''}${suffix}.webp`, loose: false, group: c.id });
   };
   for (const c of CONTROLS) {
@@ -187,17 +188,28 @@ export function buildThumbManifest(): ThumbItem[] {
     const fr = CREATURE_FRAG[t.id] ?? '';
     add({ control: 'type', option: t.id, look: 'creature', shared: true, framing: 'upper', mode: 't2i', fragment: t.phrase, prompt: `${FRAMINGS.upper.text} of ${t.phrase}, ${fr}, calm friendly expression, ${CLOTHES[t.id] ?? 'a plain bright pure-white cotton crew-neck t-shirt'}, plain mid-grey studio background, soft even light, sharp focus. Adult, fully clothed, modest everyday clothing.`, seed: 7000 + CREATURE_TYPES.indexOf(t.id) * 13, file: `type/${t.id}.webp`, group: 'type' });
   }
-  // 2c) Creature-look tiles for the tile controls that apply to creature types (outfit, accessory, prop): text-to-image, one friendly adult fox character
-  const CSUBJ = 'an adult-appearing friendly anthropomorphic fox character with orange fur, a white muzzle and kind eyes';
-  for (const cid of ['outfit', 'accessory', 'prop']) {
+  // 2c) Per-type tiles for the tile controls that apply to non-human types (outfit, accessory, prop): text-to-image, each type drawn as its OWN character
+  for (const [ti, t] of TYPE_OPTS.filter(x => CREATURE_TYPES.includes(x.id)).entries()) {
+    const subj = `${t.phrase}, ${CREATURE_FRAG[t.id] ?? ''}`;
+    for (const cid of ['outfit', 'accessory', 'prop']) {
+      const c = CONTROLS.find(x => x.id === cid)!; let n = 0;
+      for (const o of c.options) {
+        if (isBase(c, o)) continue; n++;
+        const k = `${c.id}/${o.id}`; const strong = STRONG[k] ?? o.frag; const full = cid === 'outfit';
+        const prompt = full
+          ? `full-length photo from head to toe of ${subj}, standing straight, wearing ${strong}, plain black shoes, calm friendly expression, ${REF_TAIL}`
+          : `${FRAMINGS.upper.text} of ${subj}, ${strong}, calm friendly expression, ${REF_OUTFIT}, ${REF_TAIL}`;
+        add({ control: c.id, option: o.id, look: `creature_${t.id}`, shared: false, framing: full ? 'full' : 'upper', mode: 't2i', fragment: o.frag, prompt, seed: 8000 + ti * 100 + n, file: `${c.id}/${o.id}__${t.id}.webp`, group: `${c.id}_${t.id}` });
+      }
+    }
+  }
+  // 2d) Accessory and prop tiles for Alien and Monster (their outfit tiles already exist): edit-free text-to-image of each type's own character
+  for (const kind of ['alien', 'monster'] as const) for (const cid of ['accessory', 'prop']) {
     const c = CONTROLS.find(x => x.id === cid)!; let n = 0;
     for (const o of c.options) {
       if (isBase(c, o)) continue; n++;
-      const k = `${c.id}/${o.id}`; const strong = STRONG[k] ?? o.frag; const full = cid === 'outfit';
-      const prompt = full
-        ? `full-length photo from head to toe of ${CSUBJ}, standing straight, wearing ${strong}, plain black shoes, calm friendly expression, ${REF_TAIL}`
-        : `${FRAMINGS.upper.text} of ${CSUBJ}, ${strong}, calm friendly expression, ${REF_OUTFIT}, ${REF_TAIL}`;
-      add({ control: c.id, option: o.id, look: 'creature', shared: false, framing: full ? 'full' : 'upper', mode: 't2i', fragment: o.frag, prompt, seed: 8000 + n, file: `${c.id}/${o.id}__creature.webp`, group: `${c.id}_creature` });
+      const strong = STRONG[`${c.id}/${o.id}`] ?? o.frag;
+      add({ control: c.id, option: o.id, look: kind, shared: false, framing: 'upper', mode: 't2i', fragment: o.frag, prompt: `${FRAMINGS.upper.text} of ${LOOK_SUBJECT[kind]}, ${strong}, calm friendly expression, ${REF_OUTFIT}, ${REF_TAIL}`, seed: 8900 + (kind === 'alien' ? 0 : 50) + n, file: `${c.id}/${o.id}__${kind}.webp`, group: `${c.id}_${kind}` });
     }
   }
   for (const [tid, list] of [['insect_person', INSECT_SPECIES], ['bird_person', BIRD_SPECIES]] as const) for (const sp of list) {

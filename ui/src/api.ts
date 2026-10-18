@@ -61,7 +61,7 @@ export function loadPreviews(): Promise<Map<string, PreviewItem[]>> {
     .then((m: { items?: PreviewItem[] }) => { const map = new Map<string, PreviewItem[]>(); for (const i of m.items ?? []) { const k = i.control + '/' + i.option; map.set(k, [...(map.get(k) ?? []), i]); } return map; });
   return previews;
 }
-export const LOOK_FOR_TYPE: Record<string, string> = { male: 'man', trans_man: 'man', female: 'woman', trans_woman: 'woman', non_binary: 'nonbinary', alien: 'alien', monster: 'monster', cat_person: 'creature', dog_person: 'creature', fox_person: 'creature', frog_person: 'creature', insect_person: 'creature', bird_person: 'creature', rodent_person: 'creature', reptile_person: 'creature', robot: 'creature', plush_person: 'creature' };
+export const LOOK_FOR_TYPE: Record<string, string> = { male: 'man', trans_man: 'man', female: 'woman', trans_woman: 'woman', non_binary: 'nonbinary', alien: 'alien', monster: 'monster', cat_person: 'creature_cat_person', dog_person: 'creature_dog_person', fox_person: 'creature_fox_person', frog_person: 'creature_frog_person', insect_person: 'creature_insect_person', bird_person: 'creature_bird_person', rodent_person: 'creature_rodent_person', reptile_person: 'creature_reptile_person', robot: 'creature_robot', plush_person: 'creature_plush_person' };
 /** Pick the thumbnail for a control option and the current character type. Returns null when none exists (caller draws the SVG fallback). */
 export function pickPreview(map: Map<string, PreviewItem[]>, control: string, option: string, type: string, index: number): PreviewItem | null {
   const items = map.get(control + '/' + option); if (!items?.length) return null;
@@ -69,7 +69,7 @@ export function pickPreview(map: Map<string, PreviewItem[]>, control: string, op
   const exact = want ? items.find(i => i.look === want) : undefined; if (exact) return exact;
   const shared = items.find(i => i.shared); if (shared) return shared;
   if (items.length === 1) return items[0];
-  if (want && want !== 'creature') return null;
+  if (want && !want.startsWith('creature')) return null;
   // "Surprise me": vary the person across the grid instead of always showing one look.
   const humans = items.filter(i => ['man', 'woman', 'nonbinary'].includes(i.look)); const pool = humans.length ? humans : items;
   return pool[index % pool.length];
