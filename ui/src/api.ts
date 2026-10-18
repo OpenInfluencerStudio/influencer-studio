@@ -73,6 +73,8 @@ export function pickPreview(map: Map<string, PreviewItem[]>, control: string, op
   const exact = want ? items.find(i => i.look === want) : undefined; if (exact) return exact;
   const shared = items.find(i => i.shared); if (shared) return shared;
   if (items.length === 1) return items[0];
+  // Human look without its own tile (e.g. beards for a woman): show the closest real human photo instead of a drawn icon.
+  if (isHumanSide && want) { const alt = items.find(i => i.look === 'nonbinary') ?? items.find(i => i.look === 'man') ?? items[0]; return alt; }
   if (want && !want.startsWith('creature')) return null;
   // "Surprise me": vary the person across the grid instead of always showing one look.
   return items[index % items.length];

@@ -341,9 +341,10 @@ function StyleRefBox({ ref_, set }: { ref_: { id: string; url: string; name: str
 /** Default/none options show the plain reference photo for the current type instead of drawn art. */
 const BASE_OPT = new Set(['none', 'average', 'balanced', 'unspecified']);
 function Thumb({ item, alt, fallback }: { item: PreviewItem | null; alt: string; fallback: any }) {
-  const [bad, setBad] = useState(false);
-  if (!item || bad) return fallback;
-  return <img class={'pimg ' + item.framing} src={'/previews/' + item.file} width={item.w} height={item.h} alt={alt} loading="lazy" decoding="async" onError={() => setBad(true)} />;
+  const [tries, setTries] = useState(0);
+  if (!item || tries > 2) return fallback;
+  // A failed load (busy server, interrupted connection) is retried twice before the drawn fallback is used, so a hiccup never sticks.
+  return <img class={'pimg ' + item.framing} src={'/previews/' + item.file + (tries ? '?r=' + tries : '')} width={item.w} height={item.h} alt={alt} loading="lazy" decoding="async" onError={() => { setTimeout(() => setTries(t => t + 1), 400 * (tries + 1)); }} />;
 }
 const SILLY_ICON: Record<string, string> = { hairStyle: '💇', outfit: '🧥', proportions: '🔍', background: '🌈', renderStyle: '🎨', prop: '🎈' };
 /** Drawn fallback for the playful options until their generated thumbnail exists (plan 28). */
