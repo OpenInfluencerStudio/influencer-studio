@@ -68,8 +68,8 @@ fs.rmSync(tmp, { recursive: true, force: true });
 
 // 4. launchers
 const env = (win) => win
-  ? ['set "INFLUENCER_STUDIO_OPEN=1"', 'if not defined INFLUENCER_STUDIO_DATA set "INFLUENCER_STUDIO_DATA=%LOCALAPPDATA%\\InfluencerStudio"', 'if not defined COMFYUI_URL set "COMFYUI_URL=http://127.0.0.1:8188"']
-  : ['export INFLUENCER_STUDIO_OPEN=1', 'export INFLUENCER_STUDIO_DATA="${INFLUENCER_STUDIO_DATA:-$HOME/.influencer-studio}"', 'export COMFYUI_URL="${COMFYUI_URL:-http://127.0.0.1:8188}"'];
+  ? ['set "INFLUENCER_STUDIO_OPEN=1"', 'if not defined INFLUENCER_STUDIO_DATA set "INFLUENCER_STUDIO_DATA=%LOCALAPPDATA%\\InfluencerStudio"']  // COMFYUI_URL is left unset so the server auto-detects 8188, then 8288; set it to pin an address
+  : ['export INFLUENCER_STUDIO_OPEN=1', 'export INFLUENCER_STUDIO_DATA="${INFLUENCER_STUDIO_DATA:-$HOME/.influencer-studio}"'];
 if (platform === 'win') {
   fs.writeFileSync(path.join(stage, 'start.bat'), ['@echo off', 'setlocal', 'cd /d "%~dp0"', 'title Influencer Studio', ...env(true), 'echo Starting Influencer Studio. Your browser opens by itself. Close this window to stop.', '"%~dp0node\\node.exe" "%~dp0app\\server.mjs"', 'if errorlevel 1 (echo. & echo The app stopped with an error. See above. & pause)', ''].join('\r\n'));
   fs.copyFileSync(path.join(root, 'ui/public/favicon.ico'), path.join(stage, 'icon.ico'));
@@ -78,6 +78,11 @@ if (platform === 'win') {
   const body = ['#!/bin/sh', 'cd "$(dirname "$0")"', ...env(false), 'echo "Starting Influencer Studio. Your browser opens by itself. Press Ctrl+C to stop."', 'exec ./node/node ./app/server.mjs', ''].join('\n');
   const f = platform === 'mac' ? 'start.command' : 'start.sh'; fs.writeFileSync(path.join(stage, f), body, { mode: 0o755 }); fs.chmodSync(path.join(stage, f), 0o755);
 }
+// Optional app-managed ComfyUI: only the pinned lock file, installer scripts and licence notes ship. ComfyUI itself (GPL-3.0) is downloaded by the user's own run of the installer.
+fs.mkdirSync(path.join(stage, 'comfyui'), { recursive: true });
+for (const f of ['comfyui.lock.json', 'README.md', platform === 'win' ? 'install-comfyui.ps1' : 'install-comfyui.sh']) fs.copyFileSync(path.join(root, 'comfyui', f), path.join(stage, 'comfyui', f));
+if (platform !== 'win') fs.chmodSync(path.join(stage, 'comfyui', 'install-comfyui.sh'), 0o755);
+else fs.writeFileSync(path.join(stage, 'Install ComfyUI (optional).bat'), ['@echo off', 'cd /d "%~dp0"', 'echo This downloads the official ComfyUI portable build (about 2 GB, GPL-3.0, a separate program) into the comfyui folder.', 'echo Skip this if you already run ComfyUI. Close this window to cancel.', 'pause', 'powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0comfyui\\install-comfyui.ps1" %*', 'pause', ''].join('\r\n'));
 if (fs.existsSync(path.join(root, 'docs/prelaunch-test-checklist.md'))) fs.copyFileSync(path.join(root, 'docs/prelaunch-test-checklist.md'), path.join(stage, 'TESTING.md'));
 fs.writeFileSync(path.join(stage, 'BUILD-INFO.json'), JSON.stringify({ app: 'influencer-studio', version, platform, arch, node: nodeVersion, nodeSha256: want, builtAt: new Date().toISOString().slice(0, 10) }, null, 2));
 

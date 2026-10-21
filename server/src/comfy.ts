@@ -11,6 +11,23 @@ export function validateComfyUrl(raw: string, allowRemote = false): string {
   return u.origin;
 }
 
+/** Stock ComfyUI listens on 8188; Comfy-Studio style installs (and the app's managed ComfyUI) often use 8288. */
+export const DEFAULT_COMFY_PORTS = [8188, 8288];
+
+/** Candidate URLs for auto-detect. COMFYUI_PORTS="8188,8288" overrides the order; bad entries are ignored. */
+export function comfyCandidates(portsEnv?: string): string[] {
+  const ports = (portsEnv ?? '').split(/[,\s]+/).map(Number).filter(n => Number.isInteger(n) && n > 0 && n < 65536);
+  return [...new Set(ports.length ? ports : DEFAULT_COMFY_PORTS)].map(p => `http://127.0.0.1:${p}`);
+}
+
+/** Probe loopback candidates in order and return the first one that answers /system_stats, or null. */
+export async function probeComfy(urls: string[], timeoutMs = 1500): Promise<string | null> {
+  for (const u of urls) {
+    try { const c = new ComfyClient({ baseUrl: u, timeoutMs }); if ((await c.health()).online) return c.baseUrl; } catch { /* invalid or remote: skip */ }
+  }
+  return null;
+}
+
 /** Minimal ComfyUI HTTP client. Talks only to the configured URL. */
 export class ComfyClient {
   readonly baseUrl: string;

@@ -76,7 +76,7 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
       if (sfs && sfs !== 'same-origin') throw new HttpError(403, 'bad_origin', 'Cross-site request refused');
     }
     const p = url.pathname;
-    if (m === 'GET' && p === '/api/health') return send(res, 200, { ok: true, version: VERSION, mock: services.mock, comfyUrl: services.comfy.baseUrl, comfyOnline: await services.comfyHealth() });
+    if (m === 'GET' && p === '/api/health') { const comfyOnline = await services.comfyHealth(); return send(res, 200, { ok: true, version: VERSION, mock: services.mock, comfyUrl: services.comfy.baseUrl, comfyOnline }); }
     if (m === 'GET' && p === '/api/diagnostics') {
       const opt = await optionsPayload(services, null) as any; const h = await services.comfy.health(); const pr = opt.profile;
       const loop = (() => { try { const u = new URL(services.comfy.baseUrl); return ['127.0.0.1', 'localhost', '[::1]', '::1'].includes(u.hostname); } catch { return false; } })();

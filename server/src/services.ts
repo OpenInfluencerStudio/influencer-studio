@@ -8,7 +8,7 @@ import { loadTemplates, fillTemplate, Template } from './workflows.js';
 import { scanHardware, buildProfile, HardwareProfile, Exec } from './hardware.js';
 import { bestFit, InstalledFn } from './recommend.js';
 import { checkJob, CheckCtx, JobFacts, Settings } from './enforce.js';
-import { ComfyClient } from './comfy.js';
+import { ComfyClient, comfyCandidates, probeComfy } from './comfy.js';
 import { CustomSchema, CUSTOM_DEFAULT, customProfile, type Custom } from './custom.js';
 import { ComfyProgress, ProgressTracker } from './comfy-ws.js';
 import { JobQueue, Job, Runner } from './queue.js';
@@ -34,6 +34,9 @@ export class Services {
   queue: JobQueue; refs: RefStore; downloads: DownloadManager; modelsDirSource: 'config' | 'env' | 'setting' | 'none' = 'none';
   private profile?: { p: HardwareProfile; at: number };
   private comfyOnline = false; private comfyAt = 0;
+  /** Where the ComfyUI address came from. 'auto' = nothing set, so the server probes 8188 then 8288 (COMFYUI_PORTS overrides). */
+  comfySource: 'config' | 'env' | 'custom' | 'auto' = 'auto';
+  private comfyAuto: string[] | null = null;
   private settingsFile: string; private libraryFile: string;
 
   constructor(private cfg: Config = {}) {
@@ -41,7 +44,9 @@ export class Services {
     fs.mkdirSync(this.dataDir, { recursive: true });
     this.limits = loadLimits(cfg.limitsFile); this.registry = loadRegistry(cfg.registryFile); this.templates = loadTemplates(cfg.workflowsDir);
     this.allowRemote = !!cfg.allowRemoteComfy;
-    this.comfy = new ComfyClient({ baseUrl: cfg.comfyUrl ?? process.env.COMFYUI_URL ?? 'http://127.0.0.1:8288', allowRemote: cfg.allowRemoteComfy });
+    const fixedUrl = cfg.comfyUrl ?? (process.env.COMFYUI_URL?.trim() || undefined);
+    if (fixedUrl) { this.comfySource = cfg.comfyUrl ? 'config' : 'env'; this.comfy = new ComfyClient({ baseUrl: fixedUrl, allowRemote: cfg.allowRemoteComfy }); }
+    else { this.comfyAuto = comfyCandidates(process.env.COMFYUI_PORTS); this.comfy = new ComfyClient({ baseUrl: this.comfyAuto[0] }); }
     this.mock = cfg.mock ?? process.env.INFLUENCER_STUDIO_MOCK === '1';
     this.settingsFile = path.join(this.dataDir, 'settings.json');
     this.libraryFile = path.join(this.dataDir, 'library.json');
@@ -49,6 +54,11 @@ export class Services {
     const s = readJsonSafe<{ unlock_unsupported?: unknown; models_dir?: unknown; custom?: unknown }>(this.settingsFile, {});
     this.settings = { unlock_unsupported: s.unlock_unsupported === true };
     const cp = CustomSchema.safeParse((s as { custom?: unknown }).custom); if (cp.success) this.custom = cp.data;
+    // A saved Custom ComfyUI address wins over auto-detect (not over an explicit launcher/env address).
+    if (this.custom?.enabled && this.custom.comfyUrl && this.comfySource === 'auto') {
+      const remoteOk = !!this.custom.allowRemoteComfy && this.settings.unlock_unsupported;
+      try { this.comfy = new ComfyClient({ baseUrl: this.custom.comfyUrl, allowRemote: remoteOk }); this.allowRemote = remoteOk || this.allowRemote; this.comfySource = 'custom'; this.comfyAuto = null; } catch { /* invalid saved URL: keep auto-detect */ }
+    }
     const fromSetting = typeof s.models_dir === 'string' && path.isAbsolute(s.models_dir) ? s.models_dir : undefined;
     this.modelsDir = cfg.modelsDir ?? process.env.INFLUENCER_STUDIO_MODELS_DIR ?? fromSetting;
     this.modelsDirSource = cfg.modelsDir ? 'config' : process.env.INFLUENCER_STUDIO_MODELS_DIR ? 'env' : fromSetting ? 'setting' : 'none';
@@ -85,7 +95,7 @@ export class Services {
       const remoteOk = c.allowRemoteComfy && this.settings.unlock_unsupported;
       let client: ComfyClient;
       try { client = new ComfyClient({ baseUrl: c.comfyUrl, allowRemote: remoteOk || this.allowRemote }); } catch (e) { throw Object.assign(new Error((e as Error).message + (c.allowRemoteComfy && !this.settings.unlock_unsupported ? ' (Turn on Advanced > Unlock unsupported options first.)' : '')), { status: 400, code: 'bad_comfy_url' }); }
-      if (c.enabled) { this.comfy = client; this.allowRemote = remoteOk || this.allowRemote; this.comfyAt = 0; }
+      if (c.enabled) { this.comfy = client; this.allowRemote = remoteOk || this.allowRemote; this.comfyAt = 0; this.comfySource = 'custom'; this.comfyAuto = null; }
     }
     if (c.modelsDir && c.enabled) this.setModelsDir(c.modelsDir);
     this.custom = c; this.persistSettings();
@@ -93,9 +103,21 @@ export class Services {
   }
   customDefaults() { return CUSTOM_DEFAULT; }
   async comfyHealth(): Promise<boolean> {
-    if (Date.now() - this.comfyAt > 5000) { this.comfyOnline = (await this.comfy.health()).online; this.comfyAt = Date.now(); }
+    if (Date.now() - this.comfyAt > 5000) {
+      let online = (await this.comfy.health()).online;
+      // Auto-detect: stay on the current address while it answers; otherwise try the candidates in order (8188, then 8288).
+      if (!online && this.comfyAuto) {
+        const found = await probeComfy(this.comfyAuto.filter(u => u !== this.comfy.baseUrl));
+        if (found) { this.comfy = new ComfyClient({ baseUrl: found }); online = true; }
+      }
+      this.comfyOnline = online; this.comfyAt = Date.now();
+    }
     return this.comfyOnline;
   }
+  /** True when no address was set, so the server auto-detects ComfyUI (and may start its own managed copy). */
+  get comfyAutoDetect() { return !!this.comfyAuto; }
+  /** Add an auto-detect candidate (the app-managed ComfyUI's port). Ignored when the address is fixed. */
+  addComfyCandidate(url: string) { if (this.comfyAuto && !this.comfyAuto.includes(url)) { this.comfyAuto.push(url); this.comfyAt = 0; } }
   saveSettings(next: Settings) {
     this.settings = { unlock_unsupported: next.unlock_unsupported === true };
     this.persistSettings();

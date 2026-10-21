@@ -20,3 +20,9 @@ docs-shots-local/
 data/runtime/
 .runtime/
 dist-release/
+# app-managed ComfyUI (installed at first run, never committed)
+comfyui/ComfyUI/
+comfyui/ComfyUI_windows_portable/
+comfyui/venv/
+comfyui/downloads/
+comfyui/install.json

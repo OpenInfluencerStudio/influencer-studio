@@ -4,13 +4,13 @@
 
 A simple, local, open-weights influencer content studio for ComfyUI. Build a character with a deep visual builder (Type, Body size, hair, outfit, face and more), and generate images on your own computer. Everything is SFW, adults only and fully clothed. Nothing leaves your machine.
 
-Status: **early milestone (0.1)**. See "What works today" below.
+Status: **0.2.0-prelaunch**. See "What works today" below.
 
 Follow along on X: [@OpenInflStudio](https://x.com/OpenInflStudio)
 
 ## Install (no coding)
 
-Download the package for your system from the Releases page and follow [docs/INSTALL.md](docs/INSTALL.md): unzip, start ComfyUI, double-click `start.bat` (Windows) or `start.command` / `start.sh`. Builds are unsigned for now.
+Download the package for your system from the Releases page and follow [docs/INSTALL.md](docs/INSTALL.md): unzip, start ComfyUI (found automatically on port 8188 or 8288) or run the optional **Install ComfyUI** script once, then double-click `start.bat` (Windows) or `start.command` / `start.sh`. Builds are unsigned for now.
 
 ## Quick start
 
@@ -28,7 +28,9 @@ Settings (environment variables):
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `COMFYUI_URL` | `http://127.0.0.1:8288` | Your ComfyUI address. Must be on this computer. |
+| `COMFYUI_URL` | unset (auto-detect) | Your ComfyUI address. Must be on this computer. When unset, the app looks for ComfyUI on port 8188 (stock install), then 8288, then its own optional managed ComfyUI on 8190. Set it to always use one address. |
+| `COMFYUI_PORTS` | `8188,8288` | Ports to auto-detect, in order (only used when `COMFYUI_URL` is unset). |
+| `INFLUENCER_STUDIO_MANAGED_COMFY` | on | `0` = never start the app-managed ComfyUI (see `comfyui/README.md`). |
 | `PORT` | `8787` | Local port (the server only listens on `127.0.0.1`). |
 | `INFLUENCER_STUDIO_MODELS_DIR` | unset | Your ComfyUI `models` folder, so installed files are detected. |
 | `INFLUENCER_STUDIO_DATA` | `.runtime/` | Where settings, the job queue, the library and outputs are stored. |
