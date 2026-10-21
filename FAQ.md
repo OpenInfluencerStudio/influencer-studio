@@ -12,6 +12,8 @@
 
 **My ComfyUI is on a different port.** Set `COMFYUI_URL`, for example `set COMFYUI_URL=http://127.0.0.1:8288` in `start.bat`, or list ports to try with `COMFYUI_PORTS`. You can also enter the address under Hardware > Custom.
 
+**I have more than one ComfyUI installed.** When no address is set, the app uses the first one that answers (port 8188, then 8288) and prints a warning at startup naming the one it picked. To always use a specific install, pin it with `COMFYUI_URL`, for example `set COMFYUI_URL=http://127.0.0.1:8288` in `start.bat`.
+
 **Can I try it without a GPU?** Yes. The character builder, hardware screen and About page work without one, and setting `INFLUENCER_STUDIO_MOCK=1` draws labelled placeholder images so you can try the whole interface.
 
 **Why are some options greyed out?** The hardware scan found your PC can't run them. Hover to see the reason with real numbers, for example "Needs 12 GB VRAM (you have 8 GB)". Advanced > "Unlock unsupported options at my own risk" releases soft limits; hard limits like no GPU, missing model files, a full disk or ComfyUI being offline always stay on.
