@@ -8,7 +8,7 @@ import { loadTemplates, fillTemplate, Template } from './workflows.js';
 import { scanHardware, buildProfile, HardwareProfile, Exec } from './hardware.js';
 import { bestFit, InstalledFn } from './recommend.js';
 import { checkJob, CheckCtx, JobFacts, Settings } from './enforce.js';
-import { ComfyClient, comfyCandidates, probeComfy } from './comfy.js';
+import { ComfyClient, comfyCandidates, probeComfy, onlineComfy } from './comfy.js';
 import { CustomSchema, CUSTOM_DEFAULT, customProfile, type Custom } from './custom.js';
 import { ComfyProgress, ProgressTracker } from './comfy-ws.js';
 import { JobQueue, Job, Runner } from './queue.js';
@@ -175,6 +175,17 @@ export class Services {
       : { engine: 'direct' as const, label: 'Direct ComfyUI connection (fallback, not the Comfy SDK)' };
   }
   stopEngine() { this.managedProxy?.stop(); this.managedProxy = undefined; }
+  /**
+   * Startup check: when more than one ComfyUI answers on the usual ports (for example a second install on 8188),
+   * return a warning naming the one in use and how to pin it. Null when only one (or none) answers.
+   */
+  async multiComfyWarning(): Promise<string | null> {
+    const urls = [...new Set([...(this.comfyAuto ?? []), ...comfyCandidates(process.env.COMFYUI_PORTS), this.comfy.baseUrl])];
+    const up = await onlineComfy(urls);
+    if (up.length < 2) return null;
+    const how = this.comfySource === 'auto' ? 'It was auto-detected; set COMFYUI_URL (for example in start.bat) to choose one.' : `It is pinned by ${this.comfySource === 'env' ? 'COMFYUI_URL' : this.comfySource === 'custom' ? 'your Custom setting' : 'the app config'}.`;
+    return `WARNING: more than one ComfyUI is running (${up.join(', ')}). Influencer Studio uses ${this.comfy.baseUrl}. ${how}`;
+  }
   /** True when no address was set, so the server auto-detects ComfyUI (and may start its own managed copy). */
   get comfyAutoDetect() { return !!this.comfyAuto; }
   /** Add an auto-detect candidate (the app-managed ComfyUI's port). Ignored when the address is fixed. */

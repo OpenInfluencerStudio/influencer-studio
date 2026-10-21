@@ -28,6 +28,12 @@ export async function probeComfy(urls: string[], timeoutMs = 1500): Promise<stri
   return null;
 }
 
+/** Every candidate that answers right now, in order (used to warn when two ComfyUI installs are running). */
+export async function onlineComfy(urls: string[], timeoutMs = 1500): Promise<string[]> {
+  const res = await Promise.all(urls.map(async u => { try { const c = new ComfyClient({ baseUrl: u, timeoutMs }); return (await c.health()).online ? c.baseUrl : null; } catch { return null; } }));
+  return [...new Set(res.filter((x): x is string => !!x))];
+}
+
 /** Minimal ComfyUI HTTP client. Talks only to the configured URL. */
 export class ComfyClient {
   readonly baseUrl: string;

@@ -15,6 +15,8 @@ const comfyUp = await app.services.comfyHealth();
 process.stdout.write(`ComfyUI: ${app.services.comfy.baseUrl} (${comfyUp ? 'online' : 'not reachable yet'}${app.services.comfySource === 'auto' ? ', auto-detected; set COMFYUI_URL to fix it' : ''})${app.services.mock ? '  [MOCK GENERATOR ON: placeholder images, no AI]' : ''}\n`);
 // Optional app-managed ComfyUI (single install): only when nothing is set and no ComfyUI answers on 8188 or 8288.
 const auto = await autoStartManaged({ services: app.services, appRoot: repoRoot(), log: m => process.stdout.write(m + '\n') }).catch(e => { process.stdout.write(`Managed ComfyUI: ${(e as Error).message}\n`); return { managed: null, reason: 'error' }; });
+const multi = await app.services.multiComfyWarning().catch(() => null);
+if (multi) process.stdout.write(multi + '\n');
 const eng = app.services.engineInfo();
 process.stdout.write(`Engine: ${eng.label}${'proxyUrl' in eng && eng.proxyUrl ? ` at ${eng.proxyUrl} (${eng.proxySource})` : ''}${'note' in eng && eng.note ? ` - ${eng.note}` : ''}\n`);
 if (!comfyUp && auto.reason === 'not-installed') process.stdout.write('No ComfyUI found. Start yours, or run the "Install ComfyUI" script in this folder once.\n');

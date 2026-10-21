@@ -87,4 +87,16 @@ describe('ComfyUI auto-detect (stock 8188 first, then 8288)', () => {
     const s = new Services({ dataDir: dir });
     expect(s.comfySource).toBe('auto'); expect(s.comfy.baseUrl).toBe('http://127.0.0.1:8188');
   });
+  it('warns when two ComfyUI installs answer, naming the one in use; silent with one', async () => {
+    delete process.env.COMFYUI_URL; const a = await fakeComfy(); const b = await fakeComfy();
+    process.env.COMFYUI_PORTS = `${a.port},${b.port}`;
+    const s = new Services({ dataDir: tmp() }); await s.comfyHealth();
+    const w = await s.multiComfyWarning();
+    expect(w).toContain(a.url); expect(w).toContain(b.url); expect(w).toContain(`uses ${a.url}`); expect(w).toMatch(/COMFYUI_URL/);
+    process.env.COMFYUI_URL = b.url;
+    const pinned = new Services({ dataDir: tmp() });
+    expect(await pinned.multiComfyWarning()).toMatch(new RegExp(`uses ${b.url}.*pinned by COMFYUI_URL`));
+    delete process.env.COMFYUI_URL; process.env.COMFYUI_PORTS = String(a.port);
+    expect(await new Services({ dataDir: tmp() }).multiComfyWarning()).toBeNull();
+  });
 });
