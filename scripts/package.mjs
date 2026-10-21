@@ -35,7 +35,7 @@ await build({ entryPoints: [path.join(root, 'server/src/index.ts')], bundle: tru
 fs.writeFileSync(path.join(stage, 'app', 'package.json'), JSON.stringify({ type: 'module', private: true }));
 cp('ui/dist', 'ui/dist'); cp('models.json', 'models.json'); cp('workflows', 'workflows'); cp('data/limits.json', 'data/limits.json');
 if (fs.existsSync(path.join(root, 'assets/previews'))) cp('assets/previews', 'assets/previews');
-for (const f of ['LICENSE', 'THIRD_PARTY.md', 'SAFETY.md']) if (fs.existsSync(path.join(root, f))) cp(f, f);
+for (const f of ['LICENSE', 'THIRD_PARTY.md', 'SAFETY.md', 'FAQ.md', 'README.md']) if (fs.existsSync(path.join(root, f))) cp(f, f);
 fs.copyFileSync(path.join(root, 'docs/INSTALL.md'), path.join(stage, 'INSTALL.md'));
 if (fs.existsSync(path.join(stage, 'app', 'server.mjs.LEGAL.txt'))) fs.renameSync(path.join(stage, 'app', 'server.mjs.LEGAL.txt'), path.join(stage, 'THIRD_PARTY_BUNDLED.txt'));
 
