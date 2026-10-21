@@ -11,14 +11,38 @@
     "licenseUrl": "https://github.com/Comfy-Org/ComfyUI/blob/v0.42.1/LICENSE"
   },
   "windowsPortable": {
-    "nvidia":       { "file": "ComfyUI_windows_portable_nvidia.7z",       "sizeMb": 2018, "sha256": "496afd18790ec685d99ebba2edf200d7371a29fbdd3a992bb0f4f52f244a6874", "for": "NVIDIA RTX 20 series and newer (PyTorch CUDA 13.0, Python 3.13)" },
-    "nvidia_cu126": { "file": "ComfyUI_windows_portable_nvidia_cu126.7z", "sizeMb": 1910, "sha256": "0506abc6563ea5928a052fe0bc0b32c2a063098558bd593fe39345a27f1e47fc", "for": "NVIDIA GTX 10 series and older (CUDA 12.6, Python 3.12)" },
-    "amd":          { "file": "ComfyUI_windows_portable_amd.7z",          "sizeMb": 1636, "sha256": "8af051e342de65e5ca2d9f43a5f0b11a6377da10bd96159dc41e8722cc5841fc", "for": "AMD Radeon (experimental; the app's hardware scan reads NVIDIA only)" },
-    "intel":        { "file": "ComfyUI_windows_portable_intel.7z",        "sizeMb": 1451, "sha256": "a1e03d31ea364af2f80820461cd0c5ae5bbba4b562c023c1f43b2cf65541d4ab", "for": "Intel Arc (experimental)" }
+    "nvidia": {
+      "file": "ComfyUI_windows_portable_nvidia.7z",
+      "sizeMb": 2018,
+      "sha256": "496afd18790ec685d99ebba2edf200d7371a29fbdd3a992bb0f4f52f244a6874",
+      "for": "NVIDIA RTX 20 series and newer (PyTorch CUDA 13.0, Python 3.13)"
+    },
+    "nvidia_cu126": {
+      "file": "ComfyUI_windows_portable_nvidia_cu126.7z",
+      "sizeMb": 1910,
+      "sha256": "0506abc6563ea5928a052fe0bc0b32c2a063098558bd593fe39345a27f1e47fc",
+      "for": "NVIDIA GTX 10 series and older (CUDA 12.6, Python 3.12)"
+    },
+    "amd": {
+      "file": "ComfyUI_windows_portable_amd.7z",
+      "sizeMb": 1636,
+      "sha256": "8af051e342de65e5ca2d9f43a5f0b11a6377da10bd96159dc41e8722cc5841fc",
+      "for": "AMD Radeon (experimental; the app's hardware scan reads NVIDIA only)"
+    },
+    "intel": {
+      "file": "ComfyUI_windows_portable_intel.7z",
+      "sizeMb": 1451,
+      "sha256": "a1e03d31ea364af2f80820461cd0c5ae5bbba4b562c023c1f43b2cf65541d4ab",
+      "for": "Intel Arc (experimental)"
+    }
   },
   "sevenZip": {
-    "file": "7zr.exe", "version": "26.05", "license": "LGPL-2.1 (7-Zip)", "url": "https://github.com/ip7z/7zip/releases/download/26.05/7zr.exe",
-    "sha256": "9bf582b894dfa665f852d7e9112b02290a1c303c2d95a21fcdc41ffcb03143b7", "note": "Only used if Windows tar cannot open the .7z archive."
+    "file": "7zr.exe",
+    "version": "26.05",
+    "license": "LGPL-2.1 (7-Zip)",
+    "url": "https://github.com/ip7z/7zip/releases/download/26.05/7zr.exe",
+    "sha256": "9bf582b894dfa665f852d7e9112b02290a1c303c2d95a21fcdc41ffcb03143b7",
+    "note": "Only used if Windows tar cannot open the .7z archive."
   },
   "torchIndex": {
     "nvidia": "https://download.pytorch.org/whl/cu130",
@@ -28,6 +52,19 @@
     "mac": ""
   },
   "customNodes": [
-    { "name": "ComfyUI-GGUF", "repo": "https://github.com/city96/ComfyUI-GGUF", "commit": "6ea2651e7df66d7585f6ffee804b20e92fb38b8a", "license": "Apache-2.0", "why": "Loads the Qwen-Image-Edit GGUF model" }
-  ]
+    {
+      "name": "ComfyUI-GGUF",
+      "repo": "https://github.com/city96/ComfyUI-GGUF",
+      "commit": "6ea2651e7df66d7585f6ffee804b20e92fb38b8a",
+      "license": "Apache-2.0",
+      "why": "Loads the Qwen-Image-Edit GGUF model"
+    }
+  ],
+  "sdkProxy": {
+    "package": "comfy-api-proxy",
+    "version": "0.1.6",
+    "license": "MIT",
+    "source": "https://github.com/Comfy-Org/comfy-api-proxy",
+    "why": "Serves Comfy API v2 on this computer in front of ComfyUI, so the app's Comfy SDK (@comfyorg/sdk, bundled) can run every job. Local and keyless."
+  }
 }

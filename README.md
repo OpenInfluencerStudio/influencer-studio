@@ -8,6 +8,12 @@ Status: **0.2.0-prelaunch**. See "What works today" below.
 
 Follow along on X: [@OpenInflStudio](https://x.com/OpenInflStudio)
 
+## Built on the Comfy Developer Platform
+
+Every picture and video is made through the official **Comfy SDK** (`@comfyorg/sdk`, MIT): the app submits its workflow templates as Comfy API v2 jobs to **comfy-api-proxy** (MIT, Comfy Org) running on your own computer, which drives your local ComfyUI. No account, API key, Comfy Cloud, Router or partner nodes: open-weights models only. The About screen's diagnostics report and `/api/health` show the engine in use.
+
+App -> Comfy SDK -> comfy-api-proxy (127.0.0.1, Comfy API v2) -> ComfyUI (127.0.0.1) -> open-weights models
+
 ## Install (no coding)
 
 Download the package for your system from the Releases page and follow [docs/INSTALL.md](docs/INSTALL.md): unzip, start ComfyUI (found automatically on port 8188 or 8288) or run the optional **Install ComfyUI** script once, then double-click `start.bat` (Windows) or `start.command` / `start.sh`. Builds are unsigned for now.
@@ -31,6 +37,8 @@ Settings (environment variables):
 | `COMFYUI_URL` | unset (auto-detect) | Your ComfyUI address. Must be on this computer. When unset, the app looks for ComfyUI on port 8188 (stock install), then 8288, then its own optional managed ComfyUI on 8190. Set it to always use one address. |
 | `COMFYUI_PORTS` | `8188,8288` | Ports to auto-detect, in order (only used when `COMFYUI_URL` is unset). |
 | `INFLUENCER_STUDIO_MANAGED_COMFY` | on | `0` = never start the app-managed ComfyUI (see `comfyui/README.md`). |
+| `INFLUENCER_STUDIO_ENGINE` | `sdk` | `sdk`: every job goes through the **Comfy SDK** to a local **comfy-api-proxy** (Comfy API v2) in front of your ComfyUI. `direct`: the app's own ComfyUI client, a fallback for troubleshooting only. |
+| `COMFY_PROXY_URL` | unset | Use a comfy-api-proxy you already run (for example `http://127.0.0.1:8189`). When unset, the app uses a running proxy on 8189 or 8289 that fronts the same ComfyUI, or starts its own on 8191. |
 | `PORT` | `8787` | Local port (the server only listens on `127.0.0.1`). |
 | `INFLUENCER_STUDIO_MODELS_DIR` | unset | Your ComfyUI `models` folder, so installed files are detected. |
 | `INFLUENCER_STUDIO_DATA` | `.runtime/` | Where settings, the job queue, the library and outputs are stored. |

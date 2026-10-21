@@ -6,7 +6,8 @@ Influencer Studio is a local app. It runs on your computer, opens in your browse
 
 1. **A computer with an NVIDIA graphics card** for generating (16 GB of VRAM recommended; smaller cards work with lower limits, and the app tells you what your card can do). Without a GPU you can still explore the character builder.
 2. **ComfyUI** on the same computer, with the **ComfyUI-GGUF** custom node (needed for the Qwen edit model). Use your own ComfyUI (the app finds it on port 8188 or 8288 by itself), or run the optional installer once: **Install ComfyUI (optional).bat** on Windows, `./comfyui/install-comfyui.sh` on Linux and macOS. It downloads the pinned official ComfyUI (a separate GPL-3.0 program, about 2 GB on Windows) into the app folder, and the app then starts and stops it for you. See `comfyui/README.md`.
-3. About **60 GB of free disk space** for all models (less if you skip some). An SSD loads models much faster than a hard disk.
+3. **comfy-api-proxy** (MIT, by Comfy Org): the small local server the app's Comfy SDK talks to. The optional ComfyUI installer adds it for you. If you use your own ComfyUI, run the installer once with `-ProxyOnly` (Windows: `powershell -ExecutionPolicy Bypass -File comfyui\install-comfyui.ps1 -ProxyOnly`) or `./comfyui/install-comfyui.sh --proxy-only`, or `pip install comfy-api-proxy==0.1.6` and keep `comfy-api-proxy` on your PATH. The app starts and stops it by itself.
+4. About **60 GB of free disk space** for all models (less if you skip some). An SSD loads models much faster than a hard disk.
 
 ## Windows
 
@@ -47,6 +48,8 @@ Set these before starting if you need them (Windows: add `set NAME=value` lines 
 | `COMFYUI_URL` | unset (auto-detect) | Your ComfyUI address. Must be on this computer. When unset, the app tries port 8188 (stock ComfyUI), then 8288, then its own managed ComfyUI on 8190 if you installed it. Set it to pin one address, for example `set COMFYUI_URL=http://127.0.0.1:8288`. |
 | `COMFYUI_PORTS` | `8188,8288` | Ports to auto-detect, in order. |
 | `INFLUENCER_STUDIO_MANAGED_COMFY` | on | `0` = never start the app-managed ComfyUI. `INFLUENCER_STUDIO_COMFY_PORT` changes its port (default 8190). |
+| `INFLUENCER_STUDIO_ENGINE` | `sdk` | `sdk` = every job through the Comfy SDK and comfy-api-proxy. `direct` = fallback without the SDK (troubleshooting only). |
+| `COMFY_PROXY_URL` | unset | A comfy-api-proxy you already run. When unset the app reuses one on 8189 or 8289 that fronts the same ComfyUI, or starts its own on port 8191 with a random token (`INFLUENCER_STUDIO_PROXY_PORT`, `INFLUENCER_STUDIO_PROXY_CMD` to change). |
 | `PORT` | `8787` | First port to try (the next 9 are tried if it is busy). Only `127.0.0.1` is used. |
 | `INFLUENCER_STUDIO_MODELS_DIR` | unset | Your ComfyUI `models` folder. If unset, choose it in the Models screen. |
 | `INFLUENCER_STUDIO_DATA` | `%LOCALAPPDATA%\InfluencerStudio` (Windows), `~/.influencer-studio` (others) | Settings, job queue, saved characters, pictures and videos. |

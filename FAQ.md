@@ -2,6 +2,8 @@
 
 **Is it free?** Yes. Influencer Studio is open source under Apache-2.0, and every model it uses is Apache-2.0 too (see `THIRD_PARTY.md`).
 
+**How does it use the Comfy Developer Platform?** Every job goes through the official Comfy SDK (`@comfyorg/sdk`) to comfy-api-proxy, Comfy's local Comfy API v2 server, in front of your own ComfyUI. It is all on your computer: no account, no API key, no Comfy Cloud or Router, no partner nodes.
+
 **Does anything leave my computer?** No. The app only listens on your own computer (`127.0.0.1`) behind a private link with a session token. The only internet traffic is model downloads from Hugging Face over HTTPS, and only when you press Download. There is no telemetry, and your pictures are never uploaded.
 
 **What do I need?** An NVIDIA graphics card (16 GB of VRAM recommended; smaller cards work with lower limits), ComfyUI running on the same computer with the ComfyUI-GGUF custom node, and about 60 GB of free disk space for all models. An SSD makes model loading much faster. See `docs/INSTALL.md`.

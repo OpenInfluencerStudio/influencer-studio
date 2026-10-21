@@ -9,7 +9,7 @@ export const ISSUES_URL = 'https://github.com/OpenInfluencerStudio/influencer-st
 export interface DiagModel { id: string; label: string; variants: { label: string; state: string; installed: boolean; sizeGb: number; license: string }[] }
 export interface Diagnostics {
   version: string; channel: string; issuesUrl: string; generatedAt: string;
-  runtime: { node: string; platform: string; arch: string; mock: boolean };
+  runtime: { node: string; platform: string; arch: string; mock: boolean; engine?: string };
   hardware: { os: string; gpus: { name: string; vramGb: number; driver?: string }[]; ramGb: number; freeDiskGb: number | null; tier: string; tierLabel: string; realTier: string; customActive: boolean; notes: string[] };
   comfy: { online: boolean; address: 'loopback' | 'non-loopback'; device?: string; vramTotalGb?: number; vramFreeGb?: number };
   models: DiagModel[]; modelsFolder: 'configured' | 'not set'; report?: string;
@@ -37,6 +37,7 @@ export function makeReport(d: Diagnostics, paths: { value: string | undefined | 
     `System: ${d.hardware.os}, Node ${d.runtime.node}`, `GPU: ${g}`, `RAM: ${d.hardware.ramGb} GB, free disk: ${d.hardware.freeDiskGb ?? 'unknown'} GB`,
     `Hardware level: ${d.hardware.tier} (${d.hardware.tierLabel})${d.hardware.customActive ? ` [Custom profile active, detected: ${d.hardware.realTier}]` : ''}`,
     `Generator: ${d.runtime.mock ? 'mock (placeholder images)' : 'ComfyUI'}; ComfyUI ${d.comfy.online ? 'online' : 'offline'} (${d.comfy.address})${d.comfy.device ? ', device ' + d.comfy.device : ''}${d.comfy.vramTotalGb ? `, VRAM ${d.comfy.vramFreeGb ?? '?'} / ${d.comfy.vramTotalGb} GB free` : ''}`,
+    ...(d.runtime.engine && !d.runtime.mock ? [`Engine: ${d.runtime.engine}`] : []),
     `Models folder: ${d.modelsFolder}`, '', 'Models:',
     ...d.models.flatMap(m => m.variants.map(v => `- ${m.label} / ${v.label}: ${v.installed ? 'installed' : 'not installed'}, ${v.state}, ${v.sizeGb} GB, ${v.license}`)),
   ];

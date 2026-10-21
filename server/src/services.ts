@@ -18,11 +18,16 @@ import { VideoSchema, VIDEO_NEGATIVE } from './video.js';
 import { RefStore } from './refs.js';
 import type { EditRequest } from './edit.js';
 import { writeJsonAtomic, readJsonSafe } from './store.js';
-import { dataDir as defaultDataDir } from './paths.js';
+import { dataDir as defaultDataDir, repoRoot } from './paths.js';
+import { SdkEngine, SDK_VERSION, PROXY_DEFAULT_PORTS, isLoopbackUrl, outputFileName } from './sdk-engine.js';
+import { findProxyCommand, proxyHealth, ManagedProxy, type ProxyCommand } from './sdk-proxy.js';
+import { managedComfyDir } from './managed-comfy.js';
 import { DownloadManager, DlHooks } from './downloads.js';
 
 export interface Config {
   dataDir?: string; comfyUrl?: string; mock?: boolean; modelsDir?: string; allowRemoteComfy?: boolean;
+  /** 'sdk' (default): every job goes Comfy SDK -> comfy-api-proxy -> ComfyUI. 'direct': the app's own ComfyUI client (opt-in fallback only). */
+  engine?: 'sdk' | 'direct'; proxyUrl?: string; proxyCmd?: ProxyCommand | null; proxyPort?: number;
   exec?: Exec; downloadHooks?: DlHooks; hardwareOverride?: HardwareProfile; limitsFile?: string; registryFile?: string; workflowsDir?: string;
 }
 
@@ -37,6 +42,9 @@ export class Services {
   /** Where the ComfyUI address came from. 'auto' = nothing set, so the server probes 8188 then 8288 (COMFYUI_PORTS overrides). */
   comfySource: 'config' | 'env' | 'custom' | 'auto' = 'auto';
   private comfyAuto: string[] | null = null;
+  engine: 'sdk' | 'direct';
+  sdk: SdkEngine | null = null; sdkSource: 'managed' | 'existing' | 'none' = 'none'; sdkOnline = false; sdkNote = '';
+  private proxyFixed?: string; private managedProxy?: ManagedProxy; private proxyTriedAt = 0;
   private settingsFile: string; private libraryFile: string;
 
   constructor(private cfg: Config = {}) {
@@ -48,6 +56,10 @@ export class Services {
     if (fixedUrl) { this.comfySource = cfg.comfyUrl ? 'config' : 'env'; this.comfy = new ComfyClient({ baseUrl: fixedUrl, allowRemote: cfg.allowRemoteComfy }); }
     else { this.comfyAuto = comfyCandidates(process.env.COMFYUI_PORTS); this.comfy = new ComfyClient({ baseUrl: this.comfyAuto[0] }); }
     this.mock = cfg.mock ?? process.env.INFLUENCER_STUDIO_MOCK === '1';
+    const eng = cfg.engine ?? process.env.INFLUENCER_STUDIO_ENGINE ?? 'sdk';
+    this.engine = eng === 'direct' ? 'direct' : 'sdk';
+    const pf = cfg.proxyUrl ?? (process.env.COMFY_PROXY_URL?.trim() || undefined);
+    if (pf) { if (!isLoopbackUrl(pf)) throw new Error('COMFY_PROXY_URL must be on this computer (loopback).'); this.proxyFixed = new URL(pf).origin; }
     this.settingsFile = path.join(this.dataDir, 'settings.json');
     this.libraryFile = path.join(this.dataDir, 'library.json');
     // Settings live in memory after load; a file edit while running only takes effect after restart (plan 21.6c).
@@ -111,9 +123,58 @@ export class Services {
         if (found) { this.comfy = new ComfyClient({ baseUrl: found }); online = true; }
       }
       this.comfyOnline = online; this.comfyAt = Date.now();
+      if (this.engine === 'sdk' && !this.mock) await this.ensureSdk(online);
     }
     return this.comfyOnline;
   }
+  /**
+   * Make sure the Comfy SDK has a healthy comfy-api-proxy in front of the SAME ComfyUI the app checks.
+   * Order: COMFY_PROXY_URL > a running proxy on 8189/8289 > a proxy the app starts itself (random token, own PID).
+   * In auto-detect mode a running proxy's upstream also decides which ComfyUI is used, so a machine with two
+   * ComfyUI installs uses the one its proxy fronts.
+   */
+  private async ensureSdk(comfyOnline: boolean) {
+    const want = this.comfy.baseUrl;
+    if (this.sdk) {
+      const h = await this.sdk.health();
+      if (h.online && (h.upstream === want || this.proxyFixed)) { this.sdkOnline = true; return; }
+      if (this.managedProxy && (!h.online || h.upstream !== want)) { this.managedProxy.stop(); this.managedProxy = undefined; }
+      this.sdk = null; this.sdkSource = 'none';
+    }
+    this.sdkOnline = false;
+    const adopt = (url: string, source: 'managed' | 'existing', token?: string) => { this.sdk = new SdkEngine({ proxyUrl: url, token }); this.sdkSource = source; this.sdkOnline = true; this.sdkNote = ''; };
+    if (this.proxyFixed) {
+      const h = await proxyHealth(this.proxyFixed);
+      if (h.online) adopt(this.proxyFixed, 'existing'); else this.sdkNote = `comfy-api-proxy is not answering at ${this.proxyFixed} (COMFY_PROXY_URL)`;
+      return;
+    }
+    for (const port of PROXY_DEFAULT_PORTS) {
+      const url = `http://127.0.0.1:${port}`; const h = await proxyHealth(url);
+      if (!h.online || !h.upstream || !isLoopbackUrl(h.upstream)) continue;
+      if (h.upstream === want) { adopt(url, 'existing'); return; }
+      if (this.comfyAuto && !comfyOnline) { this.comfy = new ComfyClient({ baseUrl: h.upstream }); this.comfyOnline = (await this.comfy.health()).online; if (this.comfyOnline) { adopt(url, 'existing'); return; } }
+      if (this.comfyAuto && h.upstream !== want && (await new ComfyClient({ baseUrl: h.upstream }).health()).online) {
+        // Two ComfyUI installs are up: follow the one the running proxy fronts.
+        this.comfy = new ComfyClient({ baseUrl: h.upstream }); this.comfyOnline = true; adopt(url, 'existing'); return;
+      }
+    }
+    if (!comfyOnline && !this.comfyOnline) { this.sdkNote = 'ComfyUI is offline'; return; }
+    if (Date.now() - this.proxyTriedAt < 30_000) return;
+    this.proxyTriedAt = Date.now();
+    const cmd = this.cfg.proxyCmd === null ? null : this.cfg.proxyCmd ?? findProxyCommand(managedComfyDir(repoRoot()));
+    if (!cmd) { this.sdkNote = 'comfy-api-proxy is not installed'; return; }
+    const port = this.cfg.proxyPort ?? Number(process.env.INFLUENCER_STUDIO_PROXY_PORT ?? 8191);
+    const mp = new ManagedProxy(cmd, this.comfy.baseUrl, port, this.dataDir);
+    if (await mp.start()) { this.managedProxy = mp; adopt(mp.url, 'managed', mp.token); }
+    else this.sdkNote = 'comfy-api-proxy did not start (see comfy-api-proxy.log in the data folder)';
+  }
+  /** What generates the pictures, for /api/health, diagnostics and the About screen. */
+  engineInfo() {
+    return this.engine === 'sdk'
+      ? { engine: 'comfy-sdk' as const, label: `Comfy SDK ${SDK_VERSION} (Comfy API v2 via comfy-api-proxy)`, sdkVersion: SDK_VERSION, proxyUrl: this.sdk?.proxyUrl ?? null, proxySource: this.sdkSource, proxyOnline: this.sdkOnline, note: this.sdkNote || undefined }
+      : { engine: 'direct' as const, label: 'Direct ComfyUI connection (fallback, not the Comfy SDK)' };
+  }
+  stopEngine() { this.managedProxy?.stop(); this.managedProxy = undefined; }
   /** True when no address was set, so the server auto-detects ComfyUI (and may start its own managed copy). */
   get comfyAutoDetect() { return !!this.comfyAuto; }
   /** Add an auto-detect candidate (the app-managed ComfyUI's port). Ignored when the address is fixed. */
@@ -135,14 +196,14 @@ export class Services {
     this.modelsDir = d; this.modelsDirSource = 'setting'; this.persistSettings();
   }
   checkCtx(profile: HardwareProfile, comfyOnline: boolean): CheckCtx {
-    return { profile, limits: this.limits, registry: this.registry, settings: this.settings, installed: this.installed, templates: new Map([...this.templates].map(([k, v]) => [k, v.manifest])), comfyOnline, comfyUrl: this.comfy.baseUrl, mockGenerator: this.mock, custom: this.custom };
+    return { profile, limits: this.limits, registry: this.registry, settings: this.settings, installed: this.installed, templates: new Map([...this.templates].map(([k, v]) => [k, v.manifest])), comfyOnline, comfyUrl: this.comfy.baseUrl, mockGenerator: this.mock, custom: this.custom, sdk: this.engine === 'sdk' ? { online: this.sdkOnline, note: this.sdkNote } : undefined };
   }
   async check(facts: JobFacts) { return checkJob(facts, this.checkCtx(await this.effectiveHardware(), await this.comfyHealth())); }
   /** Sync re-check at job start using cached hardware. */
   private recheck(j: Job) {
     if (!this.profile) return null;
     const r = checkJob({ template: j.template, variantId: j.variantId, width: j.width, height: j.height, frames: j.frames, refs: j.styleRef || j.edit || j.video ? 1 : 0, batch: j.batch, steps: j.steps }, this.checkCtx(this.custom?.enabled ? customProfile(this.profile.p, this.custom, this.limits) : this.profile.p, this.comfyOnline || this.mock));
-    return r.ok ? null : (r.httpStatus === 403 ? r.soft : r.hard.length && !r.hard.every(x => x.code === 'COMFY_OFFLINE') ? r.hard : null);
+    return r.ok ? null : (r.httpStatus === 403 ? r.soft : r.hard.length && !r.hard.every(x => x.code === 'COMFY_OFFLINE' || x.code === 'SDK_PROXY_OFFLINE') ? r.hard : null);
   }
 
   bestVariant(modelId: string, profile: HardwareProfile) { return bestFit(modelId, this.registry, profile, this.limits, this.installed); }
@@ -170,16 +231,25 @@ export class Services {
     if (has('negative')) values.negative = VIDEO_NEGATIVE;
     if (job.steps) values.steps = job.steps;
     values.prompt = job.prompt;
+    let sdkRef: { placeholder: string; bytes: Buffer; filename: string; mime: string } | undefined;
     const refId = job.styleRef ?? (job.edit as EditRequest | undefined)?.refId ?? (job.video as { refId?: string } | undefined)?.refId;
     if (refId) {
       const ref = this.refs.get(refId);
       if (!ref) throw new Error(job.edit || job.video ? 'The saved picture is no longer available. Save the character again from a new picture.' : 'The style reference image is no longer available. Remove it and add it again.');
       if (!has('image')) throw new Error('This template does not take a reference image');
       ctx.update(3, 'Sending your reference image');
-      values.image = await this.comfy.uploadImage(`is_ref_${refId.replace(/-/g, '').slice(0, 24)}.${ref.info.ext}`, fs.readFileSync(ref.file), ref.info.mime);
+      if (this.engine === 'sdk') { values.image = REF_PLACEHOLDER; sdkRef = { placeholder: REF_PLACEHOLDER, bytes: fs.readFileSync(ref.file), filename: `is_ref_${refId.replace(/-/g, '').slice(0, 24)}.${ref.info.ext}`, mime: ref.info.mime }; }
+      else values.image = await this.comfy.uploadImage(`is_ref_${refId.replace(/-/g, '').slice(0, 24)}.${ref.info.ext}`, fs.readFileSync(ref.file), ref.info.mime);
       if (job.styleRef) values.prompt = STYLE_REF_PREFIX + job.prompt;
     }
     const wf = fillTemplate(tpl, values);
+    if (this.engine === 'sdk') {
+      if (!this.sdk) throw new Error('The Comfy SDK proxy (comfy-api-proxy) is not running' + (this.sdkNote ? `: ${this.sdkNote}` : '') + '.');
+      const outs = await this.sdk.run(wf, { ref: sdkRef, cancelled: ctx.cancelled, onProgress: (p, m) => ctx.update(p, m) });
+      if (ctx.cancelled()) return [];
+      if (!outs.length) throw new Error('ComfyUI finished but returned no images or video');
+      return outs.map((o, n) => { const f = outputFileName(o, n); return ctx.saveOutput(f.file, o.bytes, f.mime); });
+    }
     ctx.update(4, 'Sending to ComfyUI');
     const clientId = crypto.randomUUID();
     const prog = new ComfyProgress(this.comfy.baseUrl, clientId, this.allowRemote);
@@ -214,6 +284,7 @@ export class Services {
   };
 }
 
+const REF_PLACEHOLDER = '__influencer_studio_ref_image__';
 export const STYLE_REF_PREFIX = "Use the reference photo for the person's identity, face and overall look, and create a new photo of: ";
 
 export const JobRequestSchema = z.object({

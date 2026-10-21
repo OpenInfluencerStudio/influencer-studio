@@ -76,12 +76,12 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
       if (sfs && sfs !== 'same-origin') throw new HttpError(403, 'bad_origin', 'Cross-site request refused');
     }
     const p = url.pathname;
-    if (m === 'GET' && p === '/api/health') { const comfyOnline = await services.comfyHealth(); return send(res, 200, { ok: true, version: VERSION, mock: services.mock, comfyUrl: services.comfy.baseUrl, comfyOnline }); }
+    if (m === 'GET' && p === '/api/health') { const comfyOnline = await services.comfyHealth(); return send(res, 200, { ok: true, version: VERSION, mock: services.mock, comfyUrl: services.comfy.baseUrl, comfyOnline, engine: services.engineInfo() }); }
     if (m === 'GET' && p === '/api/diagnostics') {
       const opt = await optionsPayload(services, null) as any; const h = await services.comfy.health(); const pr = opt.profile;
       const loop = (() => { try { const u = new URL(services.comfy.baseUrl); return ['127.0.0.1', 'localhost', '[::1]', '::1'].includes(u.hostname); } catch { return false; } })();
       const d: Diagnostics = { version: VERSION, channel: CHANNEL, issuesUrl: ISSUES_URL, generatedAt: new Date().toISOString(),
-        runtime: { node: process.version, platform: process.platform, arch: process.arch, mock: services.mock },
+        runtime: { node: process.version, platform: process.platform, arch: process.arch, mock: services.mock, engine: services.engineInfo().label },
         hardware: { os: `${pr.os.platform} ${pr.os.release} ${pr.os.arch}`, gpus: pr.gpus.map((x: any) => ({ name: x.name, vramGb: x.vramGb, driver: x.driver })), ramGb: pr.ramGb, freeDiskGb: pr.freeDiskGb, tier: opt.tier.name, tierLabel: opt.tier.label, realTier: opt.realTierName, customActive: !!opt.customActive, notes: pr.notes ?? [] },
         comfy: { online: h.online, address: loop ? 'loopback' : 'non-loopback', device: h.device, vramTotalGb: h.vramTotalGb, vramFreeGb: h.vramFreeGb },
         models: opt.models.map((mo: any) => ({ id: mo.id, label: mo.label ?? mo.id, variants: mo.variants.map((v: any) => ({ label: v.label, state: v.state, installed: !!v.installed, sizeGb: v.sizeGb, license: v.license })) })),

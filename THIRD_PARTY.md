@@ -28,7 +28,14 @@ Influencer Studio talks to ComfyUI over its local HTTP and WebSocket API and doe
 
 The optional installer in `comfyui/` (for people with no ComfyUI yet) downloads the official ComfyUI build pinned in `comfyui/comfyui.lock.json` from its GitHub releases or tag, plus ComfyUI-GGUF at a pinned commit, into the app folder. ComfyUI stays a separate GPL-3.0 program that the app starts as its own process; it is not included in the Influencer Studio download. On Windows the installer may also fetch the official 7-Zip `7zr.exe` (LGPL-2.1, SHA-256 checked) only to unpack the ComfyUI archive.
 
-Influencer Studio does not use, ship or require the Comfy SDK, comfy-api-proxy or any Comfy partner or API nodes.
+## Comfy Developer Platform
+
+| Component | Licence | Source | How it is used |
+|---|---|---|---|
+| Comfy SDK (`@comfyorg/sdk` 0.5.0) | MIT | [Comfy-Org/comfy-typescript-sdk](https://github.com/Comfy-Org/comfy-typescript-sdk) | Bundled into `app/server.mjs`. Every generation job is submitted, followed and downloaded through it. |
+| comfy-api-proxy 0.1.6 | MIT | [Comfy-Org/comfy-api-proxy](https://github.com/Comfy-Org/comfy-api-proxy) | Installed by the optional installer (or by you) and started by the app on 127.0.0.1 with a random token. It serves Comfy API v2 in front of your local ComfyUI. |
+
+Both run fully on your computer with no account or API key. The app's SDK calls go through a guard that refuses any address that is not this computer, so it never contacts Comfy Cloud, the Comfy Router or any partner API, and no partner or API nodes are used.
 
 ## Bundled in release packages
 

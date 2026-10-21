@@ -26,3 +26,5 @@ comfyui/ComfyUI_windows_portable/
 comfyui/venv/
 comfyui/downloads/
 comfyui/install.json
+comfyui/proxy-venv/
+comfyui/proxy-lib/

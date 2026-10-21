@@ -1,10 +1,10 @@
 /** Single source of truth for lock reason copy (plan 21.5). Real numbers always shown. */
 export type ReasonCode =
   | 'VRAM_LOW' | 'RAM_LOW' | 'RES_CAP' | 'FRAMES_CAP' | 'REFS_CAP' | 'CUSTOM_CAP' | 'DISK_LOW_SOFT'
-  | 'NO_GPU' | 'FILE_MISSING' | 'DISK_LOW' | 'COMFY_OFFLINE' | 'TEMPLATE_NOT_ALLOWED' | 'UNKNOWN_VARIANT' | 'MODE_UNSUPPORTED';
+  | 'NO_GPU' | 'FILE_MISSING' | 'DISK_LOW' | 'COMFY_OFFLINE' | 'SDK_PROXY_OFFLINE' | 'TEMPLATE_NOT_ALLOWED' | 'UNKNOWN_VARIANT' | 'MODE_UNSUPPORTED';
 export interface Reason { code: ReasonCode; hard: boolean; text: string }
 
-const HARD: ReasonCode[] = ['NO_GPU', 'FILE_MISSING', 'DISK_LOW', 'COMFY_OFFLINE', 'TEMPLATE_NOT_ALLOWED', 'UNKNOWN_VARIANT', 'MODE_UNSUPPORTED'];
+const HARD: ReasonCode[] = ['NO_GPU', 'FILE_MISSING', 'DISK_LOW', 'COMFY_OFFLINE', 'SDK_PROXY_OFFLINE', 'TEMPLATE_NOT_ALLOWED', 'UNKNOWN_VARIANT', 'MODE_UNSUPPORTED'];
 export function reason(code: ReasonCode, text: string): Reason { return { code, hard: HARD.includes(code), text }; }
 
 export const R = {
@@ -19,6 +19,7 @@ export const R = {
   disk: (have: number, min: number) => reason('DISK_LOW', `Only ${have} GB free disk (minimum ${min} GB)`),
   diskSoft: (have: number, need: number) => reason('DISK_LOW_SOFT', `Needs ${need} GB free disk (you have ${have} GB)`),
   comfy: (url: string) => reason('COMFY_OFFLINE', `ComfyUI is not reachable at ${url}`),
+  sdkProxy: (note?: string) => reason('SDK_PROXY_OFFLINE', `The Comfy SDK path is not ready${note ? ` (${note})` : ''}. Run the ComfyUI installer in the app folder once, or start comfy-api-proxy yourself.`),
   template: (id: string) => reason('TEMPLATE_NOT_ALLOWED', `Template "${id}" is not one of the bundled templates`),
   variant: (id: string) => reason('UNKNOWN_VARIANT', `Unknown model variant "${id}"`),
   mode: (m: string) => reason('MODE_UNSUPPORTED', `Mode "${m}" is not available in this version`),

@@ -15,6 +15,8 @@ export interface CheckResult { ok: boolean; hard: Reason[]; soft: Reason[]; http
 export interface CheckCtx {
   profile: HardwareProfile; limits: Limits; registry: Registry; settings: Settings; installed: InstalledFn;
   templates: Map<string, TemplateManifest>; comfyOnline: boolean; comfyUrl: string; mockGenerator: boolean; custom?: Custom | null;
+  /** Set when jobs go through the Comfy SDK: the local comfy-api-proxy must be up too. */
+  sdk?: { online: boolean; note?: string };
 }
 
 /** Server-side per-job check on the RESOLVED job facts, independent of the UI (plan 21.5). Pure. */
@@ -27,6 +29,7 @@ export function checkJob(job: JobFacts, c: CheckCtx): CheckResult {
   if (!variant) hard.push(R.variant(job.variantId));
   else if (tpl && !tpl.variantIds.includes(variant.id)) hard.push(R.template(job.template));
   if (!c.mockGenerator && !c.comfyOnline) hard.push(R.comfy(c.comfyUrl));
+  else if (!c.mockGenerator && c.sdk && !c.sdk.online) hard.push(R.sdkProxy(c.sdk.note));
   if (variant) {
     if (!c.mockGenerator) {
       const vs = variantState(variant, c.profile, c.limits, c.installed);
