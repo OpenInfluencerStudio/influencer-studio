@@ -79,3 +79,16 @@ export function pickPreview(map: Map<string, PreviewItem[]>, control: string, op
   // "Surprise me": vary the person across the grid instead of always showing one look.
   return items[index % items.length];
 }
+
+/** Hero image for a preset card: the version for the builder's current human look, otherwise the first one (silly presets have a single shared image). */
+export function presetImage(map: Map<string, PreviewItem[]>, id: string, type: string): PreviewItem | null {
+  const items = map.get('preset/' + id); if (!items?.length) return null;
+  const want = LOOK_FOR_TYPE[type];
+  return items.find(i => i.look === want) ?? items.find(i => i.look === 'man') ?? items[0];
+}
+/** Colourful generic example for the big preview panel: own type and body size, then the medium example (creatures have one), else null. */
+export function examplePreview(map: Map<string, PreviewItem[]>, size: string, type: string): PreviewItem | null {
+  const want = LOOK_FOR_TYPE[type] ?? 'man';
+  const pick = (opt: string) => map.get('example/' + opt)?.find(i => i.look === want) ?? null;
+  return pick(size) ?? pick('medium');
+}

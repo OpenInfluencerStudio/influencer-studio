@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'preact/hooks';
 import { About, Walkthrough, FeedbackLink, WALK_KEY } from './About';
-import { api, ApiError, initToken, subscribe, fetchBlobUrl, uploadRef, loadPreviews, pickPreview, type PreviewItem } from './api';
+import { api, ApiError, initToken, subscribe, fetchBlobUrl, uploadRef, loadPreviews, pickPreview, presetImage, examplePreview, type PreviewItem } from './api';
 import { SameCharacter, SaveAsCharacter, RefThumb } from './SameCharacter';
 import { VideoCard } from './VideoCard';
 import { Models } from './Models';
@@ -234,9 +234,13 @@ function Builder(p: Ctx) {
   const { schema, ch, setCh } = p as { schema: Schema; ch: Ch; setCh: (c: Ch) => void };
   const [open, setOpen] = useState<Record<string, boolean>>({ type: true, species: true, bodySize: true, hairStyle: true });
   const [lock, setLock] = useState<Record<string, boolean>>({});
+  const [hero, setHero] = useState<{ id: string; sig: string } | null>(null);
+  const applyPreset = async (id: string) => { const n = await api('POST', '/api/preset', { character: ch, preset: id }); setCh(n); setHero({ id, sig: JSON.stringify(n) }); };
   const [pv, setPv] = useState<Map<string, PreviewItem[]>>(new Map());
   useEffect(() => { loadPreviews().then(setPv); }, []);
   const type = ch.type as string;
+  const heroItem = hero && JSON.stringify(ch) === hero.sig ? presetImage(pv, hero.id, type) : null;
+  const heroFile = heroItem ? { file: heroItem.file, label: schema.presets.find(x => x.id === hero!.id)?.label ?? '' } : null;
   const human = humanType(type);
   const secs: Section[] = [
     { id: 'type', title: 'Character type', ui: 'type', options: schema.types },
@@ -309,10 +313,9 @@ function Builder(p: Ctx) {
         <div class="gbar"><button class="shuf" aria-label="Shuffle character" title="Shuffle (locked sections stay)" onClick={shuffle}>⤮</button><button class="gen-btn" onClick={p.generate}>Generate ✨</button></div>
       </aside>
       <div class="canvas">
-        <LivePreview ch={ch} seed={p.seed} pv={pv} schema={schema} type={type} opts={p.opts} msel={p.msel} unlocked={p.unlocked} jobs={p.jobs} setNotice={p.setNotice} />
+        <LivePreview hero={heroFile} clearHero={() => setHero(null)} ch={ch} seed={p.seed} pv={pv} schema={schema} type={type} opts={p.opts} msel={p.msel} unlocked={p.unlocked} jobs={p.jobs} setNotice={p.setNotice} />
         <Library setCh={setCh} />
-        <div class="card"><h2>Presets</h2><div class="chips">{schema.presets.filter(x => !x.silly).map(x => <button key={x.id} class="chip" onClick={async () => setCh(await api('POST', '/api/preset', { character: ch, preset: x.id }))}>{x.label}</button>)}</div></div>
-        <div class="card" id="silly-pack"><h2>Silly preset pack <small class="muted">{schema.presets.filter(x => x.silly).length} presets</small></h2><div class="chips">{schema.presets.filter(x => x.silly).map(x => <button key={x.id} class="chip" onClick={async () => setCh(await api('POST', '/api/preset', { character: ch, preset: x.id }))}>{x.label}</button>)}</div><small class="muted">One click fills the builder. Everything stays editable.</small></div>
+        <PresetGrid schema={schema} pv={pv} type={type} active={hero?.id ?? null} apply={applyPreset} />
       </div>
     </section>
   );
@@ -371,7 +374,7 @@ function Tile({ s, o, look, size, type, schema }: { s: Section; o: Opt; look: an
 const PREVIEW_KEY = 'is_preview';
 const sigOf = (ch: Ch, seed: number) => JSON.stringify([ch, seed]);
 /** Real preview: a realistic placeholder before any generation, and a real generated image of the current selection after pressing Preview (last result cached). */
-function LivePreview({ ch, seed, pv, schema, type, opts, msel, unlocked, jobs, setNotice }: any) {
+function LivePreview({ hero, clearHero, ch, seed, pv, schema, type, opts, msel, unlocked, jobs, setNotice }: any) {
   const [pseed] = useState(() => seed);
   const [cache, setCache] = useState<{ sig: string; jobId: string } | null>(() => { try { return JSON.parse(localStorage.getItem(PREVIEW_KEY) ?? 'null'); } catch { return null; } });
   const [url, setUrl] = useState(''); const [busy, setBusy] = useState(false); const [err, setErr] = useState('');
@@ -385,7 +388,7 @@ function LivePreview({ ch, seed, pv, schema, type, opts, msel, unlocked, jobs, s
   }, [cache?.jobId, done]);
   const sig = sigOf(ch, pseed); const stale = !!cache && cache.sig !== sig;
   const run = async () => {
-    setErr(''); setBusy(true); setNotice(null);
+    setErr(''); setBusy(true); setNotice(null); clearHero?.();
     try {
       const pk = pick(opts.models, msel, unlocked, 'image'); if (pk.blocked) { setErr(pk.blocked); return; }
       const j = await api<Job>('POST', '/api/jobs', { ...(pk.variantId ? { variantId: pk.variantId } : {}), character: ch, seed: pseed, width: 576, height: 768, batch: 1 });
@@ -395,18 +398,19 @@ function LivePreview({ ch, seed, pv, schema, type, opts, msel, unlocked, jobs, s
   // Realistic placeholder: the generated full-body photo for this type and body size, else the type picture, else a plain card.
   const sizeId = ch.bodySize ?? 'medium';
   const hasPhoto = humanType(type) || type === 'alien' || type === 'monster'; // playful creature types have no example photo until their thumbnails are generated
-  const ph = !hasPhoto ? (pv.get('type/' + type)?.[0] ?? null) : pickPreview(pv, 'bodySize', sizeId, type, 0) ?? pv.get('type/' + (type === 'trans_woman' ? 'female' : type === 'trans_man' ? 'male' : type))?.[0] ?? pv.get('type/female')?.[0] ?? null;
+  const ph = examplePreview(pv, sizeId, type) ?? (!hasPhoto ? (pv.get('type/' + type)?.[0] ?? null) : pickPreview(pv, 'bodySize', sizeId, type, 0)) ?? pv.get('type/' + (type === 'trans_woman' ? 'female' : type === 'trans_man' ? 'male' : type))?.[0] ?? pv.get('type/female')?.[0] ?? null;
   const typeLabel = schema.types.find((t: any) => t.id === type)?.label ?? '';
   const failed = job && ['failed', 'cancelled', 'interrupted'].includes(job.status);
   return <div class="stage card glow" id="live-preview">
     <div class="bigart real" aria-live="polite">
-      {url ? <img src={url} alt={`Generated preview: ${typeLabel}`} />
+      {hero ? <img src={'/previews/' + hero.file} alt={`Preset: ${hero.label}`} class="phimg hero" />
+        : url ? <img src={url} alt={`Generated preview: ${typeLabel}`} />
         : ph ? <img src={'/previews/' + ph.file} alt={`Example photo for ${typeLabel}, ${schema.sizes.find((z: Opt) => z.id === sizeId)?.label ?? ''} (not your exact selection)`} class="phimg" />
           : <div class="phempty">No example photo for this playful type yet.<br />Press Preview to see it.</div>}
       {running && <div class="pvbusy" role="status"><i class="spin" />Generating… {Math.round(job!.progress)}%</div>}
     </div>
     <div class="pvrow"><button class="primary" disabled={busy || running} onClick={run}>{running ? 'Generating…' : url ? 'Update preview' : 'Preview'}</button></div>
-    <small class="muted" role="status">{url ? (stale ? 'Last preview. Your selection has changed since; press Update preview.' : 'Preview of your current selection.') : 'Example photo shown until you press Preview.'}</small>
+    <small class="muted" role="status">{hero ? `Preset “${hero.label}”. Change anything or press Preview for your own picture.` : url ? (stale ? 'Last preview. Your selection has changed since; press Update preview.' : 'Preview of your current selection.') : 'Example photo shown until you press Preview.'}</small>
     {(err || failed) && <small class="warn" role="alert">{err || job?.error || 'The preview did not finish.'}</small>}
     <SaveBar ch={ch} seed={seed} />
     <small class="muted">Adults only, SFW, fully clothed.</small>
@@ -416,6 +420,17 @@ function SaveBar({ ch, seed }: { ch: Ch; seed: number }) {
   const [name, setName] = useState(''); const [msg, setMsg] = useState('');
   const save = async () => { try { await api('POST', '/api/characters', { name: name || 'My character', character: ch, seed }); setMsg('Saved'); window.dispatchEvent(new Event('lib')); } catch (e) { setMsg((e as Error).message); } };
   return <div class="row savebar"><input aria-label="Character name" placeholder="Name (optional)" maxLength={30} value={name} onInput={e => setName((e.target as HTMLInputElement).value)} /><button class="primary" onClick={save}>Save to library</button>{msg && <small class="muted" role="status">{msg}</small>}</div>;
+}
+function PresetGrid({ schema, pv, type, active, apply }: { schema: Schema; pv: Map<string, PreviewItem[]>; type: string; active: string | null; apply: (id: string) => void }) {
+  const card = (x: Opt & { silly?: boolean }) => { const it = presetImage(pv, x.id, type); return (
+    <button key={x.id} class={'pcard' + (active === x.id ? ' on' : '')} aria-pressed={active === x.id} title={x.label} onClick={() => apply(x.id)}>
+      <span class="pthumb">{it ? <img src={'/previews/' + it.file} width={it.w} height={it.h} alt="" loading="lazy" decoding="async" /> : <span class="pph" aria-hidden="true">🎭</span>}</span>
+      <span class="pname">{x.label}</span>
+    </button>); };
+  return <>
+    <div class="card" id="presets"><h2>Presets <small class="muted">{schema.presets.filter(x => !x.silly).length}</small></h2><div class="pgrid">{schema.presets.filter(x => !x.silly).map(card)}</div></div>
+    <div class="card" id="silly-pack"><h2>Silly preset pack <small class="muted">{schema.presets.filter(x => x.silly).length} presets</small></h2><div class="pgrid scroll">{schema.presets.filter(x => x.silly).map(card)}</div><small class="muted">One click fills the builder and shows the preset above. Everything stays editable.</small></div>
+  </>;
 }
 function Library({ setCh }: { setCh: (c: Ch) => void }) {
   const [items, setItems] = useState<any[]>([]);
