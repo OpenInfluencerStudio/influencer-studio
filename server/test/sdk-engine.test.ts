@@ -107,3 +107,51 @@ describe.runIf(!!E2E_COMFY && !!E2E_BIN)('real Comfy SDK -> comfy-api-proxy -> C
     expect((await fetch(info.proxyUrl + '/api/v2/health').catch(() => null))?.ok ?? false).toBe(false);
   }, 60000);
 });
+
+describe('job runner on the SDK engine (stub SDK, real templates)', () => {
+  const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
+  function rig() {
+    const svc = new Services({ dataDir: tmp(), engine: 'sdk', proxyCmd: null, comfyUrl: 'http://127.0.0.1:9' });
+    const calls: { graph: any; ref?: any }[] = [];
+    (svc as any).sdk = { proxyUrl: 'http://127.0.0.1:8189', health: async () => ({ online: true }), run: async (graph: any, o: any) => { calls.push({ graph, ref: o.ref }); o.onProgress?.(50, 'Drawing, step 2 of 4'); return [{ name: 'x.png', type: 'image', contentType: 'image/png', bytes: png }]; } };
+    const saved: string[] = []; const ups: string[] = [];
+    const ctx = { update: (_p: number, m?: string) => { if (m) ups.push(m); }, cancelled: () => false, outputsDir: tmp(), saveOutput: (name: string, _d: Buffer, mime: string) => { saved.push(name); return { file: name, mime }; } };
+    return { svc, calls, saved, ups, ctx };
+  }
+  it('every template with an image slot accepts the SDK reference placeholder', async () => {
+    const { sdkRefPlaceholder } = await import('../src/services.js'); const { fillTemplate } = await import('../src/workflows.js');
+    const { svc } = rig(); let n = 0;
+    for (const [, t] of svc.templates) {
+      if (!('image' in t.manifest.params)) continue; n++;
+      for (const ext of ['png', 'jpg', 'webp']) {
+        const ph = sdkRefPlaceholder('0f8e2a7c-1111-4222-8333-944445555666', ext);
+        const vals: Record<string, string | number> = { image: ph, prompt: 'p', seed: 1 };
+        for (const [k, p] of Object.entries(t.manifest.params)) if (!(k in vals) && (p as any).default !== undefined) vals[k] = (p as any).default;
+        const wf = fillTemplate(t, vals);
+        expect(findPlaceholder(wf, ph).length).toBeGreaterThan(0);
+      }
+    }
+    expect(n).toBeGreaterThan(0);
+  });
+  it('a text-to-image job goes through the SDK and saves its output', async () => {
+    const { svc, calls, saved, ups, ctx } = rig();
+    const out = await (svc as any).runner({ id: 'j1', template: 'klein_t2i', seed: 7, width: 768, height: 1024, batch: 1, prompt: 'an adult in a blazer', mock: false }, ctx);
+    expect(out).toEqual([{ file: 'img_0.png', mime: 'image/png' }]); expect(saved).toEqual(['img_0.png']);
+    expect(calls.length).toBe(1); expect(calls[0].ref).toBeUndefined(); expect(JSON.stringify(calls[0].graph)).toContain('an adult in a blazer');
+    expect(ups).toContain('Drawing, step 2 of 4');
+  });
+  it('a style-reference job hands the picture to the SDK as an asset in the template image slot', async () => {
+    const { svc, calls, ctx } = rig();
+    const pic = fs.readFileSync(path.join(__dirname, '..', '..', 'assets/previews/accessory/cap.webp'));
+    const ref = svc.refs.save(pic);
+    const tpl = [...svc.templates].find(([, t]) => 'image' in t.manifest.params && t.manifest.kind === 'image')![0];
+    await (svc as any).runner({ id: 'j2', template: tpl, seed: 7, width: 768, height: 1024, batch: 1, prompt: 'p', mock: false, styleRef: ref.id }, ctx);
+    const r = calls[0].ref; expect(r.mime).toBe('image/webp'); expect(r.bytes.equals(pic)).toBe(true); expect(r.placeholder).toMatch(/^is_sdkref_[0-9a-f]{24}\.webp$/);
+    expect(findPlaceholder(calls[0].graph, r.placeholder).length).toBeGreaterThan(0);
+  });
+  it('without a proxy the runner refuses instead of falling back to direct', async () => {
+    const svc = new Services({ dataDir: tmp(), engine: 'sdk', proxyCmd: null, comfyUrl: 'http://127.0.0.1:9' });
+    const ctx = { update: () => {}, cancelled: () => false, outputsDir: tmp(), saveOutput: () => ({ file: 'x', mime: 'x' }) };
+    await expect((svc as any).runner({ id: 'j3', template: 'klein_t2i', seed: 1, width: 768, height: 1024, batch: 1, prompt: 'p', mock: false }, ctx)).rejects.toThrow(/comfy-api-proxy/);
+  });
+});

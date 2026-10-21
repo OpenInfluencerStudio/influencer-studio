@@ -238,7 +238,7 @@ export class Services {
       if (!ref) throw new Error(job.edit || job.video ? 'The saved picture is no longer available. Save the character again from a new picture.' : 'The style reference image is no longer available. Remove it and add it again.');
       if (!has('image')) throw new Error('This template does not take a reference image');
       ctx.update(3, 'Sending your reference image');
-      if (this.engine === 'sdk') { values.image = REF_PLACEHOLDER; sdkRef = { placeholder: REF_PLACEHOLDER, bytes: fs.readFileSync(ref.file), filename: `is_ref_${refId.replace(/-/g, '').slice(0, 24)}.${ref.info.ext}`, mime: ref.info.mime }; }
+      if (this.engine === 'sdk') { const ph = sdkRefPlaceholder(refId, ref.info.ext); values.image = ph; sdkRef = { placeholder: ph, bytes: fs.readFileSync(ref.file), filename: `is_ref_${refId.replace(/-/g, '').slice(0, 24)}.${ref.info.ext}`, mime: ref.info.mime }; }
       else values.image = await this.comfy.uploadImage(`is_ref_${refId.replace(/-/g, '').slice(0, 24)}.${ref.info.ext}`, fs.readFileSync(ref.file), ref.info.mime);
       if (job.styleRef) values.prompt = STYLE_REF_PREFIX + job.prompt;
     }
@@ -284,7 +284,8 @@ export class Services {
   };
 }
 
-const REF_PLACEHOLDER = '__influencer_studio_ref_image__';
+/** Stand-in filename for the reference image while the template is filled; the SDK swaps it for the uploaded asset. Matches every template's image pattern. */
+export const sdkRefPlaceholder = (refId: string, ext: string) => `is_sdkref_${refId.replace(/[^0-9a-f]/gi, '').slice(0, 24)}.${ext === 'jpeg' ? 'jpg' : ext}`;
 export const STYLE_REF_PREFIX = "Use the reference photo for the person's identity, face and overall look, and create a new photo of: ";
 
 export const JobRequestSchema = z.object({
