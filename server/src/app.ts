@@ -198,7 +198,9 @@ export async function startApp(opts: AppOpts = {}): Promise<RunningApp> {
     if (b.video && !vref) throw new HttpError(400, 'bad_ref', 'The picture to animate was not found. Save the character from a picture first.');
     if (b.edit && (b.styleRef || b.template)) throw new HttpError(400, 'bad_params', 'An edit job cannot be combined with a style reference or a template');
     if (b.edit && !services.refs.get(b.edit.refId)) throw new HttpError(400, 'bad_ref', 'The saved character image was not found. Save the character from a picture first.');
-    const template = b.video ? 'wan22_i2v' : b.edit ? templateForEdit(b.edit) : b.styleRef ? 'klein_edit' : (b.template ?? 'klein_t2i');
+    const pickedVar = b.variantId ? services.registry.variants.find(v => v.id === b.variantId) : undefined;
+    const pickedMod = pickedVar ? services.registry.models.find(m => m.id === pickedVar.modelId) : undefined;
+    const template = b.video ? (pickedVar?.template && pickedMod?.kind === 'video' ? pickedVar.template : 'wan22_i2v') : b.edit ? templateForEdit(b.edit) : b.styleRef ? 'klein_edit' : (b.template ?? (pickedVar?.template && pickedMod?.kind === 'image' ? pickedVar.template : 'klein_t2i'));
     if (b.styleRef && b.template && b.template !== 'klein_edit') throw new HttpError(400, 'bad_params', 'A style reference needs the image edit template');
     let editPrompt: string | undefined; let frames: number | undefined;
     if (b.edit) { try { editPrompt = compileEdit(b.edit); } catch (e) { if (e instanceof SafetyError) throw e; throw new HttpError(400, 'bad_params', (e as Error).message); } }

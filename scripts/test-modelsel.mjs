@@ -5,7 +5,7 @@ const b = await chromium.launch({ executablePath: '/usr/bin/google-chrome', args
 const errs = []; p.on('pageerror', e => errs.push(e.message));
 await p.goto(url); await p.waitForSelector('.mrow'); await p.waitForTimeout(2800);
 const row = id => p.locator(`.mrow[data-model="${id}"]`);
-const rows = await p.locator('.mrow').count(); ok(rows === 3, 'three model rows');
+const rows = await p.locator('.mrow').count(); ok(rows >= 4, 'four or more model rows (' + rows + ')');
 // nothing overlays: elementFromPoint at the centre of each row is inside it
 for (const id of ['flux2-klein-4b', 'qwen-image-edit-2511', 'wan22-ti2v-5b']) {
   const hit = await row(id).evaluate(e => { const r = e.getBoundingClientRect(); const t = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2); return e.contains(t); });

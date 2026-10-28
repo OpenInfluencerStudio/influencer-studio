@@ -308,7 +308,7 @@ export const JobRequestSchema = z.object({
   width: z.number().int().min(256).max(4096).multipleOf(16).optional(),
   height: z.number().int().min(256).max(4096).multipleOf(16).optional(),
   batch: z.number().int().min(1).max(4).optional(),
-  steps: z.number().int().min(1).max(12).optional(),
+  steps: z.number().int().min(1).max(16).optional(),
   refs: z.number().int().min(0).max(8).optional(),
   styleRef: z.string().regex(/^[0-9a-f-]{36}$/).optional(),
   edit: EditSchema.optional(),

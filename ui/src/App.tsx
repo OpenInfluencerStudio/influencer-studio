@@ -460,6 +460,8 @@ function Generate(p: Ctx) {
       {video && <div class="wide3"><InputTabs vin={p.vin} set={p.setVin} models={opts.models} /></div>}
       {!video && <div class="card">
         <h2>Output</h2>
+        <h3>Image model</h3>
+        <div class="chips" id="img-model-chips">{opts.models.filter((m: ModelOpt) => m.kind === 'image').map((m: ModelOpt) => { const g = gate(m as any, p.unlocked); const eff = effective(opts.models as any, p.msel, p.unlocked); const on = eff.includes(m.id); return <button key={m.id} class={'chip' + (on ? ' on' : '') + (g.locked ? ' locked' : '')} disabled={!g.selectable} aria-disabled={!g.selectable} title={g.reason ?? m.summary} onClick={() => { const n = toggle(opts.models as any, eff, m.id, p.unlocked); if (n) p.setMsel(n); }}>{g.locked ? (p.unlocked ? '⚠ ' : '🔒 ') : ''}{m.name}</button>; })}</div>
         <h3>Resolution (long side)</h3>
         <div class="chips res">{opts.resolutions.map((r: Res) => { const lk = r.state === 'locked_soft'; const dis = lk && !p.unlocked; return <button key={r.px} class={'chip' + (p.px === r.px ? ' on' : '') + (lk ? ' locked' : '')} disabled={dis} aria-disabled={dis} title={r.reason ?? ''} onClick={() => p.setPx(r.px)}>{lk ? (p.unlocked ? '⚠ ' : '🔒 ') : ''}{r.px}</button>; })}</div>
         {opts.resolutions.some((r: Res) => r.state === 'locked_soft') && <p class="muted small">Locked sizes need a stronger GPU. {p.adv ? 'You can unlock them on the Hardware screen.' : 'Advanced mode shows the unlock setting.'}</p>}

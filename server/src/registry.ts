@@ -13,7 +13,7 @@ const VariantSchema = z.object({
   minDiskGb: z.number(), template: z.string(), templates: z.array(z.string()).optional(), measured: z.record(z.unknown()).optional(), est: z.boolean(), files: z.array(FileSchema).min(1), requiresNodes: z.array(z.string()).optional(),
 }).strict();
 const ModelSchema = z.object({
-  id: z.string(), name: z.string(), kind: z.enum(['image', 'image-edit', 'video', 'audio']), modes: z.array(z.string()), license: z.string(), sfw: z.literal(true),
+  id: z.string(), name: z.string(), kind: z.enum(['image', 'image-edit', 'video', 'audio']), modes: z.array(z.string()), license: z.string(), sfw: z.literal(true), summary: z.string().optional(),
 }).strict();
 export const RegistrySchema = z.object({
   schemaVersion: z.literal(2), note: z.string(), licenseAllowList: z.array(z.string()),
