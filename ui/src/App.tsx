@@ -18,7 +18,7 @@ type Ctl = { id: string; title: string; ui: string; multi: boolean; maxSelected:
 type Schema = { video: { motions: Opt[]; cameras: Opt[]; seconds: number[]; sizes: number[] }; types: (Opt & { human: boolean })[]; species: Record<string, Opt[]>; sizes: Opt[]; ageBands: (Opt & { age: number })[]; controls: Ctl[]; presets: (Opt & { silly?: boolean })[]; silliness: Opt[]; edit: { poses: Opt[]; azimuths: Opt[]; elevations: Opt[]; distances: Opt[] } };
 type Reason = { code: string; hard: boolean; text: string };
 type Variant = { id: string; label: string; format: string; sizeGb: number; license: string; minVramGb: number; state: string; reasons: Reason[]; installed: boolean | null; sources: string[]; downloadable: boolean; est: boolean };
-type ModelOpt = { id: string; name: string; kind: string; bestVariantId: string | null; variants: Variant[] };
+type ModelOpt = { id: string; name: string; kind: string; summary?: string; bestVariantId: string | null; variants: Variant[] };
 type Res = { px: number; width: number; height: number; state: string; reason: string | null };
 type Opts = { version: string; custom: any; customActive: boolean; profile: any; pretend: string | null; realTier: string; realTierName: string; tier: { id: string; name: string; label: string; estimated: boolean }; models: ModelOpt[]; resolutions: Res[]; settings: { unlock_unsupported: boolean }; comfyOnline: boolean; mock: boolean; summary: string };
 export type Job = { id: string; status: string; progress: number; message?: string; error?: string; label: string; prompt: string; seed: number; width: number; height: number; mock: boolean; unsupported: boolean; outputs: { index: number; mime: string }[]; createdAt: string; character?: any; edit?: any; video?: any };
@@ -473,7 +473,7 @@ function Generate(p: Ctx) {
         <p class="muted small">Camera and look presets arrive in a later milestone.</p>
       </div>}
       {!video && <SameCharacter schema={p.schema} setNotice={p.setNotice} opts={opts} msel={p.msel} unlocked={p.unlocked} />}
-      {video && (curIn.id === 'i2v' && curIn.available ? <VideoCard msel={p.msel} schema={p.schema} opts={opts} jobs={jobs} unlocked={p.unlocked} adv={p.adv} setNotice={p.setNotice} go={p.go} />
+      {video && (curIn.id === 'i2v' && curIn.available ? <VideoCard msel={p.msel} setMsel={p.setMsel} schema={p.schema} opts={opts} jobs={jobs} unlocked={p.unlocked} adv={p.adv} setNotice={p.setNotice} go={p.go} />
         : <div class="card" id="vin-panel" role="tabpanel" aria-labelledby={'vin-' + curIn.id}><h2>🔒 {curIn.label}</h2><p class="muted">{curIn.reason === 'Coming soon' ? 'Coming soon. It will appear here once a compatible open model is installed on a PC that can run it.' : curIn.reason}</p>{curIn.reason !== 'Coming soon' && <button class="ghost" onClick={() => p.go('models')}>Open Models</button>}</div>)}
       <div class="card stage2">
         <div class="preview glow">

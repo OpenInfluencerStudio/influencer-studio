@@ -1,0 +1,98 @@
+{
+  "id": "ltx25_i2v_audio",
+  "label": "LTX-2.5 22B Distilled image-to-video with synchronized speech & audio",
+  "mode": "image-to-video",
+  "kind": "video",
+  "variantIds": [
+    "ltx-2.5-22b-distilled-q4km"
+  ],
+  "allowedClassTypes": [
+    "UnetLoaderGGUF",
+    "CLIPLoader",
+    "VAELoader",
+    "LoadImage",
+    "LTXVPreprocess",
+    "CLIPTextEncode",
+    "LTXVConditioning",
+    "EmptyLTXVLatentVideo",
+    "LTXVImgToVideoInplace",
+    "LTXVEmptyLatentAudio",
+    "LTXVConcatAVLatent",
+    "LTXVDualCFGGuider",
+    "KSamplerSelect",
+    "ManualSigmas",
+    "RandomNoise",
+    "SamplerCustomAdvanced",
+    "LTXVSeparateAVLatent",
+    "VAEDecode",
+    "LTXVAudioVAEDecode",
+    "CreateVideo",
+    "SaveVideo"
+  ],
+  "params": {
+    "image": {
+      "node": "5",
+      "input": "image",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]{1,80}\\.(png|jpg|webp)$"
+    },
+    "prompt": {
+      "node": "7",
+      "input": "text",
+      "type": "string",
+      "maxLength": 2000
+    },
+    "negative": {
+      "node": "8",
+      "input": "text",
+      "type": "string",
+      "maxLength": 500
+    },
+    "width": {
+      "node": "10",
+      "input": "width",
+      "type": "int",
+      "min": 256,
+      "max": 1280,
+      "multipleOf": 32,
+      "axis": "width"
+    },
+    "height": {
+      "node": "10",
+      "input": "height",
+      "type": "int",
+      "min": 256,
+      "max": 1280,
+      "multipleOf": 32,
+      "axis": "height"
+    },
+    "length": {
+      "node": "10",
+      "input": "length",
+      "also": [
+        {
+          "node": "12",
+          "input": "frames_number"
+        }
+      ],
+      "type": "int",
+      "min": 25,
+      "max": 241,
+      "default": 49
+    },
+    "seed": {
+      "node": "17",
+      "input": "noise_seed",
+      "type": "int",
+      "min": 0,
+      "max": 4294967295
+    },
+    "prefix": {
+      "node": "23",
+      "input": "filename_prefix",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_/-]{1,40}$",
+      "default": "video/influencer_studio_ltx25"
+    }
+  }
+}

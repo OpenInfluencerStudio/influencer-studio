@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'preact/hooks';
-import { pick } from './modelsel';
+import { effective, toggle, gate, pick } from './modelsel';
 import { api, ApiError, fetchBlobUrl } from './api';
 import { RefThumb } from './SameCharacter';
 
@@ -13,15 +13,20 @@ function JobThumb({ id }: { id: string }) {
   return url ? <img class="refthumb" src={url} alt="Recent result" loading="lazy" decoding="async" /> : <div class="refthumb ph" aria-hidden="true" />;
 }
 
-/** Video mode: animate a saved character picture or a recent result with Wan 2.2 TI2V-5B. Durations and sizes are capped by the hardware tier. */
-export function VideoCard({ msel, schema, opts, jobs, unlocked, adv, setNotice, go }: { msel: string[] | null; schema: any; opts: any; jobs: any[]; unlocked: boolean; adv: boolean; setNotice: (n: any) => void; go: (s: any) => void }) {
+/** Video mode: animate a saved character picture or a recent result with Wan 2.2 TI2V-5B or LTX-2.5 22B Distilled (AV). Durations and sizes are capped by the hardware tier. */
+export function VideoCard({ msel, setMsel, schema, opts, jobs, unlocked, adv, setNotice, go }: { msel: string[] | null; setMsel?: (v: string[]) => void; schema: any; opts: any; jobs: any[]; unlocked: boolean; adv: boolean; setNotice: (n: any) => void; go: (s: any) => void }) {
   const vs = schema.video; const tier = opts.tier;
-  const model = opts.models.find((m: any) => m.id === 'wan22-ti2v-5b'); const variant = model?.variants?.[0];
+  const vModels = opts.models.filter((m: any) => m.kind === 'video');
+  const eff = effective(opts.models, msel, unlocked);
+  const model = vModels.find((m: any) => eff.includes(m.id)) ?? opts.models.find((m: any) => m.id === 'wan22-ti2v-5b') ?? vModels[0];
+  const variant = model?.variants?.[0];
+  const isLtx25 = model?.id === 'ltx-2.5-distilled';
   const hard = variant?.state === 'blocked_hard';
   const [lib, setLib] = useState<Lib[]>([]);
   const [sel, setSel] = useState('');
   const [motion, setMotion] = useState('gentle'); const [camera, setCamera] = useState('static');
   const [seconds, setSeconds] = useState(2); const [size, setSize] = useState(640); const [note, setNote] = useState('');
+  const [speech, setSpeech] = useState(''); const [audioPrompt, setAudioPrompt] = useState('');
   const [busy, setBusy] = useState(false);
   const load = () => api<Lib[]>('GET', '/api/characters').then(l => setLib(l.filter(x => x.refImage))).catch(() => {});
   useEffect(() => { load(); window.addEventListener('lib', load); return () => window.removeEventListener('lib', load); }, []);
@@ -38,7 +43,12 @@ export function VideoCard({ msel, schema, opts, jobs, unlocked, adv, setNotice, 
     try {
       let refId = cur.refId;
       if (!refId && cur.jobId) refId = (await api('POST', '/api/refs/from-job', { jobId: cur.jobId, index: 0 })).id;
-      const video: any = { refId, motion, camera, seconds, size, ...(note.trim() ? { note: note.trim() } : {}) };
+      const video: any = {
+        refId, motion, camera, seconds, size,
+        ...(note.trim() ? { note: note.trim() } : {}),
+        ...(speech.trim() ? { speech: speech.trim() } : {}),
+        ...(audioPrompt.trim() ? { audioPrompt: audioPrompt.trim() } : {}),
+      };
       const pk = pick(opts.models, msel, unlocked, 'video'); if (pk.blocked) { setNotice({ text: pk.blocked }); return; }
       await api('POST', '/api/jobs', { ...(pk.variantId ? { variantId: pk.variantId } : {}), character: cur.character && Object.keys(cur.character).length ? cur.character : { type: 'surprise' }, video });
     } catch (e) { const a = e as ApiError; setNotice({ text: a.message, reasons: a.body?.reasons }); }
@@ -49,7 +59,8 @@ export function VideoCard({ msel, schema, opts, jobs, unlocked, adv, setNotice, 
   return (
     <div class="card" id="video-card">
       <h2>🎬 Make a video</h2>
-      <p class="muted small">Bring a picture to life with a short motion (Wan 2.2 TI2V-5B, no audio).</p>
+      <p class="muted small">{isLtx25 ? 'Bring a picture to life with motion + synchronized speech & sound effects (LTX-2.5 22B Distilled AV).' : 'Bring a picture to life with a short motion (Wan 2.2 TI2V-5B, or choose LTX-2.5 AV for synchronized audio).'}</p>
+      {vModels.length > 1 && <div class="field"><h3>Video model</h3><div class="chips" id="vid-model-chips">{vModels.map((m: any) => { const g = gate(m, unlocked); const on = eff.includes(m.id); return <button key={m.id} class={'chip' + (on ? ' on' : '') + (g.locked ? ' locked' : '')} disabled={!g.selectable} aria-disabled={!g.selectable} title={g.reason || m.summary || m.name} onClick={() => { if (!setMsel) return; const n = toggle(opts.models, eff, m.id, unlocked); if (n) setMsel(n); }}>{g.locked ? (unlocked ? '⚠ ' : '🔒 ') : ''}{m.name}</button>; })}</div></div>}
       {hard && <div class="alert" role="status"><b>Not ready on this PC</b>{variant.reasons.map((r: any) => <div key={r.text}>⛔ {r.text}</div>)}<button class="ghost" onClick={() => go('models')}>Open Models</button></div>}
       {srcs.length === 0 ? <p class="muted">Make a picture first, then it shows up here to animate. Saving it as a character keeps it.</p> : <>
         <h3>Picture to animate</h3>
@@ -58,9 +69,11 @@ export function VideoCard({ msel, schema, opts, jobs, unlocked, adv, setNotice, 
         {pills('Camera', vs.cameras, camera, setCamera)}
         <div class="field"><h3>Length</h3><div class="chips">{vs.seconds.map((s: number) => { const lk = frames(s) > cap && tier.id !== 'T0'; const dis = lk && !unlocked; return <button key={s} class={'chip' + (seconds === s ? ' on' : '') + (lk ? ' locked' : '')} disabled={dis} aria-disabled={dis} title={lk ? `${frames(s)} frames is above the ${cap} frame limit for tier ${tier.id}` : ''} onClick={() => setSeconds(s)}>{lk ? (unlocked ? '⚠ ' : '🔒 ') : ''}{s} s</button>; })}</div></div>
         <div class="field"><h3>Size (long side)</h3><div class="chips">{vs.sizes.map((px: number) => { const lk = px > pxCap && tier.id !== 'T0'; const dis = lk && !unlocked; return <button key={px} class={'chip' + (size === px ? ' on' : '') + (lk ? ' locked' : '')} disabled={dis} aria-disabled={dis} title={lk ? `${px} px is above the ${pxCap} px limit for your hardware tier ${tier.id}` : ''} onClick={() => setSize(px)}>{lk ? (unlocked ? '⚠ ' : '🔒 ') : ''}{px}</button>; })}</div></div>
+        <div class="field"><h3>Spoken dialogue / speech {isLtx25 ? '(LTX-2.5 synced voice)' : '(synced when using LTX-2.5 AV)'}</h3><input id="video-speech" class="txt" maxLength={240} value={speech} placeholder="for example: Welcome back to the studio, today we are testing local AI video!" onInput={e => setSpeech((e.target as HTMLInputElement).value)} /></div>
+        <div class="field"><h3>Sound effects & ambience (optional)</h3><input id="video-audio-prompt" class="txt" maxLength={200} value={audioPrompt} placeholder="for example: warm studio room tone, soft acoustic ambience" onInput={e => setAudioPrompt((e.target as HTMLInputElement).value)} /></div>
         {adv && <div class="field"><h3>Extra detail (optional)</h3><input class="txt" maxLength={200} value={note} placeholder="for example: near a window" onInput={e => setNote((e.target as HTMLInputElement).value)} /></div>}
         <p class="muted small">About 1 minute on a 16 GB card once the models are loaded (the first run takes several minutes). {tier.estimated ? 'Limits for your tier are estimates.' : ''}</p>
-        <button class="primary wide" disabled={busy || !cur || hard} onClick={run}>{busy ? 'Sending…' : 'Make video'}</button>
+        <button class="primary wide" disabled={busy || !cur || hard} onClick={run}>{busy ? 'Sending…' : isLtx25 ? 'Make video + audio' : 'Make video'}</button>
       </>}
     </div>
   );

@@ -3,7 +3,8 @@
   "note": "Permissive licences only. sha256 values are copied from the Hugging Face LFS oids and verified locally; null means not yet verified (such variants cannot be downloaded). Hardware numbers are estimates unless est is false.",
   "licenseAllowList": [
     "Apache-2.0",
-    "MIT"
+    "MIT",
+    "LTX-2-Community"
   ],
   "models": [
     {
@@ -48,6 +49,18 @@
       ],
       "license": "Apache-2.0",
       "sfw": true
+    },
+    {
+      "id": "ltx-2.5-distilled",
+      "name": "LTX-2.5 22B Distilled (AV)",
+      "kind": "video",
+      "modes": [
+        "text-to-video",
+        "image-to-video"
+      ],
+      "license": "LTX-2-Community",
+      "sfw": true,
+      "summary": "22B 8-step distilled video + native synchronized speech/dialogue & SFX audio model by Lightricks (Q4_K_M GGUF)."
     }
   ],
   "variants": [
@@ -256,6 +269,66 @@
         "peakVramGb": 15.9,
         "note": "Peak is close to 16 GB because ComfyUI offloads dynamically; 12 GB is an estimate, not measured."
       }
+    },
+    {
+      "id": "ltx-2.5-22b-distilled-q4km",
+      "modelId": "ltx-2.5-distilled",
+      "label": "Q4_K_M (GGUF + native audio)",
+      "format": "gguf-q4_k_m",
+      "sizeGb": 30.79,
+      "license": "LTX-2-Community",
+      "qualityRank": 3,
+      "minVramGb": 16,
+      "recommendedVramGb": 24,
+      "minRamGb": 32,
+      "recommendedRamGb": 48,
+      "minDiskGb": 34,
+      "template": "ltx25_i2v_audio",
+      "templates": [
+        "ltx25_i2v_audio",
+        "ltx25_t2v_audio"
+      ],
+      "est": false,
+      "requiresNodes": [
+        "UnetLoaderGGUF",
+        "LTXVConcatAVLatent",
+        "LTXVDualCFGGuider",
+        "LTXVAudioVAEDecode"
+      ],
+      "files": [
+        {
+          "name": "ltx-2.5-22b-distilled-Q4_K_M.gguf",
+          "folder": "unet",
+          "sizeBytes": 13584703872,
+          "sha256": "ba40d53770314e69e88361661e55c6cc3b12a363646ba2ea53c8bcd459b66747",
+          "source": "https://huggingface.co/unsloth/LTX-2.5-GGUF",
+          "url": "https://huggingface.co/unsloth/LTX-2.5-GGUF/resolve/main/distilled/ltx-2.5-22b-distilled-Q4_K_M.gguf"
+        },
+        {
+          "name": "gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors",
+          "folder": "text_encoders",
+          "sizeBytes": 15372971786,
+          "sha256": "09a89e084de1a149c3de60cfe9dfd3e5161967eb09eea39e806fcdeffdd568de",
+          "source": "https://huggingface.co/comfyicu/LTX-2.5",
+          "url": "https://huggingface.co/comfyicu/LTX-2.5/resolve/main/text_encoders/gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors"
+        },
+        {
+          "name": "ltx-2.5-video-vae-bf16.safetensors",
+          "folder": "vae",
+          "sizeBytes": 1472223346,
+          "sha256": "847e14ca7f3355debca0cea4eaa24ac0fbcdf0061da054ac89ca638a869ddba3",
+          "source": "https://huggingface.co/comfyicu/LTX-2.5",
+          "url": "https://huggingface.co/comfyicu/LTX-2.5/resolve/main/vae/ltx-2.5-video-vae-bf16.safetensors"
+        },
+        {
+          "name": "ltx-2.5-audio-vae-bf16.safetensors",
+          "folder": "vae",
+          "sizeBytes": 364866540,
+          "sha256": "c52733d37f6a7fb7949c3dc0fb468c6cb2169e4d836983a73babb9f0d54837a5",
+          "source": "https://huggingface.co/unsloth/LTX-2.5-GGUF",
+          "url": "https://huggingface.co/unsloth/LTX-2.5-GGUF/resolve/main/vae/ltx-2.5-audio-vae-bf16.safetensors"
+        }
+      ]
     }
   ],
   "loras": [],
@@ -269,6 +342,11 @@
       "name": "MIT License",
       "url": "https://opensource.org/license/mit",
       "summary": "You may use, change and share this software, including commercially, as long as the copyright and licence notice stay with it. It is provided as is, with no warranty."
+    },
+    "LTX-2-Community": {
+      "name": "LTX-2 Community License Agreement",
+      "url": "https://huggingface.co/Lightricks/LTX-2.3/blob/main/LICENSE",
+      "summary": "Free for individuals, researchers, and organisations under $10M annual revenue; requires explicit acceptance before downloading."
     }
   }
 }

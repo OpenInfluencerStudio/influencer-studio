@@ -6,10 +6,10 @@ import { repoRoot } from './paths.js';
 const ParamSchema = z.object({
   node: z.string().regex(/^[0-9]+$/), input: z.string().regex(/^[A-Za-z0-9_]+$/), type: z.enum(['string', 'int', 'float']),
   min: z.number().optional(), max: z.number().optional(), multipleOf: z.number().optional(), maxLength: z.number().optional(),
-  pattern: z.string().optional(), default: z.union([z.string(), z.number()]).optional(), axis: z.enum(['width', 'height']).optional(),
+  pattern: z.string().optional(), default: z.union([z.string(), z.number()]).optional(), axis: z.enum(['width', 'height']).optional(), also: z.array(z.object({ node: z.string().regex(/^[0-9]+$/), input: z.string().regex(/^[A-Za-z0-9_]+$/) }).strict()).optional(),
 }).strict();
 export const ManifestSchema = z.object({
-  id: z.string().regex(/^[a-z0-9_]+$/), label: z.string(), mode: z.string(), kind: z.enum(['image', 'video']),
+  id: z.string().regex(/^[a-z0-9_]+$/), label: z.string(), mode: z.string(), kind: z.enum(['image', 'video', 'audio']),
   variantIds: z.array(z.string()).min(1), allowedClassTypes: z.array(z.string()).min(1), params: z.record(ParamSchema),
 }).strict();
 export type TemplateManifest = z.infer<typeof ManifestSchema>;
@@ -25,7 +25,10 @@ export function loadTemplates(dir = path.join(repoRoot(), 'workflows')): Map<str
     const workflow = JSON.parse(fs.readFileSync(wfFile, 'utf8')) as ApiWorkflow;
     // Sandbox: every node class must be on the manifest allow-list; every param slot must exist.
     for (const [id, n] of Object.entries(workflow)) if (!manifest.allowedClassTypes.includes(n.class_type)) throw new Error(`template ${manifest.id}: node ${id} class ${n.class_type} not allowed`);
-    for (const [name, p] of Object.entries(manifest.params)) if (!workflow[p.node] || !(p.input in workflow[p.node].inputs)) throw new Error(`template ${manifest.id}: param ${name} points to a missing slot`);
+    for (const [name, p] of Object.entries(manifest.params)) {
+      if (!workflow[p.node] || !(p.input in workflow[p.node].inputs)) throw new Error(`template ${manifest.id}: param ${name} points to a missing slot`);
+      for (const a of p.also ?? []) if (!workflow[a.node] || !(a.input in workflow[a.node].inputs)) throw new Error(`template ${manifest.id}: param ${name} also-target points to a missing slot`);
+    }
     out.set(manifest.id, { manifest, workflow });
   }
   return out;
@@ -51,6 +54,7 @@ export function fillTemplate(t: Template, values: Record<string, string | number
       if (p.pattern && !new RegExp(p.pattern).test(v)) throw new Error(`Parameter ${name} has an invalid format`);
     }
     wf[p.node].inputs[p.input] = v;
+    for (const a of p.also ?? []) wf[a.node].inputs[a.input] = v;
   }
   return wf;
 }
