@@ -1,0 +1,32 @@
+{
+  "id": "acestep_music",
+  "label": "ACE-Step 1.5 Turbo music & vocals",
+  "mode": "text-to-audio",
+  "kind": "audio",
+  "variantIds": [
+    "acestep-1.5-turbo",
+    "qwen3-tts-1.7b-voicedesign-bf16"
+  ],
+  "allowedClassTypes": [
+    "UNETLoader",
+    "DualCLIPLoader",
+    "VAELoader",
+    "ModelSamplingAuraFlow",
+    "TextEncodeAceStepAudio1.5",
+    "ConditioningZeroOut",
+    "EmptyAceStep1.5LatentAudio",
+    "KSampler",
+    "VAEDecodeAudio",
+    "SaveAudioMP3"
+  ],
+  "params": {
+    "tags":    { "node": "5", "input": "tags", "type": "string", "maxLength": 2000 },
+    "lyrics":  { "node": "5", "input": "lyrics", "type": "string", "maxLength": 2000, "default": "[instrumental]" },
+    "bpm":     { "node": "5", "input": "bpm", "type": "int", "default": 120, "min": 60, "max": 180 },
+    "seconds": { "node": "7", "input": "seconds", "type": "float", "default": 10, "min": 3, "max": 60, "also": [{ "node": "5", "input": "duration" }] },
+    "steps":   { "node": "8", "input": "steps", "type": "int", "default": 8, "min": 4, "max": 20 },
+    "cfg":     { "node": "8", "input": "cfg", "type": "float", "default": 1.0, "min": 1.0, "max": 4.0 },
+    "seed":    { "node": "8", "input": "seed", "type": "int", "default": 42, "min": 0, "max": 4294967295, "also": [{ "node": "5", "input": "seed" }] },
+    "prefix":  { "node": "10", "input": "filename_prefix", "type": "string", "maxLength": 64, "pattern": "^[A-Za-z0-9_/-]+$", "default": "audio/influencer_studio_music" }
+  }
+}

@@ -10,7 +10,7 @@ export interface JobOutput { file: string; mime: string }
 export interface Job {
   id: string; createdAt: string; updatedAt: string; status: JobStatus; progress: number; message?: string;
   template: string; variantId: string; prompt: string; negative: string; seed: number; width: number; height: number; batch: number; steps?: number;
-  character: Record<string, unknown>; label: string; styleRef?: string; edit?: Record<string, unknown>; video?: Record<string, unknown>; frames?: number;
+  character: Record<string, unknown>; label: string; styleRef?: string; edit?: Record<string, unknown>; video?: Record<string, unknown>; audio?: Record<string, unknown>; frames?: number;
   mock: boolean; unsupported: boolean; softReasons: Reason[];
   outputs: JobOutput[]; error?: string;
 }
@@ -50,6 +50,15 @@ export class JobQueue extends EventEmitter {
     const now = new Date().toISOString();
     const j: Job = { ...n, id: crypto.randomUUID(), createdAt: now, updatedAt: now, status: 'queued', progress: 0, outputs: [] };
     this.jobs.push(j); this.touch(j); void this.pump();
+    return j;
+  }
+  addCompleted(n: NewJob, fileName: string, data: Buffer, mime: string): Job {
+    const now = new Date().toISOString();
+    const id = crypto.randomUUID();
+    const safe = `${id}_${fileName.replace(/[^A-Za-z0-9._-]/g, '_')}`;
+    fs.writeFileSync(path.join(this.outputsDir, safe), data);
+    const j: Job = { ...n, id, createdAt: now, updatedAt: now, status: 'done', progress: 100, outputs: [{ file: safe, mime }] };
+    this.jobs.push(j); this.touch(j);
     return j;
   }
   cancel(id: string): Job | undefined {

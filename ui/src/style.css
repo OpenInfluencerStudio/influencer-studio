@@ -180,3 +180,8 @@ a.chip,a.chip:visited{color:inherit}a.primary.linkbtn,a.primary.linkbtn:visited{
 .pname{font-size:12px;line-height:1.25;min-height:2.5em;display:flex;align-items:center;justify-content:center;font-weight:600}
 .phimg.hero{object-fit:cover}
 #silly-pack>small{display:block;margin-top:12px}
+
+/* ---- audio ---- */
+.audwrap{position:relative;width:100%;padding:10px;background:#1a1a1f;border-radius:12px}.audwrap audio{width:100%;display:block}.audwrap .savevid{display:inline-block;margin-top:6px;text-decoration:none}
+#audio-card .field h3{margin:10px 0 4px;font-size:13px;opacity:.8}
+#audio-card input.txt{width:100%;background:#232327;border:1.5px solid #2e2e33;border-radius:10px;padding:8px 10px;color:var(--tx);margin:4px 0 12px}

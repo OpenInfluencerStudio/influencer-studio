@@ -15,6 +15,7 @@ import { JobQueue, Job, Runner } from './queue.js';
 import { mockImageSvg } from './mock.js';
 import { EditSchema } from './edit.js';
 import { VideoSchema, VIDEO_NEGATIVE } from './video.js';
+import { AudioSchema, synthesizeSpeechWav, synthesizeMusicWav, type AudioRequest } from './audio.js';
 import { RefStore } from './refs.js';
 import type { EditRequest } from './edit.js';
 import { writeJsonAtomic, readJsonSafe } from './store.js';
@@ -213,7 +214,7 @@ export class Services {
   async check(facts: JobFacts) { return checkJob(facts, this.checkCtx(await this.effectiveHardware(), await this.comfyHealth())); }
   /** Sync re-check at job start using cached hardware. */
   private recheck(j: Job) {
-    if (!this.profile) return null;
+    if (!this.profile || (j.audio as { mode?: string } | undefined)?.mode === 'speech') return null;
     const r = checkJob({ template: j.template, variantId: j.variantId, width: j.width, height: j.height, frames: j.frames, refs: j.styleRef || j.edit || j.video ? 1 : 0, batch: j.batch, steps: j.steps }, this.checkCtx(this.custom?.enabled ? customProfile(this.profile.p, this.custom, this.limits) : this.profile.p, this.comfyOnline || this.mock));
     return r.ok ? null : (r.httpStatus === 403 ? r.soft : r.hard.length && !r.hard.every(x => x.code === 'COMFY_OFFLINE' || x.code === 'SDK_PROXY_OFFLINE') ? r.hard : null);
   }
@@ -229,20 +230,36 @@ export class Services {
   private runner: Runner = async (job, ctx) => {
     const tpl = this.templates.get(job.template);
     if (!tpl) throw new Error('Template not found');
+    const audReq = job.audio as AudioRequest | undefined;
+    if (audReq && audReq.mode === 'speech') {
+      ctx.update(35, 'Synthesizing voice line');
+      const wav = await synthesizeSpeechWav(String(audReq.text ?? job.prompt), String(audReq.voice ?? 'warm_host'), job.seed);
+      return [ctx.saveOutput('aud_0.wav', wav, 'audio/wav')];
+    }
     if (job.mock) {
       for (let i = 1; i <= 5; i++) { if (ctx.cancelled()) return []; ctx.update(i * 18, 'Mock generator'); await new Promise(r => setTimeout(r, 350)); }
+      if (audReq) {
+        const wav = synthesizeMusicWav(Number(audReq.seconds ?? 5), Number(audReq.bpm ?? 120), job.seed);
+        return [ctx.saveOutput('aud_0.wav', wav, 'audio/wav')];
+      }
       const outs = [];
       for (let b = 0; b < job.batch; b++) outs.push(ctx.saveOutput(`mock_${b}.svg`, mockImageSvg({ width: job.width, height: job.height, seed: job.seed + b, label: job.label, prompt: job.prompt }), 'image/svg+xml'));
       return outs;
     }
-    const values: Record<string, string | number> = { seed: job.seed, prefix: tpl.manifest.kind === 'video' ? 'video/influencer_studio' : 'influencer_studio' };
+    const values: Record<string, string | number> = { seed: job.seed, prefix: tpl.manifest.kind === 'video' ? 'video/influencer_studio' : tpl.manifest.kind === 'audio' ? 'audio/influencer_studio_music' : 'influencer_studio' };
     const has = (k: string) => k in tpl.manifest.params;
     if (has('width')) { values.width = job.width; values.height = job.height; }
     if (has('batch')) values.batch = job.batch;
     if (has('length') && job.frames) values.length = job.frames;
     if (has('negative')) values.negative = VIDEO_NEGATIVE;
     if (job.steps) values.steps = job.steps;
-    values.prompt = job.prompt;
+    if (has('prompt')) values.prompt = job.prompt;
+    if (audReq) {
+      if (has('tags')) values.tags = job.prompt;
+      if (has('lyrics')) values.lyrics = String(audReq.lyrics || '[instrumental]');
+      if (has('bpm') && audReq.bpm) values.bpm = Number(audReq.bpm);
+      if (has('seconds') && audReq.seconds) values.seconds = Number(audReq.seconds);
+    }
     let sdkRef: { placeholder: string; bytes: Buffer; filename: string; mime: string } | undefined;
     const refId = job.styleRef ?? (job.edit as EditRequest | undefined)?.refId ?? (job.video as { refId?: string } | undefined)?.refId;
     if (refId) {
@@ -284,7 +301,7 @@ export class Services {
         if (s.state === 'done') {
           const outs = [];
           let n = 0;
-          for (const img of s.images) { const buf = await this.comfy.fetchImage(img); const vid = /\.mp4$/i.test(img.filename); outs.push(vid ? ctx.saveOutput(`vid_${n++}.mp4`, buf, 'video/mp4') : ctx.saveOutput(`img_${n++}.png`, buf, 'image/png')); }
+          for (const img of s.images) { const buf = await this.comfy.fetchImage(img); const f = outputFileName({ type: /\.(mp3|wav|flac)$/i.test(img.filename) ? 'audio' : /\.mp4$/i.test(img.filename) ? 'video' : 'image', contentType: '', name: img.filename }, n++); outs.push(ctx.saveOutput(f.file, buf, f.mime)); }
           if (!outs.length) throw new Error('ComfyUI finished but returned no images or video');
           return outs;
         }
@@ -313,4 +330,5 @@ export const JobRequestSchema = z.object({
   styleRef: z.string().regex(/^[0-9a-f-]{36}$/).optional(),
   edit: EditSchema.optional(),
   video: VideoSchema.optional(),
+  audio: AudioSchema.optional(),
 }).strict();

@@ -19,9 +19,9 @@ export function videoInputs(models: Model[]): InputState[] {
     if (!ok) return { id, label, available: false, locked: true, reason: hwReason(ms[0]!) || 'Not available on this PC' };
     return { id, label, available: true, locked: false, reason: '' };
   };
-  const i2v = mk('i2v', 'Image to video', models.filter(m => m.id === 'wan22-ti2v-5b'), 'Coming soon');
-  return [i2v, mk('motion', 'Motion transfer', find('motion-transfer'), 'Coming soon'), mk('lipsync', 'Lip-sync', find('lip-sync'), 'Coming soon'),
-    { id: 'audio', label: 'Audio', available: false, locked: true, reason: 'Coming soon' }];
+  const i2v = mk('i2v', 'Image to video', models.filter(m => m.kind === 'video' || m.id === 'wan22-ti2v-5b'), 'Coming soon');
+  const aud = find('audio').length ? { id: 'audio' as VideoInput, label: 'Audio', available: true, locked: false, reason: '' } : { id: 'audio' as VideoInput, label: 'Audio', available: false, locked: true, reason: 'Coming soon' };
+  return [i2v, mk('motion', 'Motion transfer', find('motion-transfer'), 'Coming soon'), mk('lipsync', 'Lip-sync', find('lip-sync'), 'Coming soon'), aud];
 }
 export const parseMode = (v: unknown): Mode => (v === 'video' ? 'video' : 'image');
 export const parseInput = (v: unknown): VideoInput => (v === 'motion' || v === 'lipsync' || v === 'audio' ? v : 'i2v');

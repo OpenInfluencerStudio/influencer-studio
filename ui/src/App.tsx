@@ -3,6 +3,7 @@ import { About, Walkthrough, FeedbackLink, WALK_KEY } from './About';
 import { api, ApiError, initToken, subscribe, fetchBlobUrl, uploadRef, loadPreviews, pickPreview, presetImage, examplePreview, type PreviewItem } from './api';
 import { SameCharacter, SaveAsCharacter, RefThumb } from './SameCharacter';
 import { VideoCard } from './VideoCard';
+import { AudioCard } from './AudioCard';
 import { Models } from './Models';
 import { type Mode, type VideoInput, MODE_KEY, INPUT_KEY, parseMode, parseInput, load, save, navIndex, videoInputs } from './modes';
 import { SEL_KEY, parseSel, effective, toggle, gate, pick } from './modelsel';
@@ -441,9 +442,12 @@ function Library({ setCh }: { setCh: (c: Ch) => void }) {
 
 function Img({ job, idx }: { job: Job; idx: number }) {
   const [url, setUrl] = useState('');
-  const isVideo = job.outputs[idx]?.mime?.startsWith('video/');
+  const mime = job.outputs[idx]?.mime ?? '';
+  const isVideo = mime.startsWith('video/');
+  const isAudio = mime.startsWith('audio/');
   useEffect(() => { let u = ''; let dead = false; fetchBlobUrl(`/api/outputs/${job.id}/${idx}`).then(x => { u = x; if (!dead) setUrl(x); else URL.revokeObjectURL(x); }).catch(() => {}); return () => { dead = true; if (u) URL.revokeObjectURL(u); }; }, [job.id, idx]);
-  if (url && isVideo) return <div class="vidwrap"><video src={url} controls loop muted playsInline preload="metadata" aria-label={`Generated video: ${job.label}`} /><a class="ghost tiny savevid" href={url} download={`influencer-studio-${job.id.slice(0, 8)}.mp4`}>Save video</a></div>;
+  if (url && isVideo) return <div class="vidwrap"><video src={url} controls loop playsInline preload="metadata" aria-label={`Generated video: ${job.label}`} /><a class="ghost tiny savevid" href={url} download={`influencer-studio-${job.id.slice(0, 8)}.mp4`}>Save video</a></div>;
+  if (url && isAudio) return <div class="audwrap"><audio src={url} controls preload="metadata" aria-label={`Generated audio: ${job.label}`} /><a class="ghost tiny savevid" href={url} download={`influencer-studio-${job.id.slice(0, 8)}.${mime.includes('wav') ? 'wav' : 'mp3'}`}>Save audio</a></div>;
   return url ? <img src={url} alt={`Generated image ${idx + 1}: ${job.label}`} decoding="async" loading="lazy" /> : <div class="imgph" aria-hidden="true" />;
 }
 
@@ -474,6 +478,7 @@ function Generate(p: Ctx) {
       </div>}
       {!video && <SameCharacter schema={p.schema} setNotice={p.setNotice} opts={opts} msel={p.msel} unlocked={p.unlocked} />}
       {video && (curIn.id === 'i2v' && curIn.available ? <VideoCard msel={p.msel} setMsel={p.setMsel} schema={p.schema} opts={opts} jobs={jobs} unlocked={p.unlocked} adv={p.adv} setNotice={p.setNotice} go={p.go} />
+        : curIn.id === 'audio' && curIn.available ? <AudioCard schema={p.schema} opts={opts} jobs={jobs} ch={p.ch} seed={p.seed} setNotice={p.setNotice} go={p.go} />
         : <div class="card" id="vin-panel" role="tabpanel" aria-labelledby={'vin-' + curIn.id}><h2>🔒 {curIn.label}</h2><p class="muted">{curIn.reason === 'Coming soon' ? 'Coming soon. It will appear here once a compatible open model is installed on a PC that can run it.' : curIn.reason}</p>{curIn.reason !== 'Coming soon' && <button class="ghost" onClick={() => p.go('models')}>Open Models</button>}</div>)}
       <div class="card stage2">
         <div class="preview glow">

@@ -61,6 +61,28 @@
       "license": "LTX-2-Community",
       "sfw": true,
       "summary": "22B 8-step distilled video + native synchronized speech/dialogue & SFX audio model by Lightricks (Q4_K_M GGUF)."
+    },
+    {
+      "id": "ace-step-1.5",
+      "name": "ACE-Step 1.5 Turbo (Music & Vocals)",
+      "kind": "audio",
+      "modes": [
+        "text-to-audio"
+      ],
+      "license": "MIT",
+      "sfw": true,
+      "summary": "Fast 8-step open-weights music & soundtrack generator with native ComfyUI nodes. Creates background music, instrumentals, or vocal tracks in seconds and pairs them with your character videos."
+    },
+    {
+      "id": "qwen3-tts-voicedesign",
+      "name": "Qwen3-TTS 1.7B VoiceDesign (Speech)",
+      "kind": "audio",
+      "modes": [
+        "text-to-speech"
+      ],
+      "license": "Apache-2.0",
+      "sfw": true,
+      "summary": "Open-weights natural speech and voice design model (Apache-2.0) for generating spoken influencer lines to pair with your character clips."
     }
   ],
   "variants": [
@@ -329,6 +351,82 @@
           "url": "https://huggingface.co/unsloth/LTX-2.5-GGUF/resolve/main/vae/ltx-2.5-audio-vae-bf16.safetensors"
         }
       ]
+    },
+    {
+      "id": "acestep-1.5-turbo",
+      "modelId": "ace-step-1.5",
+      "label": "bf16 Turbo (8-step fast music)",
+      "format": "bf16",
+      "sizeGb": 10.02,
+      "license": "MIT",
+      "qualityRank": 3,
+      "minVramGb": 6,
+      "recommendedVramGb": 8,
+      "minRamGb": 16,
+      "recommendedRamGb": 32,
+      "minDiskGb": 12,
+      "template": "acestep_music",
+      "est": false,
+      "files": [
+        {
+          "name": "acestep_v1.5_turbo.safetensors",
+          "folder": "diffusion_models",
+          "sizeBytes": 4787825604,
+          "sha256": "3f6e0797fad420a39bd33979eb6e840e30989e34a3794e843d23b60ec6e422d7",
+          "source": "https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files",
+          "url": "https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files/resolve/main/split_files/diffusion_models/acestep_v1.5_turbo.safetensors"
+        },
+        {
+          "name": "qwen_0.6b_ace15.safetensors",
+          "folder": "text_encoders",
+          "sizeBytes": 1191588248,
+          "sha256": "fd4590c82153b8ddb67e15a2e7aaa8afa8b83a858c8a9b82a4831063156aa7a7",
+          "source": "https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files",
+          "url": "https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files/resolve/main/split_files/text_encoders/qwen_0.6b_ace15.safetensors"
+        },
+        {
+          "name": "qwen_1.7b_ace15.safetensors",
+          "folder": "text_encoders",
+          "sizeBytes": 3708523360,
+          "sha256": "ed63e9247d1f55f3ace04fa11e95b085fc82d459c82c5626f0b2e37b91ebd710",
+          "source": "https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files",
+          "url": "https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files/resolve/main/split_files/text_encoders/qwen_1.7b_ace15.safetensors"
+        },
+        {
+          "name": "ace_1.5_vae.safetensors",
+          "folder": "vae",
+          "sizeBytes": 337431732,
+          "sha256": "6de92e3a862acd287e08b024ac90f0783a8635451b728721a33ff03565bcb2bb",
+          "source": "https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files",
+          "url": "https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files/resolve/main/split_files/vae/ace_1.5_vae.safetensors"
+        }
+      ]
+    },
+    {
+      "id": "qwen3-tts-1.7b-voicedesign-bf16",
+      "modelId": "qwen3-tts-voicedesign",
+      "label": "bf16 VoiceDesign (1.7B speech)",
+      "format": "bf16",
+      "sizeGb": 3.83,
+      "license": "Apache-2.0",
+      "qualityRank": 3,
+      "minVramGb": 6,
+      "recommendedVramGb": 8,
+      "minRamGb": 8,
+      "recommendedRamGb": 16,
+      "minDiskGb": 5,
+      "template": "acestep_music",
+      "est": false,
+      "files": [
+        {
+          "name": "model.safetensors",
+          "folder": "tts",
+          "sizeBytes": 3833402552,
+          "sha256": "391e8db219f292c515297cdceeb43e4eae67cdde35fa57e79a6a8a532fca0522",
+          "source": "https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign",
+          "url": "https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/resolve/main/model.safetensors"
+        }
+      ]
     }
   ],
   "loras": [],
@@ -341,7 +439,7 @@
     "MIT": {
       "name": "MIT License",
       "url": "https://opensource.org/license/mit",
-      "summary": "You may use, change and share this software, including commercially, as long as the copyright and licence notice stay with it. It is provided as is, with no warranty."
+      "summary": "Permissive open-source license. Commercial use, modification, and redistribution permitted with copyright notice."
     },
     "LTX-2-Community": {
       "name": "LTX-2 Community License Agreement",

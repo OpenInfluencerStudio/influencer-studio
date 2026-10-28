@@ -50,6 +50,9 @@ for (const [w, h] of VPS) {
   await p.locator('text=/^Motion$/').first().click().catch(() => {}); await p.waitForTimeout(500); await visit(p, 'builder-motion', w, h);
   await nav('Generate'); await visit(p, 'generate', w, h);
   await p.locator('.top button:has-text("Video")').first().click().catch(() => {}); await p.waitForTimeout(700); await visit(p, 'video', w, h);
+  await p.locator('#vin-audio').click().catch(() => {}); await p.waitForTimeout(500); await visit(p, 'audio-music', w, h);
+  await p.locator('#audio-mode-pills button:has-text("Speech")').click().catch(() => {}); await p.waitForTimeout(500); await visit(p, 'audio-speech', w, h);
+  await p.locator('#vin-i2v').click().catch(() => {});
   await p.locator('.top button:has-text("Image")').first().click().catch(() => {});
   await nav('Models'); await visit(p, 'models', w, h);
   await nav('About'); await visit(p, 'about', w, h);
