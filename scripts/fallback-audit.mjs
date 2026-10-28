@@ -1,6 +1,6 @@
 // Lists every option tile that shows a drawn fallback instead of a real webp, for each character type. Usage: node fallback-audit.mjs <url> [types]
 import { chromium } from 'playwright';
-const types = process.argv[3] ? process.argv[3].split(',') : ['Surprise me','Man','Woman','Non-binary','Trans woman','Trans man','Alien','Monster','Cat person','Dog person','Fox person','Frog person','Insect person','Bird person','Rodent person','Reptile person','Robot','Plush person'];
+const types = process.argv[3] ? process.argv[3].split(',') : ['Surprise me','Man','Woman','Non-binary','Trans woman','Trans man','Alien','Monster','Cat person','Dog person','Fox person','Frog person','Insect person','Bird person','Rodent person','Reptile person','Robot','Plush toy person'];
 const b = await chromium.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox'] }); const p = await b.newPage({ viewport: { width: 1280, height: 1600 } });
 p.setDefaultTimeout(4000);
 await p.addInitScript(() => localStorage.setItem('is_walkthrough_done', '1'));

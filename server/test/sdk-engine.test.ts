@@ -40,6 +40,8 @@ describe('Comfy SDK engine: local only, keyless', () => {
     expect(progressMessage({ value: 0, currentNodeClass: 'UNETLoader' }).message).toBe('Loading models');
     expect(progressMessage({ value: 0.1, currentNodeClass: 'CLIPTextEncode' }).message).toBe('Reading your prompt');
     expect(progressMessage({ value: 2 }).percent).toBe(95); expect(progressMessage({}).percent).toBe(5);
+    expect(progressMessage({ value: 0.3, currentNode: "12" }, { "12": { class_type: "UNETLoader", inputs: {} } } as never).message).toBe("Loading models");
+    expect(progressMessage({ nodesDone: 3, nodesTotal: 6 })).toEqual({ percent: 50, message: "Working (3 of 6)" });
   });
   it('finds the reference-image slot and names outputs by type', () => {
     const wf = { '1': { class_type: 'LoadImage', inputs: { image: '__ref__' } }, '2': { class_type: 'X', inputs: { a: 1, b: '__ref__' } }, '3': { class_type: 'Y', inputs: {} } } as never;

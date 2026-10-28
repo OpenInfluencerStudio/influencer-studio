@@ -148,7 +148,8 @@ export class Services {
       if (h.online) adopt(this.proxyFixed, 'existing'); else this.sdkNote = `comfy-api-proxy is not answering at ${this.proxyFixed} (COMFY_PROXY_URL)`;
       return;
     }
-    for (const port of PROXY_DEFAULT_PORTS) {
+    const forcedPort = this.cfg.proxyPort ?? (process.env.INFLUENCER_STUDIO_PROXY_PORT ? Number(process.env.INFLUENCER_STUDIO_PROXY_PORT) : undefined);
+    if (!forcedPort) for (const port of PROXY_DEFAULT_PORTS) {
       const url = `http://127.0.0.1:${port}`; const h = await proxyHealth(url);
       if (!h.online || !h.upstream || !isLoopbackUrl(h.upstream)) continue;
       if (h.upstream === want) { adopt(url, 'existing'); return; }

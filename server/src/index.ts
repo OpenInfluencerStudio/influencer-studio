@@ -25,3 +25,4 @@ const running = app;
 const stop = () => { running.services.stopEngine(); auto.managed?.stop(); void running.close().then(() => process.exit(0)); };
 process.on('exit', () => { running.services.stopEngine(); auto.managed?.stop(); });
 process.on('SIGINT', stop); process.on('SIGTERM', stop); process.on('SIGHUP', stop);
+if (process.env.INFLUENCER_STUDIO_STOP_ON_EOF === '1') { process.stdin.resume(); process.stdin.on('end', stop); }

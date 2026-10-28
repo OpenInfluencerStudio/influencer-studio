@@ -24,6 +24,7 @@ const [pop] = await Promise.all([ctx.waitForEvent('page', { timeout: 5000 }).cat
 // About and diagnostics
 await p.click('nav >> text=About'); await p.waitForSelector('#diag-report'); await p.waitForTimeout(500);
 ok((await p.locator('#version-stamp').innerText()).trim() === '0.2.0-prelaunch', 'About shows the version');
+const pb = (await p.locator('#platform-badge').innerText()).trim(); ok(pb.includes('Built on the Comfy Developer Platform — Comfy SDK 0.5.0 (Comfy API v2 via comfy-api-proxy)'), 'About shows the Comfy Developer Platform badge: ' + pb);
 const rep = await p.locator('#diag-report').inputValue(); ok(rep.includes('0.2.0-prelaunch') && rep.includes('GPU:') && rep.includes('Models:'), 'report has version, GPU and models');
 ok(!/[A-Za-z]:\\Users|\/home\/|\/Users\/|#t=[A-Za-z0-9_-]{20}/.test(rep), 'report has no private paths or token');
 await p.click('#copy-report'); await p.waitForTimeout(400);

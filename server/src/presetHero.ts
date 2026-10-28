@@ -6,12 +6,12 @@ import { PRESETS, CONTROLS, SILLINESS, CREATURE_TYPES as CT } from './compiler/s
 export type HeroLook = 'man' | 'woman' | 'nonbinary';
 const TYPE_FOR_LOOK: Record<HeroLook, string> = { man: 'male', woman: 'female', nonbinary: 'non_binary' };
 /** Hero images are realistic photos even for silly presets: the stylisation wording (render style, silliness level) is replaced by a photo direction. */
-const STYLE_FRAGS = [...(CONTROLS.find(c => c.id === 'renderStyle')?.options.map(o => o.frag) ?? []), ...SILLINESS.map(l => l.frag).filter(Boolean)];
-export function realistic(prompt: string, creature: boolean): string {
+const STYLE_FRAGS = [...(CONTROLS.find(c => c.id === 'renderStyle')?.options.map(o => o.frag) ?? []), ...SILLINESS.map(l => l.frag).filter(Boolean), 'a cartoon giant head on a small body'];
+export function realistic(prompt: string, creature: boolean, heroLead?: string): string {
   let s = prompt; for (const f of STYLE_FRAGS) s = s.split(f + ', ').join('').split(f).join('');
   s = s.replace(/^[\s,]+/, '');
   const lead = creature ? 'photorealistic cinematic DSLR photograph of a lifelike character with real fur, feather or skin texture and real fabric clothing, natural light and depth of field,' : 'photorealistic DSLR photograph of a real adult person, natural skin texture, real fabric clothing and real costume pieces where described, 85mm lens, natural depth of field,';
-  return `${lead} ${s}`;
+  return `${lead}${heroLead ? " " + heroLead + "," : ""} ${s}`;
 }
 const TAIL = 'vivid saturated colours, bold colourful styling, bright even lighting, crisp sharp photo, three-quarter length view, standing, friendly confident expression';
 
@@ -25,18 +25,18 @@ export const HERO_COLOUR: Record<string, string> = {
   night: 'a glossy electric-purple techwear jacket with glowing cyan trim and bright teal cargo trousers, neon signs in magenta and cyan on a rainy city street at night',
   sir_pompadour: 'an enormous glossy pompadour, a bright purple blazer, big round oversized sunglasses, bold pink backdrop',
   captain_frog: 'a green frog character in a red and gold pirate coat with a tricorn hat, holding a teapot, bright blue sea backdrop',
-  disco_moth: 'a fluffy moth character with big feathery antennae in a sparkling gold glitter tracksuit, colourful disco lights and a mirror ball',
+  disco_moth: 'a fluffy anthropomorphic moth character with large patterned velvet moth wings spreading from the back and two big feathery plumose moth antennae on the fuzzy moth head, large expressive dark eyes, wearing a sparkling gold glitter sequin disco tracksuit, colourful neon disco lights and a mirror ball',
   mushroom_hermit: 'a huge red mushroom-cap hairstyle with white spots, cosy knitted green cardigan, bright mossy forest with tiny glowing mushrooms',
   cloud_chef: 'a huge pink cotton-candy cloud of hair, a very tall white chef hat, holding a giant pink donut, bright mint kitchen',
   space_parrot: 'a bright red and blue macaw parrot character in a shiny orange space suit with a clear bubble helmet, pastel cloud kingdom sky',
   hamster_wizard: 'a round-faced hamster character in a deep purple wizard robe with gold stars and a pointy hat, holding a teapot, warm candlelit library',
-  stair_step_steve: 'a clearly adult man in his late thirties with light stubble and smile lines, hair cut in clear stair steps like a staircase, a bright turquoise denim jacket over a red t-shirt, bright yellow backdrop',
+  stair_step_steve: 'three-quarter angle portrait of a clearly adult man in his late thirties with light stubble and smile lines, wearing a tall sculptural architectural haircut shaped like three stacked rectangular blocks of hair forming literal stair-steps rising from left to right on top of his head (a 3-tier stepped ziggurat flat-top hairstyle with sharp 90-degree corners), wearing a bright turquoise denim jacket over a red crew-neck t-shirt, bright yellow backdrop',
   bubble_afro: 'a huge round voluminous afro with shiny rainbow soap bubbles floating around it, a bright rainbow-striped tracksuit in red, yellow, green and blue, bright teal backdrop',
   owl_professor: 'a wise brown owl character in a mustard knit waistcoat and round glasses, holding a tall stack of colourful books, cosy library',
-  banana_detective: 'a full-body bright yellow banana costume with peel flaps hanging over the shoulders and the face showing through the front, dark sunglasses, a small detective hat, bright blue backdrop',
+  banana_detective: 'wearing a full-body bright yellow padded banana costume with big yellow banana-peel flaps hanging over the shoulders and a classic tan detective trenchcoat worn over the banana suit, holding up a large round brass magnifying glass in one hand, wearing dark sunglasses and a brown detective fedora hat, adult face smiling through the front opening of the banana costume, bright blue backdrop',
   robot_barista: 'a friendly shiny red and silver robot with a very tall white chef hat holding a teapot in a bright colourful cafe',
   mascot_marvin: 'a big furry blue sports-team mascot costume with a huge smiling head, laughing, confetti, bright red backdrop',
-  unicorn_hair: 'a long rainbow-coloured mane of hair with a sparkly unicorn horn, a flowing purple superhero cape with a star emblem, bright sky',
+  unicorn_hair: 'a prominent long spiralling iridescent pearl-and-gold unicorn horn rising from the center of the forehead above a long flowing rainbow-coloured mane of hair in vivid magenta, gold, cyan and violet, wearing a modest long-sleeved purple superhero tunic with a gold star emblem on the chest and a flowing purple cape over dark trousers, bright sky backdrop',
   rainbow_mohawk: 'a tall rainbow-coloured mohawk, a bright floral jacket in pink and orange, cheerful laugh, sunny backdrop',
   cat_cafe: 'a ginger cat character in a green knit cardigan serving tea from a teapot, a warm colourful cafe with plants',
   knight_duck: 'a bright orange toucan character in shiny silver knight armour with a cardboard crown, a colourful castle courtyard',
@@ -46,7 +46,7 @@ export const HERO_COLOUR: Record<string, string> = {
   duck_rain: 'a bright yellow duck-themed rain hood with a beak and a yellow raincoat, holding a tiny red umbrella, wet colourful street',
   balloon_wizard: 'a long purple wizard robe with gold stars, a long braid, holding a big bunch of colourful balloons, bright blue sky',
   long_shoe_larry: 'enormously long bright red clown shoes clearly visible, a baggy polka-dot clown-style suit, rainbow mohawk, full-length view, circus backdrop',
-  curly_toe_queen: 'bright golden shoes with long toes that curl up into big spirals, the shoes clearly visible, a tiered ruffle dress in magenta, a braided crown hairstyle, full-length view from head to feet, royal blue backdrop',
+  curly_toe_queen: 'full-length head-to-toe view showing feet on the floor: wearing ornate shiny metallic gold court-jester elf heels with very long pointed toes that curl upward into big coiled 360-degree spiral loops at the tips, the curled-toe gold shoes clearly visible in full, wearing a knee-length magenta tiered ruffle dress over dark opaque leggings, a braided crown hairstyle, royal blue backdrop',
   platform_pete: 'very tall chunky rainbow platform boots clearly visible, a neon green and hot-pink windbreaker over a bright yellow t-shirt, bright pink trousers, a tall swirling tornado-shaped hairstyle, full-length view from head to feet, bright turquoise backdrop',
   cycling_clara: 'a bright yellow and blue cycling kit, oversized giant sneakers, a fountain ponytail, standing in a sunny park, full-length view',
   legging_lou: 'bright orange and purple striped opaque leggings with a long loose lime-green tunic top covering the hips, two parallel tall mohawk ridges dyed bright blue clearly visible, rainbow-striped boots, full-length view, bright orange backdrop',
@@ -54,7 +54,7 @@ export const HERO_COLOUR: Record<string, string> = {
   puffy_percy: 'a bright orange shirt with huge balloon-like puffy sleeves, green trousers, a tall stack of three round pancake-shaped buns of hair on top of the head, lime green backdrop',
   mismatch_max: 'a top with one red sleeve and one blue sleeve, hair half bright pink and half bright blue, yellow backdrop',
   collar_connie: 'a shirt with an enormous oversized pointed collar that reaches past the shoulders in bright teal, hair styled into a tall curling ocean-wave crest, coral backdrop',
-  spring_steps: 'chunky sneakers mounted on big shiny metal coil springs under the soles, the springs clearly visible, an oversized bright orange puffer jacket and bright blue trousers, pointy spiky hair, full-length view from head to feet, bright blue backdrop',
+  spring_steps: 'full-length head-to-toe shot with plenty of floor visible below the feet: wearing chunky athletic sneakers that sit on top of tall thick shiny chrome metal coil springs underneath the soles, standing elevated above the floor on the two big coiled metal springs under the bottom of the shoes, wearing an oversized bright orange puffer jacket over a bright teal t-shirt and bright blue cropped trousers, spiky hair crown, bright blue backdrop',
   space_buns: 'two big space buns, a bright pink and yellow sport set, holding a skateboard, sunny skate park',
 };
 
@@ -69,7 +69,7 @@ export function presetHeroJobs(): HeroJob[] {
       const base = CharacterSchema.parse({ type: look ? TYPE_FOR_LOOK[look] : 'surprise', bodySize: 'medium', age: 30 });
       const ch = applyPreset(base, p.id); const seed = seedOf(p.id + (look ?? ''));
       const c = compileCharacter(ch, seed);
-      jobs.push({ id: p.id, look, file: `presets/${p.id}${look ? '__' + look : ''}.webp`, seed, prompt: `${realistic(c.positive, !!c.resolved && CT.includes(c.resolved.type))} ${HERO_COLOUR[p.id]}, ${TAIL}.`, negative: c.negative, width: 768, height: 1024 });
+      jobs.push({ id: p.id, look, file: `presets/${p.id}${look ? '__' + look : ''}.webp`, seed, prompt: `${realistic(c.positive, !!c.resolved && CT.includes(c.resolved.type), HERO_COLOUR[p.id])} ${HERO_COLOUR[p.id]}, ${/full-length|head-to-toe/i.test(HERO_COLOUR[p.id]) ? TAIL.replace('three-quarter length view', 'full-length view from head to feet') : TAIL}.`, negative: c.negative, width: 768, height: 1024 });
     }
   }
   return jobs;
