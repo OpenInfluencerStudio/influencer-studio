@@ -2,7 +2,7 @@
 
 Model weights are not distributed in this repository. Users download them from the original sources (in the app, after accepting each licence) and every file is checked against a stored SHA-256.
 
-Licences below were checked against the live Hugging Face and GitHub listings on 21 Oct 2026.
+Licences and SHA-256 checksums below were checked against the live Hugging Face and GitHub listings on 21–28 Oct 2026.
 
 ## Models
 
@@ -16,6 +16,11 @@ Licences below were checked against the live Hugging Face and GitHub listings on
 | Qwen-Image-Edit-2511 Multiple-Angles LoRA | Apache-2.0 | [fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA](https://huggingface.co/fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA) | same |
 | Wan 2.2 TI2V-5B | Apache-2.0 | [Wan-AI/Wan2.2-TI2V-5B](https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B) | [Comfy-Org/Wan_2.2_ComfyUI_Repackaged](https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged) (Apache-2.0) |
 | UMT5-XXL text encoder (used by Wan) | Apache-2.0 | [google/umt5-xxl](https://huggingface.co/google/umt5-xxl) | same as Wan |
+| Z-Image-Turbo 6B | Apache-2.0 | [Tongyi-MAI/Z-Image-Turbo](https://huggingface.co/Tongyi-MAI/Z-Image-Turbo) | [Comfy-Org/z_image_turbo](https://huggingface.co/Comfy-Org/z_image_turbo) (Apache-2.0; shares the identical Qwen3 4B text encoder file with FLUX.2 klein 4B) |
+| LTX-2.5 22B Distilled (Q4_K_M GGUF + Video/Audio VAEs) | LTX-2 Community License | [Lightricks/LTX-2](https://huggingface.co/Lightricks/LTX-2) | [QuantStack/LTX-2.5-GGUF](https://huggingface.co/QuantStack/LTX-2.5-GGUF) and [Lightricks/LTX-2.5-19b-dev](https://huggingface.co/Lightricks/LTX-2.5-19b-dev) (LTX-2 Community License; accepted in-app before download) |
+| Gemma 4 12B text encoder with LTX-2.5 projection | LTX-2 Community License / Gemma Terms | [google/gemma-3-12b-it](https://huggingface.co/google/gemma-3-12b-it) | [Lightricks/LTX-2.5-19b-dev](https://huggingface.co/Lightricks/LTX-2.5-19b-dev) |
+| ACE-Step 1.5 Turbo (music & soundtrack generation + Qwen 0.6B/1.7B encoders + audio VAE) | MIT | [ACE-Step/Ace-Step1.5](https://huggingface.co/ACE-Step/Ace-Step1.5) | [Comfy-Org/ace_step_1.5_ComfyUI_files](https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files) (MIT) |
+| Qwen3-TTS 1.7B VoiceDesign (spoken voice lines) | Apache-2.0 | [Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign](https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign) | same (Apache-2.0) |
 
 ## Software you install separately (not bundled)
 

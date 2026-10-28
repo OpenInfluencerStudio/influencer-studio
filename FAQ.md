@@ -1,6 +1,6 @@
 # FAQ
 
-**Is it free?** Yes. Influencer Studio is open source under Apache-2.0, and every model it uses is Apache-2.0 too (see `THIRD_PARTY.md`).
+**Is it free?** Yes. Influencer Studio is open source under Apache-2.0. Core image, edit, video and speech models are Apache-2.0, ACE-Step 1.5 music is MIT, and the optional LTX-2.5 audio-video model uses the LTX-2 Community License (free for creators and entities under $10M annual revenue; accepted in-app before download). See `THIRD_PARTY.md`.
 
 **How does it use the Comfy Developer Platform?** Every job goes through the official Comfy SDK (`@comfyorg/sdk`) to comfy-api-proxy, Comfy's local Comfy API v2 server, in front of your own ComfyUI. It is all on your computer: no account, no API key, no Comfy Cloud or Router, no partner nodes.
 
@@ -18,7 +18,7 @@
 
 **Why are some options greyed out?** The hardware scan found your PC can't run them. Hover to see the reason with real numbers, for example "Needs 12 GB VRAM (you have 8 GB)". Advanced > "Unlock unsupported options at my own risk" releases soft limits; hard limits like no GPU, missing model files, a full disk or ComfyUI being offline always stay on.
 
-**Which model should I download?** The Models screen pre-selects the best fit for your hardware. FLUX.2 klein 4B makes images, Qwen-Image-Edit-2511 keeps the same character in a new scene or camera angle (needs a 16 GB GPU), and Wan 2.2 TI2V-5B makes short videos.
+**Which model should I download?** The Models screen pre-selects the best fit for your hardware. **FLUX.2 klein 4B** and **Z-Image-Turbo 6B** make images (they share the same Qwen3 4B text encoder and VAE), **Qwen-Image-Edit-2511** keeps the same character in a new scene or camera angle (needs a 16 GB GPU), **Wan 2.2 TI2V-5B** makes silent short videos, **LTX-2.5 22B Distilled** makes short videos with synchronized speech and sound effects, and **ACE-Step 1.5 Turbo** makes background music and soundtracks.
 
 **How long does generating take?** On the reference PC (RTX 5060 Ti 16 GB): a klein preview image in about 4 seconds, a same-character edit in 2.5 to 3 minutes, and a 2-second video in about a minute once models are loaded. First runs are slower while models load from disk.
 
@@ -28,7 +28,7 @@
 
 **What content is allowed?** SFW only: adults (21+ in the builder), fully clothed, respectful wording, with a blocked-terms filter. Only use reference images you have the right to use, and never a real person's likeness without their consent. See `SAFETY.md`.
 
-**Is there audio, lip-sync or motion transfer?** Not yet. They're planned after the core app, once the audio models' licences are checked.
+**Is there audio, lip-sync or motion transfer?** Yes for audio and synced speech! Switch to **Video** mode: when **LTX-2.5 22B Distilled** is selected in **Image to video**, you can type a spoken line and sound-effects prompt for native synchronized audio-video generation. Or open the **Audio** tab to generate background music with **ACE-Step 1.5 Turbo** (MIT) or spoken voiceovers (TTS) and attach them onto any generated video clip. Standalone motion transfer and lip-sync re-animation are planned for a future update.
 
 **Where are my characters and pictures stored?** In the data folder: `%LOCALAPPDATA%\InfluencerStudio` on Windows, `~/.influencer-studio` elsewhere. Updating the app keeps them.
 
