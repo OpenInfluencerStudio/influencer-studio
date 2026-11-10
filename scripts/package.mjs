@@ -35,8 +35,9 @@ await build({ entryPoints: [path.join(root, 'server/src/index.ts')], bundle: tru
 fs.writeFileSync(path.join(stage, 'app', 'package.json'), JSON.stringify({ type: 'module', private: true }));
 cp('ui/dist', 'ui/dist'); cp('models.json', 'models.json'); cp('workflows', 'workflows'); cp('data/limits.json', 'data/limits.json');
 if (fs.existsSync(path.join(root, 'assets/previews'))) cp('assets/previews', 'assets/previews');
-for (const f of ['LICENSE', 'THIRD_PARTY.md', 'SAFETY.md', 'FAQ.md', 'README.md']) if (fs.existsSync(path.join(root, f))) cp(f, f);
-fs.copyFileSync(path.join(root, 'docs/INSTALL.md'), path.join(stage, 'INSTALL.md'));
+// Docs: the same layout as the repository, so every relative link and image in them works inside the package too.
+for (const f of ['LICENSE', 'README.md', 'CHANGELOG.md', 'CONTRIBUTING.md', 'FAQ.md', 'SAFETY.md', 'THIRD_PARTY.md']) if (fs.existsSync(path.join(root, f))) cp(f, f);
+cp('docs', 'docs'); fs.mkdirSync(path.join(stage, 'ui', 'public'), { recursive: true }); fs.copyFileSync(path.join(root, 'ui/public/icon.svg'), path.join(stage, 'ui/public/icon.svg'));
 if (fs.existsSync(path.join(stage, 'app', 'server.mjs.LEGAL.txt'))) fs.renameSync(path.join(stage, 'app', 'server.mjs.LEGAL.txt'), path.join(stage, 'THIRD_PARTY_BUNDLED.txt'));
 
 // 3. Node runtime for the target (official build, checksum checked)
@@ -83,7 +84,6 @@ fs.mkdirSync(path.join(stage, 'comfyui'), { recursive: true });
 for (const f of ['comfyui.lock.json', 'README.md', platform === 'win' ? 'install-comfyui.ps1' : 'install-comfyui.sh']) fs.copyFileSync(path.join(root, 'comfyui', f), path.join(stage, 'comfyui', f));
 if (platform !== 'win') fs.chmodSync(path.join(stage, 'comfyui', 'install-comfyui.sh'), 0o755);
 else fs.writeFileSync(path.join(stage, 'Install ComfyUI (optional).bat'), ['@echo off', 'cd /d "%~dp0"', 'echo This downloads the official ComfyUI portable build (about 2 GB, GPL-3.0, a separate program) into the comfyui folder.', 'echo Skip this if you already run ComfyUI. Close this window to cancel.', 'pause', 'powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0comfyui\\install-comfyui.ps1" %*', 'pause', ''].join('\r\n'));
-if (fs.existsSync(path.join(root, 'docs/prelaunch-test-checklist.md'))) fs.copyFileSync(path.join(root, 'docs/prelaunch-test-checklist.md'), path.join(stage, 'TESTING.md'));
 fs.writeFileSync(path.join(stage, 'BUILD-INFO.json'), JSON.stringify({ app: 'influencer-studio', version, platform, arch, node: nodeVersion, nodeSha256: want, builtAt: new Date().toISOString().slice(0, 10) }, null, 2));
 
 // 5. archive + checksum

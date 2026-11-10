@@ -443,7 +443,7 @@
     },
     "LTX-2-Community": {
       "name": "LTX-2 Community License Agreement",
-      "url": "https://huggingface.co/Lightricks/LTX-2.3/blob/main/LICENSE",
+      "url": "https://github.com/Lightricks/LTX-2/blob/main/LICENSE-2_x",
       "summary": "Free for individuals, researchers, and organisations under $10M annual revenue; requires explicit acceptance before downloading."
     }
   }

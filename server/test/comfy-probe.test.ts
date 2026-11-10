@@ -62,7 +62,7 @@ describe('ComfyUI auto-detect (stock 8188 first, then 8288)', () => {
     const s = new Services({ dataDir: tmp() });
     expect(await s.comfyHealth()).toBe(true); expect(s.comfy.baseUrl).toBe(first.url);
   });
-  it('COMFYUI_URL pins the address and turns auto-detect off (<your-pc>: Comfy-Studio on 8288)', async () => {
+  it('COMFYUI_URL pins the address and turns auto-detect off (a second ComfyUI on 8288)', async () => {
     const dead = await deadPort(); const live = await fakeComfy();
     process.env.COMFYUI_URL = `http://127.0.0.1:${dead}`; process.env.COMFYUI_PORTS = `${live.port}`;
     const s = new Services({ dataDir: tmp() });

@@ -11,7 +11,7 @@ export function validateComfyUrl(raw: string, allowRemote = false): string {
   return u.origin;
 }
 
-/** Stock ComfyUI listens on 8188; Comfy-Studio style installs (and the app's managed ComfyUI) often use 8288. */
+/** Stock ComfyUI listens on 8188; a second install side by side often uses 8288. */
 export const DEFAULT_COMFY_PORTS = [8188, 8288];
 
 /** Candidate URLs for auto-detect. COMFYUI_PORTS="8188,8288" overrides the order; bad entries are ignored. */

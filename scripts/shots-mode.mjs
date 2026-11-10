@@ -1,6 +1,6 @@
 // Playwright screenshots of the mode switch and scan spacing (run against a mock-mode server). Usage: node shots-mode.mjs <urlWithToken>  (needs: npm i playwright; set executablePath to your Chrome)
 import { chromium } from 'playwright';
-const url = process.argv[2]; const out = '/workspace/influencer-studio-repo/docs-shots-local/mode/';
+const url = process.argv[2]; const out = new URL('../docs-shots-local/mode/', import.meta.url).pathname;
 import fs from 'node:fs'; fs.mkdirSync(out,{recursive:true});
 const b = await chromium.launch({ executablePath: '/usr/bin/google-chrome', args:['--no-sandbox'] });
 for (const [w,h] of [[1280,800],[1920,1080]]) {
