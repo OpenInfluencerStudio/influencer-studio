@@ -52,7 +52,7 @@ export function Models(p: any) {
       <p class="muted">{p.opts.summary} Only models with a permissive open licence are listed. Nothing is downloaded until you read the licence and press Download.</p>
       <div class="card">
         <b>Models folder:</b> {dl?.modelsDir ? <code>{dl.modelsDir}</code> : <span class="muted">not set</span>}{dl?.modelsDirSource === 'env' && <small class="muted"> (set by the launcher)</small>}
-        {dl && dl.modelsDirSource !== 'env' && dl.modelsDirSource !== 'config' && (p.adv || noDir) && <div class="row"><input class="num" style={{ width: '360px' }} aria-label="Models folder path" placeholder="Full folder path, for example <models-dir>" value={dir} onInput={e => setDir((e.target as HTMLInputElement).value)} /><button class="ghost" disabled={dir.trim().length < 3} onClick={saveDir}>Use this folder</button></div>}
+        {dl && dl.modelsDirSource !== 'env' && dl.modelsDirSource !== 'config' && (p.adv || noDir) && <div class="row"><input class="num" style={{ width: '360px' }} aria-label="Models folder path" placeholder="Full folder path, for example C:\ComfyUI\models" value={dir} onInput={e => setDir((e.target as HTMLInputElement).value)} /><button class="ghost" disabled={dir.trim().length < 3} onClick={saveDir}>Use this folder</button></div>}
         {noDir && <p class="muted small">Pick a folder with plenty of free space (the files are large). An SSD loads models much faster than a hard disk.</p>}
       </div>
       {err && <div class="alert" role="alert"><b>{err}</b></div>}

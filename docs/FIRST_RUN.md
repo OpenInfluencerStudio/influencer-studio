@@ -37,7 +37,7 @@ Recommended models for your level are ticked in the model list. Tick the ones yo
 
 ## 4. Choose a models folder
 
-Open **Models**. If no models folder is set, enter a full folder path, for example your ComfyUI `models` folder (such as `<models-dir>`), and press **Use this folder**. Pick a drive with plenty of free space; an SSD loads models much faster than a hard disk.
+Open **Models**. If no models folder is set, enter a full folder path, for example your ComfyUI `models` folder (such as `C:\ComfyUI\models`), and press **Use this folder**. Pick a drive with plenty of free space; an SSD loads models much faster than a hard disk.
 
 You can also set it before starting with `INFLUENCER_STUDIO_MODELS_DIR` (see [Settings](INSTALL.md#settings)). If you use your own ComfyUI, the folder must be the one that ComfyUI reads models from, so it can find the files.
 

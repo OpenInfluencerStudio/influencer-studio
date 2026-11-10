@@ -34,7 +34,7 @@ export function findManagedComfy(comfyDir: string): ManagedLayout | null {
 }
 
 const yamlPath = (p: string) => JSON.stringify(p.replace(/\\/g, '/'));
-/** extra_model_paths.yaml that points ComfyUI at the app's models folder (for example <models-dir> or the app's own models folder). */
+/** extra_model_paths.yaml that points ComfyUI at the app's models folder (for example C:\ComfyUI\models or the app's own models folder). */
 export function extraModelPathsYaml(modelsDir: string): string {
   const lines = ['# Written by Influencer Studio. Points the app-managed ComfyUI at your models folder.', 'influencer_studio:', `  base_path: ${yamlPath(modelsDir)}`, '  is_default: true'];
   for (const [key, dirs] of Object.entries(MODEL_FOLDERS)) {

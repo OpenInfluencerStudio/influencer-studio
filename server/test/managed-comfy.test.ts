@@ -43,8 +43,8 @@ describe('app-managed ComfyUI (single install prototype)', () => {
     expect(MANAGED_DEFAULT_PORT).not.toBe(8188); expect(MANAGED_DEFAULT_PORT).not.toBe(8288);
   });
   it('extra_model_paths.yaml maps the app models folder (Windows paths become forward slashes)', () => {
-    const y = extraModelPathsYaml('<models-dir>\\AI');
-    expect(y).toContain('base_path: "<models-dir>/AI"'); expect(y).toContain('is_default: true');
+    const y = extraModelPathsYaml('C:\\ComfyUI\\models');
+    expect(y).toContain('base_path: "C:/ComfyUI/models"'); expect(y).toContain('is_default: true');
     for (const f of ['diffusion_models', 'unet', 'text_encoders', 'vae', 'loras']) expect(y).toContain(`${f}/`);
   });
   it('INFLUENCER_STUDIO_COMFY_DIR overrides <app>/comfyui', () => {
